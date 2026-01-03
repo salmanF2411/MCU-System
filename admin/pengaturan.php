@@ -7,10 +7,11 @@ require_once '../includes/functions.php';
 requireLogin();
 requireRole('super_admin');
 
-// Get current settings
-$query = "SELECT * FROM pengaturan LIMIT 1";
-$result = mysqli_query($conn, $query);
-$settings = mysqli_fetch_assoc($result);
+    // Get current settings
+    $query = "SELECT * FROM pengaturan LIMIT 1";
+    $result = mysqli_query($conn, $query);
+    $settings = mysqli_fetch_assoc($result);
+    $settings['hero_image'] = $settings['hero_image'] ?? '';
 
 // If no settings exist, create default
 if (!$settings) {
@@ -56,16 +57,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $logo = '';
     }
+
+    // Handle hero image upload
+    $hero_image = $settings['hero_image'];
+    if (isset($_FILES['hero_image']) && $_FILES['hero_image']['error'] == 0) {
+        $upload_result = uploadFile($_FILES['hero_image'], 'uploads/hero/');
+        if (isset($upload_result['success'])) {
+            // Delete old hero image if exists
+            if ($hero_image && file_exists('../assets/' . $hero_image)) {
+                unlink('../assets/' . $hero_image);
+            }
+            $hero_image = $upload_result['success'];
+        }
+    }
+
+    // Delete hero image if checkbox is checked
+    if (isset($_POST['delete_hero_image']) && $_POST['delete_hero_image'] == '1') {
+        if ($hero_image && file_exists('../assets/' . $hero_image)) {
+            unlink('../assets/' . $hero_image);
+        }
+        $hero_image = '';
+    }
     
     // Update settings
-    $query = "UPDATE pengaturan SET 
+    $query = "UPDATE pengaturan SET
               nama_klinik = '$nama_klinik',
               alamat = '$alamat',
               telepon = '$telepon',
               email = '$email',
               whatsapp = '$whatsapp',
               tentang = '$tentang',
-              logo = '$logo'";
+              logo = '$logo',
+              hero_image = '$hero_image'";
     
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Pengaturan berhasil diperbarui!";
@@ -126,14 +149,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="col-md-6 offset-md-6">
                                 <div class="border p-3 rounded">
                                     <p class="mb-2"><strong>Logo Saat Ini:</strong></p>
-                                    <img src="<?php echo ASSETS_URL . '/' . $settings['logo']; ?>" 
+                                    <img src="<?php echo ASSETS_URL . '/' . $settings['logo']; ?>"
                                          class="img-fluid" style="max-height: 100px;">
                                     <div class="mt-2">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" 
+                                            <input class="form-check-input" type="checkbox"
                                                    name="delete_logo" value="1" id="deleteLogo">
                                             <label class="form-check-label text-danger" for="deleteLogo">
                                                 Hapus logo
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Gambar Hero Dashboard</label>
+                                <input type="file" class="form-control" name="hero_image" accept="image/*">
+                                <small class="text-muted">Format: JPG, PNG, GIF. Max: 5MB. Digunakan di dashboard admin</small>
+                            </div>
+                        </div>
+
+                        <!-- Current Hero Image -->
+                        <?php if ($settings['hero_image']): ?>
+                        <div class="row mb-3">
+                            <div class="col-md-6 offset-md-6">
+                                <div class="border p-3 rounded">
+                                    <p class="mb-2"><strong>Gambar Hero Saat Ini:</strong></p>
+                                    <img src="<?php echo ASSETS_URL . '/' . $settings['hero_image']; ?>"
+                                         class="img-fluid" style="max-height: 100px;">
+                                    <div class="mt-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   name="delete_hero_image" value="1" id="deleteHeroImage">
+                                            <label class="form-check-label text-danger" for="deleteHeroImage">
+                                                Hapus gambar hero
                                             </label>
                                         </div>
                                     </div>
@@ -248,6 +301,18 @@ if (deleteCheckbox) {
     deleteCheckbox.addEventListener('change', function() {
         if (this.checked) {
             if (!confirm('Yakin ingin menghapus logo?')) {
+                this.checked = false;
+            }
+        }
+    });
+}
+
+// Delete hero image confirmation
+const deleteHeroCheckbox = document.getElementById('deleteHeroImage');
+if (deleteHeroCheckbox) {
+    deleteHeroCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            if (!confirm('Yakin ingin menghapus gambar hero?')) {
                 this.checked = false;
             }
         }

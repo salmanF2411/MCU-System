@@ -173,3 +173,6 @@ CREATE TABLE pengaturan (
 
 INSERT INTO pengaturan (nama_klinik, alamat, telepon, email, whatsapp) VALUES
 ('Klinik Sehat Mandiri', 'Jl. Kesehatan No. 123, Jakarta Pusat', '(021) 1234567', 'info@kliniksehat.com', '081234567890');
+
+
+ALTER TABLE pengaturan ADD COLUMN hero_image VARCHAR(255) DEFAULT NULL;

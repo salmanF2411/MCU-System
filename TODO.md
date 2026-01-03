@@ -1,37 +1,23 @@
-# Admin Layout Standardization Task
+# TODO: Add Configurable Hero Section to Admin Dashboard
 
-## Overview
+## Database Changes
 
-Standardize all admin pages to use consistent layout with sidebar for symmetrical appearance.
+- [ ] Add 'hero_image' column to pengaturan table
 
-## Files to Update
+## Settings Page Updates
 
-- [x] admin/dashboard.php: Add sidebar, change footer to admin-footer.php
-- [x] admin/users/list.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [x] admin/users/add.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [x] admin/users/edit.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [x] admin/pasien/list.php: Add sidebar
-- [x] admin/pasien/detail.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [x] admin/pasien/pemeriksaan.php: Change header to admin-header.php, change footer to admin-footer.php
-- [x] admin/laporan/cetak-pasien.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [x] admin/laporan/cetak-hasil.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [x] admin/artikel/list.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [ ] admin/artikel/add.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [ ] admin/artikel/edit.php: Change header to admin-header.php, add sidebar, change footer to admin-footer.php
-- [ ] admin/profile.php: Add sidebar, change footer to admin-footer.php
-- [ ] admin/pengaturan.php: Add sidebar, change footer to admin-footer.php
+- [ ] Update pengaturan.php to handle hero image upload
+- [ ] Add form fields for hero image in settings form
+- [ ] Handle image upload and deletion logic
 
-## Layout Structure
+## Dashboard Updates
 
-All pages should use:
+- [ ] Update dashboard.php to display hero section
+- [ ] Add hero section above existing content
+- [ ] Use configured hero image from settings
 
-- admin-header.php
-- admin-nav.php
-- admin-sidebar.php (col-lg-2)
-- Main content (col-lg-10)
-- admin-footer.php
+## Testing
 
-## Progress
-
-- [ ] Started: [Date/Time]
-- [ ] Completed: [Date/Time]
+- [ ] Test image upload functionality
+- [ ] Test hero display on dashboard
+- [ ] Test image deletion

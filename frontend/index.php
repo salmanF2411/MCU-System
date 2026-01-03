@@ -2,15 +2,20 @@
 $page_title = 'Beranda - Sistem MCU Klinik';
 require_once '../config/database.php';
 require_once '../includes/header.php';
+
+// Get settings for hero image
+$query = "SELECT * FROM pengaturan LIMIT 1";
+$result = mysqli_query($conn, $query);
+$settings = mysqli_fetch_assoc($result);
 ?>
 
 <a href="daftar-mcu.php" style="text-decoration: none; color: inherit; display: block;">
-    <div class="hero-section mb-5" style="background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('<?php echo ASSETS_URL; ?>/images/hero-bg.jpg'); background-size: cover; color: white; padding: 100px 0; border-radius: 15px;">
+    <div class="hero-section mb-5" style="background: linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.4)), url('<?php echo $settings && $settings['hero_image'] ? ASSETS_URL . '/' . $settings['hero_image'] : ASSETS_URL . '/images/hero-bg.jpg'; ?>'); background-size: cover; background-position: center; background-repeat: no-repeat; color: #333; padding: 100px 0; border-radius: 15px;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h1 class="display-4 fw-bold">Medical Check Up Profesional</h1>
-                    <p class="lead">Layanan pemeriksaan kesehatan lengkap untuk perusahaan dan individu dengan tim dokter profesional dan peralatan medis terkini.</p>
+                    <h1 class="display-4 fw-bold" style="color: white; text-shadow: 3px 3px 8px rgba(0,0,0,0.9), 0px 0px 20px rgba(0,0,0,0.7);">Medical Check Up Profesional</h1>
+                    <p class="lead" style="color: white; text-shadow: 2px 2px 6px rgba(9, 6, 6, 0.9), 0px 0px 15px rgba(3, 2, 2, 0.7);">Layanan pemeriksaan kesehatan lengkap untuk perusahaan dan individu dengan tim dokter profesional dan peralatan medis terkini.</p>
                     <span class="btn btn-primary btn-lg">
                         <i class="fas fa-calendar-check"></i> Daftar MCU Sekarang
                     </span>
