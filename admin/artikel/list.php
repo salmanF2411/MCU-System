@@ -141,19 +141,13 @@ $result = mysqli_query($conn, $query);
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
-                                                    <a href="<?php echo BASE_URL; ?>/artikel-detail.php?id=<?php echo $article['id']; ?>" 
-                                                       target="_blank" 
-                                                       class="btn btn-info" 
-                                                       title="Lihat">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                    <a href="edit.php?id=<?php echo $article['id']; ?>" 
-                                                       class="btn btn-warning" 
+                                                    <a href="edit.php?id=<?php echo $article['id']; ?>"
+                                                       class="btn btn-warning"
                                                        title="Edit">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <button type="button" 
-                                                            class="btn btn-danger delete-article" 
+                                                    <button type="button"
+                                                            class="btn btn-danger delete-article"
                                                             data-id="<?php echo $article['id']; ?>"
                                                             data-title="<?php echo htmlspecialchars($article['judul']); ?>"
                                                             title="Hapus">

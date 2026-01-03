@@ -1,15 +1,11 @@
 <?php
+ob_start();
 $page_title = 'Dashboard Admin - Sistem MCU';
 require_once '../config/database.php';
 require_once '../includes/auth.php';
 require_once '../includes/functions.php';
 
 requireLogin();
-
-// Get settings for hero image
-$query = "SELECT * FROM pengaturan LIMIT 1";
-$result = mysqli_query($conn, $query);
-$settings = mysqli_fetch_assoc($result);
 
 // Check if patients page is requested
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
@@ -498,21 +494,7 @@ if ($page == 'patients') {
                     </div>
                 </div>
 
-                <!-- Hero Section -->
-                <?php if ($settings && $settings['hero_image']): ?>
-                <div class="row mb-4">
-                    <div class="col-12">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-body p-0">
-                                <img src="<?php echo ASSETS_URL . '/' . $settings['hero_image']; ?>"
-                                     class="img-fluid rounded"
-                                     style="width: 100%; height: 300px; object-fit: cover;"
-                                     alt="Hero Image">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php endif; ?>
+
 
                 <!-- Welcome Card -->
                 <div class="row mb-4">

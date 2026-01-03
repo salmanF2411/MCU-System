@@ -98,14 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <!-- Password -->
                                 <div class="mb-3">
                                     <label class="form-label">Password *</label>
-                                    <input type="password" class="form-control" name="password" required>
+                                    <div class="position-relative">
+                                        <input type="password" class="form-control" name="password" id="password" required>
+                                        <i class="fas fa-eye position-absolute top-50 end-0 translate-middle-y me-3 text-muted" id="togglePassword" style="cursor: pointer;"></i>
+                                    </div>
                                     <small class="text-muted">Minimal 6 karakter</small>
                                 </div>
-                                
+
                                 <!-- Confirm Password -->
                                 <div class="mb-3">
                                     <label class="form-label">Konfirmasi Password *</label>
-                                    <input type="password" class="form-control" name="confirm_password" required>
+                                    <input type="password" class="form-control" name="confirm_password" id="confirmPassword" required>
                                 </div>
                             </div>
                             
@@ -172,22 +175,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 document.getElementById('userForm').addEventListener('submit', function(e) {
     const password = this.querySelector('input[name="password"]');
     const confirmPassword = this.querySelector('input[name="confirm_password"]');
-    
+
     if (password.value.length < 6) {
         e.preventDefault();
         alert('Password minimal 6 karakter!');
         password.focus();
         return false;
     }
-    
+
     if (password.value !== confirmPassword.value) {
         e.preventDefault();
         alert('Konfirmasi password tidak sesuai!');
         confirmPassword.focus();
         return false;
     }
-    
+
     return true;
+});
+
+// Password toggle functionality
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.classList.remove('fa-eye');
+        this.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        this.classList.remove('fa-eye-slash');
+        this.classList.add('fa-eye');
+    }
+});
+
+document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+
+    if (confirmPasswordInput.type === 'password') {
+        confirmPasswordInput.type = 'text';
+        this.classList.remove('fa-eye');
+        this.classList.add('fa-eye-slash');
+    } else {
+        confirmPasswordInput.type = 'password';
+        this.classList.remove('fa-eye-slash');
+        this.classList.add('fa-eye');
+    }
 });
 </script>
 
