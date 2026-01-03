@@ -78,9 +78,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         $hashed_password = md5($new_password);
         $query = "UPDATE admin_users SET password = '$hashed_password' WHERE id = $user_id";
-        
+
         if (mysqli_query($conn, $query)) {
             $_SESSION['success'] = "Password berhasil diubah!";
+            redirect('profile.php');
+        } else {
+            $_SESSION['error'] = "Terjadi kesalahan saat mengubah password. Silakan coba lagi.";
             redirect('profile.php');
         }
     }
@@ -244,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="col-md-6">
                                                 <label class="form-label">Password Saat Ini *</label>
                                                 <div class="input-group">
-                                                    <input type="password" class="form-control" name="current_password" id="currentPassword" required>
+                                                    <input type="password" class="form-control password-field" name="current_password" id="currentPassword" required>
                                                     <button type="button" class="btn btn-outline-secondary"
                                                             onclick="togglePasswordVisibility('currentPassword')">
                                                         <i class="fas fa-eye"></i>
@@ -252,13 +255,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Password Baru *</label>
                                                 <div class="input-group">
-                                                    <input type="password" class="form-control" name="new_password" id="newPassword" required>
-                                                    <button type="button" class="btn btn-outline-secondary" 
+                                                    <input type="password" class="form-control password-field" name="new_password" id="newPassword" required>
+                                                    <button type="button" class="btn btn-outline-secondary"
                                                             onclick="togglePasswordVisibility('newPassword')">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
@@ -268,8 +271,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="col-md-6">
                                                 <label class="form-label">Konfirmasi Password Baru *</label>
                                                 <div class="input-group">
-                                                    <input type="password" class="form-control" name="confirm_password" id="confirmPassword" required>
-                                                    <button type="button" class="btn btn-outline-secondary" 
+                                                    <input type="password" class="form-control password-field" name="confirm_password" id="confirmPassword" required>
+                                                    <button type="button" class="btn btn-outline-secondary"
                                                             onclick="togglePasswordVisibility('confirmPassword')">
                                                         <i class="fas fa-eye"></i>
                                                     </button>
@@ -298,6 +301,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
+<style>
+/* Hide browser's default password toggle */
+.password-field::-ms-reveal,
+.password-field::-ms-clear {
+    display: none;
+}
+
+.password-field::-webkit-credentials-auto-fill-button {
+    display: none;
+}
+
+.password-field::-webkit-contacts-auto-fill-button {
+    display: none;
+}
+
+.password-field::-webkit-credit-card-auto-fill-button {
+    display: none;
+}
+
+/* Hide Chrome's password reveal icon */
+input[type="password"]::-webkit-password-toggle {
+    display: none;
+}
+</style>
+
 <script>
 // Initialize tabs
 const triggerTabList = document.querySelectorAll('#profileTabs button');
@@ -314,7 +342,7 @@ function togglePasswordVisibility(inputId) {
     const input = document.getElementById(inputId);
     const button = event.currentTarget;
     const icon = button.querySelector('i');
-    
+
     if (input.type === 'password') {
         input.type = 'text';
         icon.classList.remove('fa-eye');

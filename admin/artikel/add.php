@@ -15,12 +15,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $penulis = escape($_POST['penulis']);
     $tanggal_publish = escape($_POST['tanggal_publish']);
     $status = escape($_POST['status']);
-    
+
     // Generate slug
     $slug = strtolower(str_replace(' ', '-', $judul));
     $slug = preg_replace('/[^a-z0-9\-]/', '', $slug);
     $slug = preg_replace('/-+/', '-', $slug);
-    
+
+    // Check if slug already exists
+    $check_query = "SELECT id FROM artikel WHERE slug = '$slug'";
+    $check_result = mysqli_query($conn, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        $_SESSION['error'] = "Judul artikel sudah ada. Silakan gunakan judul yang berbeda.";
+        header("Location: add.php");
+        exit();
+    }
+
     // Handle image upload
     $gambar = '';
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
@@ -29,21 +38,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $gambar = $upload_result['success'];
         }
     }
-    
+
     // Insert article
-    $query = "INSERT INTO artikel (judul, slug, konten, gambar, kategori, penulis, tanggal_publish, status) 
+    $query = "INSERT INTO artikel (judul, slug, konten, gambar, kategori, penulis, tanggal_publish, status)
               VALUES ('$judul', '$slug', '$konten', '$gambar', '$kategori', '$penulis', '$tanggal_publish', '$status')";
-    
+
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Artikel berhasil ditambahkan!";
-        redirect('list.php');
+        header("Location: list.php");
+        exit();
     } else {
-        $_SESSION['error'] = "Gagal menambahkan artikel: " . mysqli_error($conn);
+        $_SESSION['error'] = "Gagal menambahkan artikel: " . mysqli_error($conn) . " | Query: " . $query;
+        // For debugging, also show on page
+        echo "Error: " . mysqli_error($conn) . "<br>";
+        echo "Query: " . $query;
+        exit();
     }
 }
-?>
 
-<?php include '../../includes/admin-header.php'; ?>
+include '../../includes/admin-header.php';
+?>
 <?php include '../includes/admin-nav.php'; ?>
 
 <div class="container-fluid mt-4">
@@ -75,7 +89,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <!-- Title -->
                                 <div class="mb-3">
                                     <label class="form-label">Judul Artikel *</label>
-                                    <input type="text" class="form-control" name="judul" required>
+                                    <input type="text" class="form-control <?php echo isset($_SESSION['error']) && strpos($_SESSION['error'], 'Judul artikel sudah ada') !== false ? 'is-invalid' : ''; ?>" name="judul" required>
+                                    <?php if (isset($_SESSION['error']) && strpos($_SESSION['error'], 'Judul artikel sudah ada') !== false): ?>
+                                        <div class="invalid-feedback">
+                                            <?php echo $_SESSION['error']; ?>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 
                                 <!-- Content -->

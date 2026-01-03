@@ -75,6 +75,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 </a>
             </li>
 
+            <li class="nav-item mt-2">
+                <small class="text-muted ps-3">PROFILE</small>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page == 'profile.php') ? 'active' : ''; ?>"
+                   href="<?php echo ADMIN_URL; ?>/profile.php">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+            </li>
+
             <?php if ($_SESSION['role'] == 'super_admin'): ?>
             <li class="nav-item mt-2">
                 <small class="text-muted ps-3">MANAJEMEN USER</small>
@@ -106,13 +117,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <a class="nav-link <?php echo ($current_page == 'pengaturan.php') ? 'active' : ''; ?>"
                    href="<?php echo ADMIN_URL; ?>/pengaturan.php">
                     <i class="fas fa-cog"></i> Pengaturan Sistem
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'profile.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/profile.php">
-                    <i class="fas fa-user"></i> Profile
                 </a>
             </li>
             <?php endif; ?>

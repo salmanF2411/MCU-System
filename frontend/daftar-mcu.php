@@ -174,10 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="card shadow-lg border-0">
         <div class="card-header bg-gradient-primary text-white">
             <div class="d-flex align-items-center">
-                <i class="fas fa-clipboard-list fa-lg me-3"></i>
+                <i class="fas fa-clipboard-list fa-lg me-3 text-primary"></i>
                 <div>
-                    <h4 class="mb-0">Formulir Pendaftaran MCU</h4>
-                    <small>Sistem Pendaftaran Medical Check Up Klinik</small>
+                    <h4 class="mb-0 text-primary">Formulir Pendaftaran MCU</h4>
+                    <small class="text-primary">Sistem Pendaftaran Medical Check Up Klinik</small>
                 </div>
             </div>
         </div>
@@ -357,54 +357,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </h5>
                     
                     <!-- Status Kesehatan Sekarang -->
-                    <div class="row mb-4">
+                    <div class="row mb-3">
                         <div class="col-12 mb-3">
                             <h6>Status Kesehatan Sekarang</h6>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="kesehatan_sekarang[]" value="Sehat" id="sehat">
                                 <label class="form-check-label" for="sehat">Sehat</label>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="kesehatan_sekarang[]" value="Sakit" id="sakit">
                                 <label class="form-check-label" for="sakit">Sakit</label>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="kesehatan_sekarang[]" value="Konsumsi Obat" id="konsumsi_obat">
                                 <label class="form-check-label" for="konsumsi_obat">Konsumsi Obat</label>
                             </div>
                         </div>
+                        <div class="col-md-3 mb-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="kesehatan_sekarang[]" value="Pemulihan" id="pemulihan">
+                                <label class="form-check-label" for="pemulihan">Pemulihan</label>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Penyakit Dahulu -->
-                    <div class="row mb-4">
+                    <div class="row mb-3">
                         <div class="col-12 mb-3">
                             <h6>Penyakit Dahulu <small class="text-muted">(Centang semua yang sesuai)</small></h6>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="penyakit_dahulu[]" value="TIDAK" id="tidak_penyakit">
+                                <label class="form-check-label" for="tidak_penyakit">Tidak</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="penyakit_dahulu[]" value="HIPERTENSI" id="hipertensi">
                                 <label class="form-check-label" for="hipertensi">Hipertensi</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="penyakit_dahulu[]" value="DIABETES" id="diabetes">
                                 <label class="form-check-label" for="diabetes">Diabetes</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="penyakit_dahulu[]" value="TBC" id="tbc">
                                 <label class="form-check-label" for="tbc">TBC</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="penyakit_dahulu[]" value="TRAUMA" id="trauma">
                                 <label class="form-check-label" for="trauma">Trauma</label>
@@ -417,29 +429,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     
                     <!-- Riwayat Penyakit Keluarga -->
-                    <div class="row mb-4">
+                    <div class="row mb-3">
                         <div class="col-12 mb-3">
                             <h6>Riwayat Penyakit Keluarga</h6>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="riwayat_keluarga[]" value="TIDAK" id="tidak_keluarga">
+                                <label class="form-check-label" for="tidak_keluarga">Tidak</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="riwayat_keluarga[]" value="DIABETES" id="keluarga_diabetes">
                                 <label class="form-check-label" for="keluarga_diabetes">Diabetes</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="riwayat_keluarga[]" value="HIPERTENSI" id="keluarga_hipertensi">
                                 <label class="form-check-label" for="keluarga_hipertensi">Hipertensi</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="riwayat_keluarga[]" value="HEMOPILIA" id="hemofilia">
                                 <label class="form-check-label" for="hemofilia">Hemofilia</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="riwayat_keluarga[]" value="TBC" id="keluarga_tbc">
                                 <label class="form-check-label" for="keluarga_tbc">TBC</label>
@@ -448,29 +466,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     
                     <!-- Alergi -->
-                    <div class="row mb-4">
+                    <div class="row mb-3">
                         <div class="col-12 mb-3">
                             <h6>Riwayat Alergi</h6>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="alergi[]" value="TIDAK" id="tidak_alergi">
+                                <label class="form-check-label" for="tidak_alergi">Tidak</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="alergi[]" value="OBAT" id="alergi_obat">
                                 <label class="form-check-label" for="alergi_obat">Obat</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="alergi[]" value="MAKANAN" id="alergi_makanan">
                                 <label class="form-check-label" for="alergi_makanan">Makanan</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="alergi[]" value="CUACA PANAS" id="alergi_panas">
+                                <label class="form-check-label" for="alergi_panas">Cuaca Panas</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="alergi[]" value="CUACA DINGIN" id="alergi_dingin">
                                 <label class="form-check-label" for="alergi_dingin">Cuaca Dingin</label>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="alergi[]" value="DEBU" id="alergi_debu">
                                 <label class="form-check-label" for="alergi_debu">Debu</label>
@@ -604,10 +634,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                 <!-- Submit Button -->
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                    <button type="submit" class="btn btn-primary btn-lg px-5 btn-mobile-responsive">
                         <i class="fas fa-paper-plane me-2"></i> Kirim Pendaftaran
                     </button>
-                    <button type="reset" class="btn btn-secondary btn-lg px-5 ms-2">
+                    <button type="reset" class="btn btn-secondary btn-lg px-5 ms-2 btn-mobile-responsive">
                         <i class="fas fa-redo me-2"></i> Reset Form
                     </button>
                 </div>
@@ -684,7 +714,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             meninggalField.value = '';
         }
     });
-    
+
     document.getElementById('kondisi_ibu').addEventListener('change', function() {
         var meninggalField = document.getElementById('meninggal_ibu');
         if (this.value === 'Meninggal') {
@@ -694,6 +724,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             meninggalField.value = '';
         }
     });
+
+    // Handle "Tidak" option logic for health history sections
+    function handleTidakOption(sectionName, tidakId) {
+        var checkboxes = document.querySelectorAll('input[name="' + sectionName + '[]"]');
+        var tidakCheckbox = document.getElementById(tidakId);
+
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.id !== tidakId) {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked && tidakCheckbox.checked) {
+                        tidakCheckbox.checked = false;
+                        checkboxes.forEach(function(cb) {
+                            cb.disabled = false;
+                        });
+                    }
+                });
+            }
+        });
+
+        tidakCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                checkboxes.forEach(function(checkbox) {
+                    if (checkbox.id !== tidakId) {
+                        checkbox.checked = false;
+                        checkbox.disabled = true;
+                    }
+                });
+            } else {
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.disabled = false;
+                });
+            }
+        });
+    }
+
+    // Initialize the logic for each section
+    handleTidakOption('penyakit_dahulu', 'tidak_penyakit');
+    handleTidakOption('riwayat_keluarga', 'tidak_keluarga');
+    handleTidakOption('alergi', 'tidak_alergi');
 </script>
 
 <style>
@@ -703,19 +772,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         border-radius: 10px;
         border-left: 4px solid var(--primary-color);
     }
-    
+
     .section-title {
         color: var(--primary-color);
         font-weight: 600;
     }
-    
+
     .form-check-label {
         font-weight: 500;
     }
-    
+
     .form-label {
         font-weight: 500;
         margin-bottom: 5px;
+    }
+
+    /* Mobile responsive adjustments */
+    @media (max-width: 768px) {
+        .btn-mobile-responsive {
+            font-size: 0.875rem;
+            padding: 0.375rem 0.75rem;
+        }
     }
 </style>
 
