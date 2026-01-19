@@ -1,13 +1,15 @@
 <?php
+ob_start();
 $page_title = 'Pendaftaran Berhasil - Sistem MCU Klinik';
 require_once '../config/database.php';
-require_once '../includes/header.php';
 
 $kode_mcu = isset($_GET['kode']) ? $_GET['kode'] : '';
 
 if (empty($kode_mcu)) {
     redirect('daftar-mcu.php');
 }
+
+require_once '../includes/header.php';
 ?>
 
 <div class="container">

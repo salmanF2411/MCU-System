@@ -1,7 +1,7 @@
 <?php
+ob_start();
 $page_title = 'Pendaftaran MCU - Sistem MCU Klinik';
 require_once '../config/database.php';
-require_once '../includes/header.php';
 require_once '../includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -150,7 +150,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['error'] = "Gagal melakukan pendaftaran. Silakan coba lagi.";
     }
 }
+
+require_once '../includes/header.php';
 ?>
+
+
 
 
 

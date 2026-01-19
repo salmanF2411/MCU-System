@@ -6,9 +6,11 @@ require_once '../../includes/functions.php';
 
 requireLogin();
 
-// Check role permissions
-if (!hasRole('pendaftaran') && $_SESSION['role'] != 'super_admin') {
-    requireRole('dokter_mata'); // Dokter mata dan dokter umum bisa melihat list
+// Check role permissions - allow all medical staff roles
+$authorized_roles = ['super_admin', 'pendaftaran', 'dokter_mata', 'dokter_umum'];
+if (!in_array($_SESSION['role'], $authorized_roles)) {
+    header('Location: ../dashboard.php');
+    exit();
 }
 
 // Filter parameters

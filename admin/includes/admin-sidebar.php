@@ -1,6 +1,9 @@
 <?php
 // Get current page
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Check if we're on dashboard with patients page
+$is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) && $_GET['page'] == 'patients');
 ?>
 
 <!-- Admin Sidebar -->
@@ -30,7 +33,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <!-- Navigation -->
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>"
+                <a class="nav-link <?php echo ($current_page == 'dashboard.php' && !isset($_GET['page'])) ? 'active' : ''; ?>"
                    href="<?php echo ADMIN_URL; ?>/dashboard.php">
                     <i class="fas fa-tachometer-alt"></i> Dashboard
                 </a>
@@ -42,17 +45,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
             
             <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
             <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) ? 'active' : ''; ?>"
+                <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
                    href="<?php echo ADMIN_URL; ?>/pasien/list.php">
                     <i class="fas fa-users"></i> Daftar Pasien
                 </a>
             </li>
             <?php endif; ?>
-            
+
             <?php if (hasRole('dokter_mata') || hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
             <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page == 'pemeriksaan.php') ? 'active' : ''; ?>"
-                   href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan.php">
+                <a class="nav-link <?php echo (($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/pasien/') !== false) || $is_patients_page) ? 'active' : ''; ?>"
+                   href="<?php echo ADMIN_URL; ?>/pasien/list.php">
                     <i class="fas fa-stethoscope"></i> Pemeriksaan Pasien
                 </a>
             </li>
@@ -72,6 +75,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <a class="nav-link <?php echo ($current_page == 'cetak-hasil.php') ? 'active' : ''; ?>"
                    href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php">
                     <i class="fas fa-print"></i> Cetak Hasil MCU
+                </a>
+            </li>
+
+            <li class="nav-item mt-2">
+                <small class="text-muted ps-3">EVALUASI</small>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page == 'evaluasi.php') ? 'active' : ''; ?>"
+                   href="<?php echo ADMIN_URL; ?>/evaluasi.php">
+                    <i class="fas fa-comments"></i> Feedback Pasien
                 </a>
             </li>
 
