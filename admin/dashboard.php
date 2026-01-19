@@ -14,8 +14,9 @@ $search = isset($_GET['search']) ? escape($_GET['search']) : '';
 
 if ($page == 'patients') {
     // Check role permissions
-    if (!hasRole('pendaftaran') && $_SESSION['role'] != 'super_admin') {
-        requireRole('dokter_mata'); // Dokter mata dan dokter umum bisa melihat list
+    if (!hasRole('pendaftaran') && !hasRole('dokter_mata') && !hasRole('dokter_umum') && $_SESSION['role'] != 'super_admin') {
+        $_SESSION['error'] = "Anda tidak memiliki izin untuk mengakses halaman ini";
+        redirect('dashboard.php');
     }
 
     // Build query

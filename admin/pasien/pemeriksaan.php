@@ -175,7 +175,7 @@ $role_titles = [
 $role_title = $role_titles[$role];
 ?>
 
-<?php include '../../includes/header.php'; ?>
+<?php include '../../includes/admin-header.php'; ?>
 <?php include '../includes/admin-nav.php'; ?>
 
 <div class="container-fluid mt-4">
@@ -189,8 +189,8 @@ $role_title = $role_titles[$role];
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="../list.php">Pasien</a></li>
-                    <li class="breadcrumb-item"><a href="../detail.php?id=<?php echo $id; ?>">Detail</a></li>
+                    <li class="breadcrumb-item"><a href="../dashboard.php?page=patients">Pasien</a></li>
+                    <li class="breadcrumb-item"><a href="detail.php?id=<?php echo $id; ?>">Detail</a></li>
                     <li class="breadcrumb-item active">Pemeriksaan <?php echo $role_title; ?></li>
                 </ol>
             </nav>
@@ -640,7 +640,7 @@ $role_title = $role_titles[$role];
                         <!-- Form Actions -->
                         <div class="row mt-4">
                             <div class="col-md-12 text-center">
-                                <a href="detail.php?id=<?php echo $id; ?>" class="btn btn-secondary me-2">
+                                <a href="../dashboard.php?page=patients" class="btn btn-secondary me-2">
                                     <i class="fas fa-times me-1"></i> Batal
                                 </a>
                                 <button type="submit" class="btn btn-success">
