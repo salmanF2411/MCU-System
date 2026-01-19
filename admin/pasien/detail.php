@@ -42,7 +42,7 @@ $habits_result = mysqli_query($conn, $habits_query);
 
 // Get pemeriksaan data
 $pemeriksaan_query = "SELECT * FROM pemeriksaan WHERE pasien_id = $id ORDER BY pemeriksa_role, tanggal_periksa";
-$pemeriksaan_result = mysqli_query($conn, $query);
+$pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
 ?>
 
 <?php include '../../includes/admin-header.php'; ?>
@@ -380,12 +380,50 @@ $pemeriksaan_result = mysqli_query($conn, $query);
                 <!-- Examination Tab -->
                 <div class="tab-pane fade" id="examination" role="tabpanel">
                     <div class="card border-top-0">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="fas fa-stethoscope me-2"></i> Hasil Pemeriksaan
+                            </h5>
+                            <div>
+                                <?php
+                                // Check which examinations are missing
+                                $cek_pendaftaran = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM pemeriksaan WHERE pasien_id = $id AND pemeriksa_role = 'pendaftaran'"));
+                                $cek_mata = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM pemeriksaan WHERE pasien_id = $id AND pemeriksa_role = 'dokter_mata'"));
+                                $cek_umum = mysqli_num_rows(mysqli_query($conn, "SELECT id FROM pemeriksaan WHERE pasien_id = $id AND pemeriksa_role = 'dokter_umum'"));
+
+                                // Show examination buttons based on role and completion status
+                                if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin') {
+                                    if (!$cek_pendaftaran) {
+                                        echo '<a href="pemeriksaan.php?role=pendaftaran&id=' . $id . '" class="btn btn-warning btn-sm me-2">
+                                                <i class="fas fa-edit me-1"></i> Periksa Awal
+                                              </a>';
+                                    }
+                                }
+
+                                if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin') {
+                                    if ($cek_pendaftaran && !$cek_mata) {
+                                        echo '<a href="pemeriksaan.php?role=dokter_mata&id=' . $id . '" class="btn btn-primary btn-sm me-2">
+                                                <i class="fas fa-eye me-1"></i> Periksa Mata
+                                              </a>';
+                                    }
+                                }
+
+                                if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin') {
+                                    if ($cek_mata && !$cek_umum) {
+                                        echo '<a href="pemeriksaan.php?role=dokter_umum&id=' . $id . '" class="btn btn-success btn-sm">
+                                                <i class="fas fa-stethoscope me-1"></i> Periksa Umum
+                                              </a>';
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <?php
                             // Get all pemeriksaan data
                             $exams_query = "SELECT * FROM pemeriksaan WHERE pasien_id = $id ORDER BY pemeriksa_role, tanggal_periksa";
                             $exams_result = mysqli_query($conn, $exams_query);
-                            
+
                             if (mysqli_num_rows($exams_result) > 0):
                                 while ($exam = mysqli_fetch_assoc($exams_result)):
                                     $role = $exam['pemeriksa_role'];
