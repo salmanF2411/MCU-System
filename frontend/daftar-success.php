@@ -26,10 +26,10 @@ require_once '../includes/header.php';
                     
                     <h3 class="card-title mb-3">Terima kasih telah mendaftar MCU</h3>
                     
-                    <div class="alert alert-info mb-4">
+                    <div class="info mb-4">
                         <h5>Kode MCU Anda:</h5>
                         <div class="display-4 fw-bold text-primary"><?php echo $kode_mcu; ?></div>
-                        <p class="mt-2">Harap simpan kode ini untuk keperluan berikutnya.</p>
+                        <p class="mt-2"><strong>Harap Tunjukan Kode Ini Pada Saat Akan Melakukan Pemeriksaan.</strong></p>
                     </div>
                     
                     <div class="card mb-4">
@@ -44,15 +44,6 @@ require_once '../includes/header.php';
                                 <li><i class="fas fa-phone text-primary me-2"></i> <strong>Kontak:</strong> <?php echo getSetting('telepon'); ?> / <?php echo getSetting('whatsapp'); ?></li>
                             </ul>
                         </div>
-                    </div>
-                    
-                    <div class="alert alert-warning">
-                        <h6><i class="fas fa-exclamation-triangle me-2"></i> Persyaratan yang Harus Dibawa:</h6>
-                        <ul class="mb-0">
-                            <li>Kode MCU (tunjukkan di loket pendaftaran)</li>
-                            <li>Kartu Identitas (KTP/SIM/Paspor)</li>
-                            <li>Puasa 8-10 jam sebelum pemeriksaan (jika diperlukan)</li>
-                        </ul>
                     </div>
                     
                     <div class="mt-4">

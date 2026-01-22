@@ -117,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nyeri_epigastrium = isset($_POST['nyeri_epigastrium']) ? 1 : 0;
         $nyeri_abdomen = isset($_POST['nyeri_abdomen']) ? 1 : 0;
         $bising_usus = isset($_POST['bising_usus']) ? 1 : 0;
+        $hepar = isset($_POST['hepar']) ? 1 : 0;
         $hepatomegali = escape($_POST['hepatomegali']);
         
         // Refleks
@@ -142,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             tenggorokan_status, tenggorokan_keterangan, gigi_keterangan, leher_kgb,
             paru_auskultasi, paru_palpasi, paru_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
-            nyeri_epigastrium, nyeri_abdomen, bising_usus, hepatomegali,
+            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar, hepatomegali,
             biceps, triceps, patella, achilles, plantar_response,
             kesimpulan, saran, status_mcu, dokter_pemeriksa, pemeriksa_id
         ) VALUES (
@@ -151,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_keterangan', '$leher_kgb',
             '$paru_auskultasi', '$paru_palpasi', '$paru_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
-            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, '$hepatomegali',
+            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar, '$hepatomegali',
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response',
             '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
@@ -261,14 +262,14 @@ $role_title = $role_titles[$role];
                                            placeholder="120/80" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label">Nadi (bpm)</label>
+                                    <label class="form-label">Nadi (x/menit)</label>
                                     <input type="number" class="form-control" name="nadi" 
                                            min="40" max="200" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Suhu (°C)</label>
                                     <input type="number" step="0.1" class="form-control" name="suhu" 
-                                           min="35" max="42" required>
+                                           min="20" max="50" required>
                                 </div>
                             </div>
                             
@@ -315,8 +316,13 @@ $role_title = $role_titles[$role];
                                             <label class="form-label">Dekat</label>
                                             <select class="form-select" name="visus_kanan_dekat">
                                                 <option value="">- Pilih -</option>
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
+                                                <option value="6/6">6/6</option>
+                                                <option value="6/9">6/9</option>
+                                                <option value="6/12">6/12</option>
+                                                <option value="6/18">6/18</option>
+                                                <option value="6/24">6/24</option>
+                                                <option value="6/36">6/36</option>
+                                                <option value="6/60">6/60</option>
                                             </select>
                                         </div>
                                     </div>
@@ -342,8 +348,13 @@ $role_title = $role_titles[$role];
                                             <label class="form-label">Dekat</label>
                                             <select class="form-select" name="visus_kiri_dekat">
                                                 <option value="">- Pilih -</option>
-                                                <option value="Normal">Normal</option>
-                                                <option value="Abnormal">Abnormal</option>
+                                                <option value="6/6">6/6</option>
+                                                <option value="6/9">6/9</option>
+                                                <option value="6/12">6/12</option>
+                                                <option value="6/18">6/18</option>
+                                                <option value="6/24">6/24</option>
+                                                <option value="6/36">6/36</option>
+                                                <option value="6/60">6/60</option>
                                             </select>
                                         </div>
                                     </div>
@@ -355,10 +366,8 @@ $role_title = $role_titles[$role];
                                     <label class="form-label">Anemia</label>
                                     <select class="form-select" name="anemia">
                                         <option value="">- Pilih -</option>
-                                        <option value="Tidak">Tidak</option>
-                                        <option value="Ringan">Ringan</option>
-                                        <option value="Sedang">Sedang</option>
-                                        <option value="Berat">Berat</option>
+                                        <option value="Ikterik(-)">Ikterik (-) </option>
+                                        <option value="Ikterik(+)">Ikterik (+) </option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
@@ -521,6 +530,12 @@ $role_title = $role_titles[$role];
                                                 <input class="form-check-input" type="checkbox" name="bising_usus" id="bising_usus">
                                                 <label class="form-check-label" for="bising_usus">
                                                     Bising Usus
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="hepar" id="hepar">
+                                                <label class="form-check-label" for="hepar">
+                                                    Hepar
                                                 </label>
                                             </div>
                                         </div>

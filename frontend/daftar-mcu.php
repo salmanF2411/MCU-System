@@ -579,9 +579,9 @@ require_once '../includes/header.php';
                 <!-- Bagian 5: Keluhan -->
                 <div class="section mb-5">
                     <h5 class="section-title border-bottom pb-2 mb-4">
-                        <i class="fas fa-exclamation-triangle me-2"></i> 5. KELUHAN KESEHATAN
+                        <i class="fas fa-exclamation-triangle me-2"></i> 5. UMUM
                     </h5>
-                    <p class="text-muted mb-3">Centang jika ada keluhan berikut:</p>
+                    <p class="text-muted mb-3">Ceklis jika ada keluhan Sebelum/Sesudah Medical Check Up:</p>
                     
                     <div class="row">
                         <div class="col-md-4 mb-2">

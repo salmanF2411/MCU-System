@@ -101,6 +101,7 @@ CREATE TABLE pemeriksaan (
     nyeri_epigastrium BOOLEAN DEFAULT 0,
     nyeri_abdomen BOOLEAN DEFAULT 0,
     bising_usus BOOLEAN DEFAULT 0,
+    hepar BOOLEAN DEFAULT 0,
     hepatomegali TEXT,
     
     -- Refleks

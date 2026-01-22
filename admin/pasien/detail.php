@@ -320,7 +320,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                             <!-- Complaints -->
                             <div class="row">
                                 <div class="col-12">
-                                    <h6>Keluhan Kesehatan</h6>
+                                    <h6>Keluhan Kesehatan Sebelum/Seseudah Medical Check Up</h6>
                                     <div class="list-group">
                                         <?php if (isset($histories['keluhan'])): ?>
                                             <?php foreach ($histories['keluhan'] as $complaint): ?>
@@ -446,15 +446,19 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                             <table class="table table-sm">
                                                 <tr>
                                                     <th width="30%">Tekanan Darah</th>
-                                                    <td><?php echo $exam['tekanan_darah'] ?: '-'; ?></td>
+                                                    <td><?php echo $exam['tekanan_darah'] ? $exam['tekanan_darah'] . ' mmHg' : '-'; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Nadi</th>
-                                                    <td><?php echo $exam['nadi'] ? $exam['nadi'] . ' bpm' : '-'; ?></td>
+                                                    <td><?php echo $exam['nadi'] ? $exam['nadi'] . ' x/menit' : '-'; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Suhu</th>
                                                     <td><?php echo $exam['suhu'] ? $exam['suhu'] . ' °C' : '-'; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Respirasi</th>
+                                                    <td><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Tinggi Badan</th>
@@ -550,6 +554,22 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <th>Hernia</th>
                                                             <td><?php echo $exam['hernia'] ? 'Ya' : 'Tidak'; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <th>Nyeri Tekan Epigastrium</th>
+                                                            <td><?php echo $exam['nyeri_epigastrium'] ? 'Ya' : 'Tidak'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Nyeri Tekan Abdomen</th>
+                                                            <td><?php echo $exam['nyeri_abdomen'] ? 'Ya' : 'Tidak'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Bising Usus</th>
+                                                            <td><?php echo $exam['bising_usus'] ? 'Ya' : 'Tidak'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Heper</th>
+                                                            <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                                 <div class="col-md-6">
@@ -571,6 +591,10 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <th>Achilles</th>
                                                             <td><?php echo $exam['achilles'] ?: '-'; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <th>Plantar Response</th>
+                                                            <td><?php echo $exam['plantar_response'] ?: '-'; ?></td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                             </div>
@@ -581,6 +605,8 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     <div class="card-body">
                                                         <h6>Kesimpulan</h6>
                                                         <p><?php echo nl2br($exam['kesimpulan']); ?></p>
+                                                        <h6>Saran</h6>
+                                                        <p><?php echo nl2br($exam['saran']); ?></p>
                                                         <div class="mt-2">
                                                             <strong>Status MCU:</strong>
                                                             <?php echo getMCUStatusBadge($exam['status_mcu']); ?>
