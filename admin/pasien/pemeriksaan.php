@@ -100,11 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $hidung_keterangan = escape($_POST['hidung_keterangan']);
         $tenggorokan_status = escape($_POST['tenggorokan_status']);
         $tenggorokan_keterangan = escape($_POST['tenggorokan_keterangan']);
+        $gigi_status = escape($_POST['gigi_status']);
         $gigi_keterangan = escape($_POST['gigi_keterangan']);
         $leher_kgb = escape($_POST['leher_kgb']);
         
         // Thorax
         $paru_auskultasi = escape($_POST['paru_auskultasi']);
+        $auskultasi_keterangan = escape($_POST['auskultasi_keterangan']);
         $paru_palpasi = escape($_POST['paru_palpasi']);
         $paru_perkusi = escape($_POST['paru_perkusi']);
         
@@ -140,8 +142,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $insert_query = "INSERT INTO pemeriksaan (
             pasien_id, pemeriksa_role, 
             telinga_status, telinga_keterangan, hidung_status, hidung_keterangan, 
-            tenggorokan_status, tenggorokan_keterangan, gigi_keterangan, leher_kgb,
-            paru_auskultasi, paru_palpasi, paru_perkusi,
+            tenggorokan_status, tenggorokan_keterangan,gigi_status, gigi_keterangan, leher_kgb,
+            paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
             nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar, hepatomegali,
             biceps, triceps, patella, achilles, plantar_response,
@@ -149,8 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ) VALUES (
             $id, '$role',
             '$telinga_status', '$telinga_keterangan', '$hidung_status', '$hidung_keterangan',
-            '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_keterangan', '$leher_kgb',
-            '$paru_auskultasi', '$paru_palpasi', '$paru_perkusi',
+            '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_status', '$gigi_keterangan', '$leher_kgb',
+            '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
             $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar, '$hepatomegali',
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response',
@@ -429,12 +431,16 @@ $role_title = $role_titles[$role];
                                     </div>
                                     
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label class="form-label">Gigi</label>
-                                            <textarea class="form-control" name="gigi_keterangan" 
-                                                      rows="2" placeholder="Kondisi gigi..."></textarea>
+                                            <select class="form-select" name="gigi_status">
+                                                <option value="Normal">Normal</option>
+                                                <option value="Abnormal">Abnormal</option>
+                                            </select>
+                                            <textarea class="form-control mt-2" name="gigi_keterangan" 
+                                                      rows="2" placeholder="Keterangan..."></textarea>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label class="form-label">Leher (KGB)</label>
                                             <textarea class="form-control" name="leher_kgb" 
                                                       rows="2" placeholder="Pembesaran KGB..."></textarea>
@@ -458,6 +464,8 @@ $role_title = $role_titles[$role];
                                                 <option value="Ronchi">Ronchi</option>
                                                 <option value="Crackles">Crackles</option>
                                             </select>
+                                            <textarea class="form-control mt-2" name="auskultasi_keterangan" 
+                                                      rows="2" placeholder="Keterangan..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Palpasi</label>
@@ -543,9 +551,9 @@ $role_title = $role_titles[$role];
                                     
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label class="form-label">Hepatomegali</label>
+                                            <label class="form-label">GENITALIA</label>
                                             <input type="text" class="form-control" name="hepatomegali" 
-                                                   placeholder="Ukuran hepar...">
+                                                   placeholder="Genitalia...">
                                         </div>
                                     </div>
                                 </div>
@@ -562,47 +570,37 @@ $role_title = $role_titles[$role];
                                             <label class="form-label">Biceps</label>
                                             <select class="form-select" name="biceps">
                                                 <option value="Normal">Normal</option>
-                                                <option value="Hiperaktif">Hiperaktif</option>
-                                                <option value="Hipoaktif">Hipoaktif</option>
-                                                <option value="Negatif">Negatif</option>
+                                                <option value="Abnormal">Abnormal</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Triceps</label>
                                             <select class="form-select" name="triceps">
                                                 <option value="Normal">Normal</option>
-                                                <option value="Hiperaktif">Hiperaktif</option>
-                                                <option value="Hipoaktif">Hipoaktif</option>
-                                                <option value="Negatif">Negatif</option>
+                                                <option value="Abnormal">Abnormal</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Patella</label>
                                             <select class="form-select" name="patella">
                                                 <option value="Normal">Normal</option>
-                                                <option value="Hiperaktif">Hiperaktif</option>
-                                                <option value="Hipoaktif">Hipoaktif</option>
-                                                <option value="Negatif">Negatif</option>
+                                                <option value="Abnormal">Abnormal</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label">Achilles</label>
                                             <select class="form-select" name="achilles">
                                                 <option value="Normal">Normal</option>
-                                                <option value="Hiperaktif">Hiperaktif</option>
-                                                <option value="Hipoaktif">Hipoaktif</option>
-                                                <option value="Negatif">Negatif</option>
+                                                <option value="Abnormal">Abnormal</option>
                                             </select>
                                         </div>
                                     </div>
-                                    
                                     <div class="row mt-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <label class="form-label">Plantar Response</label>
                                             <select class="form-select" name="plantar_response">
                                                 <option value="Normal">Normal</option>
-                                                <option value="Babinski +">Babinski +</option>
-                                                <option value="Babinski -">Babinski -</option>
+                                                <option value="Abnormal">Abnormal</option>
                                             </select>
                                         </div>
                                     </div>

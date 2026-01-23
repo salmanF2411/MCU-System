@@ -506,29 +506,78 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <td><?php echo $exam['telinga_status'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['telinga_keterangan'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Hidung</th>
                                                             <td><?php echo $exam['hidung_status'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['hidung_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Tenggorokan</th>
                                                             <td><?php echo $exam['tenggorokan_status'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['tenggorokan_keterangan'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Gigi</th>
+                                                            <td><?php echo $exam['gigi_status'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Keterangan</th>
                                                             <td><?php echo $exam['gigi_keterangan'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Leher (KGB)</th>
+                                                            <td><?php echo $exam['leher_kgb'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <h6>Thorax</h6>
+                                                    <h6>Thorax PARU - PARU</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Auskultasi</th>
                                                             <td><?php echo $exam['paru_auskultasi'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['auskultasi_keterangan'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Palpasi</th>
                                                             <td><?php echo $exam['paru_palpasi'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Perkusi</th>
+                                                            <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <h6>Thorax JANTUNG</h6>
+                                                    <table class="table table-sm">
+                                                        <tr>
+                                                            <th>Auskultasi</th>
+                                                            <td><?php echo $exam['paru_auskultasi'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['auskultasi_keterangan'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Palpasi</th>
+                                                            <td><?php echo $exam['paru_palpasi'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Perkusi</th>
+                                                            <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>
@@ -541,6 +590,10 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         <tr>
                                                             <th>Operasi</th>
                                                             <td><?php echo $exam['operasi'] ? 'Ya' : 'Tidak'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Keterangan Operasi</th>
+                                                            <td><?php echo $exam['keterangan_operasi'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Obesitas</th>
@@ -567,9 +620,12 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <td><?php echo $exam['bising_usus'] ? 'Ya' : 'Tidak'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Heper</th>
+                                                            <th>Hepar</th>
                                                             <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <th>GENITALIA</th>
+                                                            <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
                                                     </table>
                                                 </div>
                                                 <div class="col-md-6">
