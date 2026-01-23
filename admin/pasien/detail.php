@@ -559,25 +559,19 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
-                                                </div>
-                                                <div class="col-md-6">
                                                     <h6>Thorax JANTUNG</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Auskultasi</th>
-                                                            <td><?php echo $exam['paru_auskultasi'] ?: '-'; ?></td>
+                                                            <td><?php echo $exam['jantung_auskultasi'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Keterangan</th>
-                                                            <td><?php echo $exam['auskultasi_keterangan'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Palpasi</th>
-                                                            <td><?php echo $exam['paru_palpasi'] ?: '-'; ?></td>
+                                                            <td><?php echo $exam['jantung_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Perkusi</th>
-                                                            <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
+                                                            <td><?php echo $exam['jantung_perkusi'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>

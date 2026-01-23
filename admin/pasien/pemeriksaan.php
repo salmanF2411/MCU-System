@@ -104,11 +104,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $gigi_keterangan = escape($_POST['gigi_keterangan']);
         $leher_kgb = escape($_POST['leher_kgb']);
         
-        // Thorax
+        // Thorax Paru - Paru
         $paru_auskultasi = escape($_POST['paru_auskultasi']);
         $auskultasi_keterangan = escape($_POST['auskultasi_keterangan']);
         $paru_palpasi = escape($_POST['paru_palpasi']);
         $paru_perkusi = escape($_POST['paru_perkusi']);
+
+        // Thorax Jantung
+        $jantung_auskultasi = escape($_POST['jantung_auskultasi']);
+        $jantung_keterangan = escape($_POST['jantung_keterangan']);
+        $jantung_perkusi = escape($_POST['jantung_perkusi']);
         
         // Abdominal (boolean fields)
         $operasi = isset($_POST['operasi']) ? 1 : 0;
@@ -143,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             pasien_id, pemeriksa_role, 
             telinga_status, telinga_keterangan, hidung_status, hidung_keterangan, 
             tenggorokan_status, tenggorokan_keterangan,gigi_status, gigi_keterangan, leher_kgb,
-            paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,
+            paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,jantung_auskultasi, jantung_keterangan, jantung_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
             nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar, hepatomegali,
             biceps, triceps, patella, achilles, plantar_response,
@@ -152,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id, '$role',
             '$telinga_status', '$telinga_keterangan', '$hidung_status', '$hidung_keterangan',
             '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_status', '$gigi_keterangan', '$leher_kgb',
-            '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi',
+            '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
             $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar, '$hepatomegali',
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response',
@@ -449,10 +454,10 @@ $role_title = $role_titles[$role];
                                 </div>
                             </div>
                             
-                            <!-- PEMERIKSAAN THORAX -->
+                            <!-- PEMERIKSAAN THORAX PARU - PARU-->
                             <div class="card mb-4">
                                 <div class="card-header bg-light">
-                                    <h6 class="mb-0">PEMERIKSAAN THORAX</h6>
+                                    <h6 class="mb-0">PEMERIKSAAN THORAX PARU - PARU</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
@@ -478,6 +483,33 @@ $role_title = $role_titles[$role];
                                                 <option value="Sonor">Sonor</option>
                                                 <option value="Hipersonor">Hipersonor</option>
                                                 <option value="Pekak">Pekak</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PEMERIKSAAN THORAX JANTUNG-->
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">PEMERIKSAAN THORAX JANTUNG</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Auskultasi Jantung</label>
+                                            <select class="form-select" name="jantung_auskultasi">
+                                                <option value="Suara Normal">Suara Normal</option>
+                                                <option value="Suara Tambahan">Suara Tambahan</option>
+                                            </select>
+                                            <textarea class="form-control mt-2" name="jantung_keterangan" 
+                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Perkusi (Batas Jantung)</label>
+                                            <select class="form-select" name="jantung_perkusi">
+                                                <option value="Apex">Apex</option>
+                                                <option value="Basal">Basal</option>
                                             </select>
                                         </div>
                                     </div>
