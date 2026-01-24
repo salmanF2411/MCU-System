@@ -86,11 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $visus_kiri_jauh = escape($_POST['visus_kiri_jauh']);
         $visus_kiri_dekat = escape($_POST['visus_kiri_dekat']);
         $anemia = escape($_POST['anemia']);
+        $ikterik_keterangan = escape($_POST['ikterik_keterangan']);
         $buta_warna = escape($_POST['buta_warna']);
+        $buta_warna_keterangan = escape($_POST['buta_warna_keterangan']);
         $lapang_pandang = escape($_POST['lapang_pandang']);
+        $lapang_pandang_keterangan = escape($_POST['lapang_pandang_keterangan']);
         
-        $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia, buta_warna, lapang_pandang, pemeriksa_id) 
-                         VALUES ($id, '$role', '$visus_kanan_jauh', '$visus_kanan_dekat', '$visus_kiri_jauh', '$visus_kiri_dekat', '$anemia', '$buta_warna', '$lapang_pandang', {$_SESSION['admin_id']})";
+        $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia,ikterik_keterangan, buta_warna,buta_warna_keterangan, lapang_pandang,lapang_pandang_keterangan, pemeriksa_id) 
+                         VALUES ($id, '$role', '$visus_kanan_jauh', '$visus_kanan_dekat', '$visus_kiri_jauh', '$visus_kiri_dekat', '$anemia', '$ikterik_keterangan', '$buta_warna','$buta_warna_keterangan', '$lapang_pandang','$lapang_pandang_keterangan', {$_SESSION['admin_id']})";
         
     } elseif ($role == 'dokter_umum') {
         // THT & Gigi
@@ -125,6 +128,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nyeri_abdomen = isset($_POST['nyeri_abdomen']) ? 1 : 0;
         $bising_usus = isset($_POST['bising_usus']) ? 1 : 0;
         $hepar = isset($_POST['hepar']) ? 1 : 0;
+        $striae = escape($_POST['striae']);
+        $sikatriks = escape($_POST['sikatriks']);
+        $psoas_sign = escape($_POST['psoas_sign']);
         $hepatomegali = escape($_POST['hepatomegali']);
         
         // Refleks
@@ -150,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             tenggorokan_status, tenggorokan_keterangan,gigi_status, gigi_keterangan, leher_kgb,
             paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,jantung_auskultasi, jantung_keterangan, jantung_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
-            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar, hepatomegali,
+            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,
             biceps, triceps, patella, achilles, plantar_response,
             kesimpulan, saran, status_mcu, dokter_pemeriksa, pemeriksa_id
         ) VALUES (
@@ -159,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_status', '$gigi_keterangan', '$leher_kgb',
             '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
-            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar, '$hepatomegali',
+            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,$striae,$sikatriks,$psoas_sign, '$hepatomegali',
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response',
             '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
@@ -308,29 +314,13 @@ $role_title = $role_titles[$role];
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label class="form-label">Jauh</label>
-                                            <select class="form-select" name="visus_kanan_jauh">
-                                                <option value="">- Pilih -</option>
-                                                <option value="6/6">6/6</option>
-                                                <option value="6/9">6/9</option>
-                                                <option value="6/12">6/12</option>
-                                                <option value="6/18">6/18</option>
-                                                <option value="6/24">6/24</option>
-                                                <option value="6/36">6/36</option>
-                                                <option value="6/60">6/60</option>
-                                            </select>
+                                            <textarea class="form-control" name="visus_kanan_jauh" 
+                                                      rows="1" placeholder="6/"></textarea>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Dekat</label>
-                                            <select class="form-select" name="visus_kanan_dekat">
-                                                <option value="">- Pilih -</option>
-                                                <option value="6/6">6/6</option>
-                                                <option value="6/9">6/9</option>
-                                                <option value="6/12">6/12</option>
-                                                <option value="6/18">6/18</option>
-                                                <option value="6/24">6/24</option>
-                                                <option value="6/36">6/36</option>
-                                                <option value="6/60">6/60</option>
-                                            </select>
+                                            <textarea class="form-control" name="visus_kanan_dekat" 
+                                                      rows="1" placeholder="6/"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -340,29 +330,13 @@ $role_title = $role_titles[$role];
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label class="form-label">Jauh</label>
-                                            <select class="form-select" name="visus_kiri_jauh">
-                                                <option value="">- Pilih -</option>
-                                                <option value="6/6">6/6</option>
-                                                <option value="6/9">6/9</option>
-                                                <option value="6/12">6/12</option>
-                                                <option value="6/18">6/18</option>
-                                                <option value="6/24">6/24</option>
-                                                <option value="6/36">6/36</option>
-                                                <option value="6/60">6/60</option>
-                                            </select>
+                                            <textarea class="form-control" name="visus_kiri_jauh" 
+                                                      rows="1" placeholder="6/"></textarea>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label">Dekat</label>
-                                            <select class="form-select" name="visus_kiri_dekat">
-                                                <option value="">- Pilih -</option>
-                                                <option value="6/6">6/6</option>
-                                                <option value="6/9">6/9</option>
-                                                <option value="6/12">6/12</option>
-                                                <option value="6/18">6/18</option>
-                                                <option value="6/24">6/24</option>
-                                                <option value="6/36">6/36</option>
-                                                <option value="6/60">6/60</option>
-                                            </select>
+                                           <textarea class="form-control" name="visus_kiri_dekat" 
+                                                      rows="1" placeholder="6/"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -370,12 +344,14 @@ $role_title = $role_titles[$role];
                             
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <label class="form-label">Anemia</label>
+                                    <label class="form-label">Anemis : Ikterik</label>
                                     <select class="form-select" name="anemia">
                                         <option value="">- Pilih -</option>
                                         <option value="Ikterik(-)">Ikterik (-) </option>
                                         <option value="Ikterik(+)">Ikterik (+) </option>
                                     </select>
+                                    <textarea class="form-control mt-2" name="ikterik_keterangan" 
+                                                      rows="2" placeholder="Keterangan Anemis : Ikterik..."></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Buta Warna</label>
@@ -385,6 +361,8 @@ $role_title = $role_titles[$role];
                                         <option value="Merah/Hijau">Merah/Hijau</option>
                                         <option value="Lainnya">Lainnya</option>
                                     </select>
+                                    <textarea class="form-control mt-2" name="buta_warna_keterangan" 
+                                                      rows="2" placeholder="Keterangan Buta Warna..."></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Lapang Pandang</label>
@@ -393,6 +371,8 @@ $role_title = $role_titles[$role];
                                         <option value="Normal">Normal</option>
                                         <option value="Abnormal">Abnormal</option>
                                     </select>
+                                    <textarea class="form-control mt-2" name="lapang_pandang_keterangan" 
+                                                      rows="2" placeholder="Keterangan Lapang Pandang..."></textarea>
                                 </div>
                             </div>
                             
@@ -413,7 +393,7 @@ $role_title = $role_titles[$role];
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
                                             <textarea class="form-control mt-2" name="telinga_keterangan" 
-                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                                      rows="2" placeholder="Keterangan Telinga..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Hidung</label>
@@ -422,7 +402,7 @@ $role_title = $role_titles[$role];
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
                                             <textarea class="form-control mt-2" name="hidung_keterangan" 
-                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                                      rows="2" placeholder="Keterangan Hidung..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Tenggorokan</label>
@@ -431,7 +411,7 @@ $role_title = $role_titles[$role];
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
                                             <textarea class="form-control mt-2" name="tenggorokan_keterangan" 
-                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                                      rows="2" placeholder="Keterangan Tenggorokan..."></textarea>
                                         </div>
                                     </div>
                                     
@@ -443,7 +423,7 @@ $role_title = $role_titles[$role];
                                                 <option value="Abnormal">Abnormal</option>
                                             </select>
                                             <textarea class="form-control mt-2" name="gigi_keterangan" 
-                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                                      rows="2" placeholder="Keterangan Gigi..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Leher (KGB)</label>
@@ -470,7 +450,7 @@ $role_title = $role_titles[$role];
                                                 <option value="Crackles">Crackles</option>
                                             </select>
                                             <textarea class="form-control mt-2" name="auskultasi_keterangan" 
-                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                                      rows="2" placeholder="Keterangan Auskultasi Paru..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Palpasi</label>
@@ -503,7 +483,7 @@ $role_title = $role_titles[$role];
                                                 <option value="Suara Tambahan">Suara Tambahan</option>
                                             </select>
                                             <textarea class="form-control mt-2" name="jantung_keterangan" 
-                                                      rows="2" placeholder="Keterangan..."></textarea>
+                                                      rows="2" placeholder="Keterangan Auskultasi Jantung..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Perkusi (Batas Jantung)</label>
@@ -578,6 +558,22 @@ $role_title = $role_titles[$role];
                                                     Hepar
                                                 </label>
                                             </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="form-label">PEMERIKSAAN</label>
+                                            <br>
+                                            <label class="form-label">Striae</label>
+                                            <input type="text" class="form-control" name="striae" 
+                                                   placeholder="Striae...">
+                                            <label class="form-label">Sikatriks</label>
+                                            <input type="text" class="form-control" name="sikatriks" 
+                                                   placeholder="Sikatriks...">
+                                            <label class="form-label">PSOAS SIGN</label>
+                                            <input type="text" class="form-control" name="psoas_sign" 
+                                                   placeholder="PSOAS SIGN...">
                                         </div>
                                     </div>
                                     

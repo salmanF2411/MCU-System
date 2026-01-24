@@ -482,16 +482,28 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     <td><?php echo $exam['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <th>Anemia</th>
+                                                    <th>Anemis : Ikterik</th>
                                                     <td><?php echo $exam['anemia'] ?: '-'; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Keterangan</th>
+                                                    <td><?php echo $exam['ikterik_keterangan'] ?: '-'; ?></td>
                                                 </tr>
                                                 <tr>
                                                     <th>Buta Warna</th>
                                                     <td><?php echo $exam['buta_warna'] ?: '-'; ?></td>
                                                 </tr>
                                                 <tr>
+                                                    <th>Keterangan</th>
+                                                    <td><?php echo $exam['buta_warna_keterangan'] ?: '-'; ?></td>
+                                                </tr>
+                                                <tr>
                                                     <th>Lapang Pandang</th>
                                                     <td><?php echo $exam['lapang_pandang'] ?: '-'; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Keterangan</th>
+                                                    <td><?php echo $exam['lapang_pandang_keterangan'] ?: '-'; ?></td>
                                                 </tr>
                                             </table>
                                             
@@ -618,8 +630,21 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>Striae</th>
+                                                            <td><?php echo $exam['striae'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Sikatriks</th>
+                                                            <td><?php echo $exam['sikatriks'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>PSOAS SIGN</th>
+                                                            <td><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>GENITALIA</th>
                                                             <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
+                                                        </tr>
                                                     </table>
                                                 </div>
                                                 <div class="col-md-6">
