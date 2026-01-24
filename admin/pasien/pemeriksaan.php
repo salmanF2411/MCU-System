@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_status', '$gigi_keterangan', '$leher_kgb',
             '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
-            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,$striae,$sikatriks,$psoas_sign, '$hepatomegali',
+            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,'$striae','$sikatriks','$psoas_sign', '$hepatomegali',
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response',
             '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
@@ -563,25 +563,26 @@ $role_title = $role_titles[$role];
 
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <label class="form-label">GENITALIA</label>
+                                            <input type="text" class="form-control" name="hepatomegali"
+                                                   placeholder="Genitalia...">
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
                                             <label class="form-label">PEMERIKSAAN</label>
                                             <br>
                                             <label class="form-label">Striae</label>
-                                            <input type="text" class="form-control" name="striae" 
+                                            <input type="text" class="form-control" name="striae"
                                                    placeholder="Striae...">
                                             <label class="form-label">Sikatriks</label>
-                                            <input type="text" class="form-control" name="sikatriks" 
+                                            <input type="text" class="form-control" name="sikatriks"
                                                    placeholder="Sikatriks...">
                                             <label class="form-label">PSOAS SIGN</label>
-                                            <input type="text" class="form-control" name="psoas_sign" 
+                                            <input type="text" class="form-control" name="psoas_sign"
                                                    placeholder="PSOAS SIGN...">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">GENITALIA</label>
-                                            <input type="text" class="form-control" name="hepatomegali" 
-                                                   placeholder="Genitalia...">
                                         </div>
                                     </div>
                                 </div>

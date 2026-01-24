@@ -630,6 +630,10 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <th>GENITALIA</th>
+                                                            <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <th>Striae</th>
                                                             <td><?php echo $exam['striae'] ?: '-'; ?></td>
                                                         </tr>
@@ -640,10 +644,6 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         <tr>
                                                             <th>PSOAS SIGN</th>
                                                             <td><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>GENITALIA</th>
-                                                            <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>

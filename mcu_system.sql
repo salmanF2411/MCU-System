@@ -177,3 +177,14 @@ INSERT INTO pengaturan (nama_klinik, alamat, telepon, email, whatsapp) VALUES
 
 
 ALTER TABLE pengaturan ADD COLUMN hero_image VARCHAR(255) DEFAULT NULL;
+
+-- Add missing columns to pemeriksaan table
+ALTER TABLE pemeriksaan ADD COLUMN ikterik_keterangan TEXT AFTER anemia;
+ALTER TABLE pemeriksaan ADD COLUMN buta_warna_keterangan TEXT AFTER buta_warna;
+ALTER TABLE pemeriksaan ADD COLUMN lapang_pandang_keterangan TEXT AFTER lapang_pandang;
+ALTER TABLE pemeriksaan ADD COLUMN gigi_status VARCHAR(20) AFTER tenggorokan_keterangan;
+ALTER TABLE pemeriksaan ADD COLUMN auskultasi_keterangan TEXT AFTER paru_auskultasi;
+ALTER TABLE pemeriksaan ADD COLUMN jantung_keterangan TEXT AFTER jantung_auskultasi;
+ALTER TABLE pemeriksaan ADD COLUMN striae TEXT AFTER hepar;
+ALTER TABLE pemeriksaan ADD COLUMN sikatriks TEXT AFTER striae;
+ALTER TABLE pemeriksaan ADD COLUMN psoas_sign TEXT AFTER sikatriks;
