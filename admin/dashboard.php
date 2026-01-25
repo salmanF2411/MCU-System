@@ -88,10 +88,10 @@ if ($page == 'patients') {
     $recent_query = "SELECT * FROM pasien ORDER BY created_at DESC LIMIT 5";
     $recent_result = mysqli_query($conn, $recent_query);
 
-    // MCU status stats
-    $fit_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'FIT'";
-    $unfit_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'UNFIT'";
-    $fit_note_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'FIT WITH NOTE'";
+    // MCU status stats - only count completed examinations (dokter_umum)
+    $fit_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'FIT' AND pemeriksa_role = 'dokter_umum'";
+    $unfit_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'UNFIT' AND pemeriksa_role = 'dokter_umum'";
+    $fit_note_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'FIT WITH NOTE' AND pemeriksa_role = 'dokter_umum'";
 
     $fit_result = mysqli_query($conn, $fit_query);
     $unfit_result = mysqli_query($conn, $unfit_query);
