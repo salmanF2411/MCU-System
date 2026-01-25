@@ -22,11 +22,9 @@ if ($status != 'all') {
     $where .= " AND p.status_pendaftaran = '$status'";
 }
 
-// Get patients with MCU results
+// Get all patients
 $query = "SELECT p.* FROM pasien p
-          INNER JOIN pemeriksaan pm ON p.id = pm.pasien_id
           WHERE $where
-          GROUP BY p.id
           ORDER BY p.created_at DESC";
 $result = mysqli_query($conn, $query);
 
@@ -37,7 +35,6 @@ $stats_query = "SELECT
                 SUM(CASE WHEN p.status_pendaftaran = 'proses' THEN 1 ELSE 0 END) as proses,
                 SUM(CASE WHEN p.status_pendaftaran = 'selesai' THEN 1 ELSE 0 END) as selesai
                 FROM pasien p
-                INNER JOIN pemeriksaan pm ON p.id = pm.pasien_id
                 WHERE $where";
 
 $stats_result = mysqli_query($conn, $stats_query);
@@ -182,8 +179,9 @@ $stats = mysqli_fetch_assoc($stats_result);
                                         <th>Usia</th>
                                         <th>Perusahaan</th>
                                         <th>Tanggal MCU</th>
+                                        <th>Alamat</th>
+                                        <th>No HP</th>
                                         <th>Status</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -196,18 +194,14 @@ $stats = mysqli_fetch_assoc($stats_result);
                                             <td><?php echo $patient['usia']; ?> thn</td>
                                             <td><?php echo $patient['perusahaan'] ?: '-'; ?></td>
                                             <td><?php echo formatDateIndo($patient['tanggal_mcu']); ?></td>
+                                            <td><?php echo htmlspecialchars($patient['alamat']); ?></td>
+                                            <td><?php echo htmlspecialchars($patient['no_telp']); ?></td>
                                             <td>
                                                 <?php
                                                 if ($patient['status_pendaftaran'] == 'menunggu') echo 'Menunggu';
                                                 elseif ($patient['status_pendaftaran'] == 'proses') echo 'Proses';
                                                 else echo 'Selesai';
                                                 ?>
-                                            </td>
-                                            <td>
-                                                <a href="cetak-hasil.php?id=<?php echo $patient['id']; ?>"
-                                                   class="btn btn-sm btn-success" target="_blank">
-                                                    <i class="fas fa-print me-1"></i> Cetak PDF
-                                                </a>
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>

@@ -332,37 +332,25 @@ if ($id > 0) {
 }
 
 // Filter parameters for listing page
-$start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
-$end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
-$status = isset($_GET['status']) ? $_GET['status'] : 'all';
+$search = isset($_GET['search']) ? escape($_GET['search']) : '';
 
 // Build query
-$where = "1=1";
+$where = "p.status_pendaftaran = 'selesai'";
 
-if ($start_date && $end_date) {
-    $where .= " AND DATE(p.created_at) BETWEEN '$start_date' AND '$end_date'";
+if ($search) {
+    $where .= " AND (p.nama LIKE '%$search%' OR p.kode_mcu LIKE '%$search%' OR p.no_telp LIKE '%$search%')";
 }
 
-if ($status != 'all') {
-    $where .= " AND p.status_pendaftaran = '$status'";
-}
-
-// Get patients with MCU results
+// Get patients with completed MCU results
 $query = "SELECT p.* FROM pasien p
-          INNER JOIN pemeriksaan pm ON p.id = pm.pasien_id
           WHERE $where
-          GROUP BY p.id
           ORDER BY p.created_at DESC";
 $result = mysqli_query($conn, $query);
 
 // Get statistics
 $stats_query = "SELECT
-                COUNT(DISTINCT p.id) as total,
-                SUM(CASE WHEN p.status_pendaftaran = 'menunggu' THEN 1 ELSE 0 END) as menunggu,
-                SUM(CASE WHEN p.status_pendaftaran = 'proses' THEN 1 ELSE 0 END) as proses,
-                SUM(CASE WHEN p.status_pendaftaran = 'selesai' THEN 1 ELSE 0 END) as selesai
+                COUNT(DISTINCT p.id) as total
                 FROM pasien p
-                INNER JOIN pemeriksaan pm ON p.id = pm.pasien_id
                 WHERE $where";
 
 $stats_result = mysqli_query($conn, $stats_query);
@@ -388,34 +376,19 @@ $stats = mysqli_fetch_assoc($stats_result);
             <!-- Filter Card -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0">Filter Laporan</h5>
+                    <h5 class="mb-0">Pencarian</h5>
                 </div>
                 <div class="card-body">
                     <form method="GET" action="" class="row g-3">
-                        <div class="col-md-3">
-                            <label class="form-label">Tanggal Mulai</label>
-                            <input type="date" class="form-control" name="start_date"
-                                   value="<?php echo $start_date; ?>">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Tanggal Akhir</label>
-                            <input type="date" class="form-control" name="end_date"
-                                   value="<?php echo $end_date; ?>">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-select" name="status">
-                                <option value="all" <?php echo $status == 'all' ? 'selected' : ''; ?>>Semua Status</option>
-                                <option value="menunggu" <?php echo $status == 'menunggu' ? 'selected' : ''; ?>>Menunggu</option>
-                                <option value="proses" <?php echo $status == 'proses' ? 'selected' : ''; ?>>Proses</option>
-                                <option value="selesai" <?php echo $status == 'selesai' ? 'selected' : ''; ?>>Selesai</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <div class="d-grid w-100">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-filter me-2"></i> Filter
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="search" placeholder="Cari nama/kode MCU/telp..." value="<?php echo htmlspecialchars($search); ?>">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
                                 </button>
+                                <a href="cetak-hasil.php" class="btn btn-secondary ms-2">
+                                    <i class="fas fa-undo"></i> Reset
+                                </a>
                             </div>
                         </div>
                     </form>
@@ -425,39 +398,12 @@ $stats = mysqli_fetch_assoc($stats_result);
             <!-- Statistics Card -->
             <div class="card mb-4">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3">
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
                             <div class="card text-center border-primary">
                                 <div class="card-body">
                                     <h5 class="card-title">Total</h5>
                                     <h2 class="text-primary"><?php echo $stats['total']; ?></h2>
-                                    <p class="card-text">Hasil MCU</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center border-warning">
-                                <div class="card-body">
-                                    <h5 class="card-title">Menunggu</h5>
-                                    <h2 class="text-warning"><?php echo $stats['menunggu']; ?></h2>
-                                    <p class="card-text">Hasil MCU</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center border-info">
-                                <div class="card-body">
-                                    <h5 class="card-title">Proses</h5>
-                                    <h2 class="text-info"><?php echo $stats['proses']; ?></h2>
-                                    <p class="card-text">Hasil MCU</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card text-center border-success">
-                                <div class="card-body">
-                                    <h5 class="card-title">Selesai</h5>
-                                    <h2 class="text-success"><?php echo $stats['selesai']; ?></h2>
                                     <p class="card-text">Hasil MCU</p>
                                 </div>
                             </div>
@@ -488,10 +434,6 @@ $stats = mysqli_fetch_assoc($stats_result);
                         <div class="text-center mb-4">
                             <h3><?php echo getSetting('nama_klinik'); ?></h3>
                             <h4>Laporan Hasil MCU</h4>
-                            <p>
-                                Periode: <?php echo formatDateIndo($start_date); ?> - <?php echo formatDateIndo($end_date); ?>
-                                | Status: <?php echo $status == 'all' ? 'Semua' : ucfirst($status); ?>
-                            </p>
                             <p>Dicetak pada: <?php echo date('d/m/Y H:i:s'); ?></p>
                         </div>
                     </div>
@@ -507,7 +449,8 @@ $stats = mysqli_fetch_assoc($stats_result);
                                         <th>Usia</th>
                                         <th>Perusahaan</th>
                                         <th>Tanggal MCU</th>
-                                        <th>Status</th>
+                                        <th>Alamat</th>
+                                        <th>No HP</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -521,14 +464,13 @@ $stats = mysqli_fetch_assoc($stats_result);
                                             <td><?php echo $patient['usia']; ?> thn</td>
                                             <td><?php echo $patient['perusahaan'] ?: '-'; ?></td>
                                             <td><?php echo formatDateIndo($patient['tanggal_mcu']); ?></td>
+                                            <td><?php echo $patient['alamat'] ?: '-'; ?></td>
+                                            <td><?php echo $patient['no_telp'] ?: '-'; ?></td>
                                             <td>
-                                                <?php
-                                                if ($patient['status_pendaftaran'] == 'menunggu') echo 'Menunggu';
-                                                elseif ($patient['status_pendaftaran'] == 'proses') echo 'Proses';
-                                                else echo 'Selesai';
-                                                ?>
-                                            </td>
-                                            <td>
+                                                <a href="../pasien/detail.php?id=<?php echo $patient['id']; ?>&from=cetak-hasil"
+                                                   class="btn btn-sm btn-info me-1" title="Lihat Detail">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
                                                 <a href="cetak-hasil.php?id=<?php echo $patient['id']; ?>"
                                                    class="btn btn-sm btn-success" target="_blank">
                                                     <i class="fas fa-print me-1"></i> Cetak PDF

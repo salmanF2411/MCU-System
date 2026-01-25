@@ -6,8 +6,9 @@ require_once '../../includes/functions.php';
 
 requireLogin();
 
-// Get patient ID
+// Get patient ID and source page
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$from = isset($_GET['from']) ? $_GET['from'] : '';
 
 if ($id == 0) {
     $_SESSION['error'] = "Pasien tidak ditemukan";
@@ -61,7 +62,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                         <i class="fas fa-user me-2"></i> Detail Pasien
                     </h5>
                     <div>
-                        <a href="list.php" class="btn btn-light btn-sm">
+                        <a href="<?php echo $from == 'cetak-hasil' ? '../laporan/cetak-hasil.php' : 'list.php'; ?>" class="btn btn-light btn-sm">
                             <i class="fas fa-arrow-left me-1"></i> Kembali
                         </a>
                         <a href="../laporan/cetak-hasil.php?id=<?php echo $id; ?>" 
