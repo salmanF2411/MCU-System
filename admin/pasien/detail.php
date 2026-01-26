@@ -520,7 +520,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                             <!-- General Examination Data -->
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <h6>THT & Gigi</h6>
+                                                    <h6 style="font-weight: bold;">THT & Gigi</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Telinga</th>
@@ -561,7 +561,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     </table>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <h6>Thorax PARU - PARU</h6>
+                                                    <h6 style="font-weight: bold;">Thorax PARU - PARU</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Auskultasi</th>
@@ -580,7 +580,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
-                                                    <h6>Thorax JANTUNG</h6>
+                                                    <h6 style="font-weight: bold;">Thorax JANTUNG</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Auskultasi</th>
@@ -600,7 +600,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                             
                                             <div class="row mt-3">
                                                 <div class="col-md-6">
-                                                    <h6>Abdominal</h6>
+                                                    <h6 style="font-weight: bold;">Abdominal</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Operasi</th>
@@ -657,7 +657,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     </table>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <h6>Refleks</h6>
+                                                    <h6 style="font-weight: bold;">Refleks</h6>
                                                     <table class="table table-sm">
                                                         <tr>
                                                             <th>Biceps</th>
@@ -687,9 +687,9 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                             <?php if ($exam['kesimpulan'] || $exam['status_mcu']): ?>
                                                 <div class="card mt-3 bg-light">
                                                     <div class="card-body">
-                                                        <h6>Kesimpulan</h6>
+                                                        <h6 style="font-weight: bold;">Kesimpulan</h6>
                                                         <p><?php echo nl2br($exam['kesimpulan']); ?></p>
-                                                        <h6>Saran</h6>
+                                                        <h6 style="font-weight: bold;">Saran</h6>
                                                         <p><?php echo nl2br($exam['saran']); ?></p>
                                                         <div class="mt-2">
                                                             <strong>Status MCU:</strong>
