@@ -142,7 +142,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         // Kesimpulan
         $kesimpulan = escape($_POST['kesimpulan']);
-        $saran = escape($_POST['saran']);
+
+        // Process saran from checkboxes and manual input
+        $saran_options = isset($_POST['saran_options']) ? $_POST['saran_options'] : [];
+        $saran_manual = escape($_POST['saran_manual']);
+        $saran_combined = '';
+
+        if (!empty($saran_options)) {
+            $saran_combined = implode("\n", array_map(function($saran) {
+                return "- " . $saran;
+            }, $saran_options));
+        }
+
+        if (!empty($saran_manual)) {
+            if (!empty($saran_combined)) {
+                $saran_combined .= "\n\nSaran Tambahan:\n" . $saran_manual;
+            } else {
+                $saran_combined = $saran_manual;
+            }
+        }
+
+        $saran = $saran_combined;
         $status_mcu = escape($_POST['status_mcu']);
         $dokter_pemeriksa = escape($_POST['dokter_pemeriksa']);
         
@@ -670,8 +690,53 @@ $role_title = $role_titles[$role];
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label class="form-label">Saran</label>
-                                            <textarea class="form-control" name="saran" 
-                                                      rows="3" placeholder="Saran untuk pasien..."></textarea>
+                                            <div class="mb-3">
+                                                <small class="text-muted">Pilih saran yang sesuai (boleh lebih dari satu):</small>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist" id="saran1">
+                                                            <label class="form-check-label" for="saran1">
+                                                                - Jika terdapat keluhan mengenai Gigi, Konsultasi ke Dentist
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Konsultasi ke Opthalmologist jika penglihatan makin menurun" id="saran2">
+                                                            <label class="form-check-label" for="saran2">
+                                                                - Konsultasi ke Opthalmologist jika penglihatan makin menurun
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Diet Tinggi Zat Besi" id="saran3">
+                                                            <label class="form-check-label" for="saran3">
+                                                                - Diet Tinggi Zat Besi
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jangan mengkonsumsi alkohol sehari sebelum bekerja." id="saran4">
+                                                            <label class="form-check-label" for="saran4">
+                                                                - Jangan mengkonsumsi alkohol sehari sebelum bekerja.
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan." id="saran5">
+                                                            <label class="form-check-label" for="saran5">
+                                                                - Batasi aktivitas yang dapat mengganggu kesehatan saat kehamilan.
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="saran_options[]" value="Jaga kebersihan telinga secara rutin dan berkala" id="saran6">
+                                                            <label class="form-check-label" for="saran6">
+                                                                - Jaga kebersihan telinga secara rutin dan berkala
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <textarea class="form-control" name="saran_manual" 
+                                                      rows="3" placeholder="Saran tambahan (manual)..."></textarea>
                                         </div>
                                     </div>
                                 </div>

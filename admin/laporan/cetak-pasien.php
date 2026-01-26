@@ -6,6 +6,35 @@ require_once '../../includes/functions.php';
 
 requireLogin();
 
+// Tambahkan fitur export Excel
+if (isset($_GET['export_excel']) && $_GET['export_excel'] == '1') {
+    // Filter parameters for export
+    $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
+    $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
+    $status = isset($_GET['status']) ? $_GET['status'] : 'all';
+
+    // Build query (sama dengan query utama)
+    $where = "1=1";
+
+    if ($start_date && $end_date) {
+        $where .= " AND DATE(p.created_at) BETWEEN '$start_date' AND '$end_date'";
+    }
+
+    if ($status != 'all') {
+        $where .= " AND p.status_pendaftaran = '$status'";
+    }
+
+    // Get all patients for export
+    $query = "SELECT p.* FROM pasien p
+              WHERE $where
+              ORDER BY p.created_at DESC";
+    $result = mysqli_query($conn, $query);
+
+    // Ekspor ke Excel
+    exportToExcel($result, $start_date, $end_date, $status);
+    exit;
+}
+
 // Filter parameters for listing page
 $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
 $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
@@ -149,9 +178,10 @@ $stats = mysqli_fetch_assoc($stats_result);
                         <button onclick="printReport()" class="btn btn-success me-2">
                             <i class="fas fa-print me-2"></i> Cetak Semua
                         </button>
-                        <button onclick="exportToExcel()" class="btn btn-primary">
+                        <a href="?export_excel=1&start_date=<?php echo $start_date; ?>&end_date=<?php echo $end_date; ?>&status=<?php echo $status; ?>"
+                           class="btn btn-primary">
                             <i class="fas fa-file-excel me-2"></i> Excel
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -252,37 +282,110 @@ function printReport() {
     window.location.reload();
 }
 
-// Export to Excel function
-function exportToExcel() {
-    const table = document.getElementById('reportTable');
-    let csv = [];
-    
-    // Get headers
-    const headers = [];
-    table.querySelectorAll('thead th').forEach(th => {
-        headers.push(th.textContent);
-    });
-    csv.push(headers.join(','));
-    
-    // Get rows
-    table.querySelectorAll('tbody tr').forEach(tr => {
-        const row = [];
-        tr.querySelectorAll('td').forEach(td => {
-            row.push(`"${td.textContent}"`);
-        });
-        csv.push(row.join(','));
-    });
-    
-    // Create download link
-    const csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `laporan-pasien-${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
+
 </script>
+
+<?php
+/**
+ * Fungsi untuk ekspor data ke Excel menggunakan PHPSpreadsheet
+ */
+function exportToExcel($result, $start_date, $end_date, $status) {
+    // Require PHPSpreadsheet
+    require '../../vendor/autoload.php';
+
+    // Create new Spreadsheet
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Set judul laporan
+    $sheet->setTitle('Laporan Pasien');
+
+    // Header informasi
+    $sheet->setCellValue('A1', 'LAPORAN DATA PASIEN')
+          ->setCellValue('A2', getSetting('nama_klinik'))
+          ->setCellValue('A3', 'Periode: ' . formatDateIndo($start_date) . ' - ' . formatDateIndo($end_date))
+          ->setCellValue('A4', 'Status: ' . ($status == 'all' ? 'Semua Status' : ucfirst($status)))
+          ->setCellValue('A5', 'Tanggal Cetak: ' . date('d/m/Y H:i:s'));
+
+    // Header tabel
+    $headers = ['No', 'Kode MCU', 'Nama', 'Usia', 'Perusahaan', 'Tanggal MCU', 'Alamat', 'No HP', 'Status'];
+    $col = 'A';
+    foreach ($headers as $header) {
+        $sheet->setCellValue($col . '7', $header);
+        $sheet->getStyle($col . '7')->getFont()->setBold(true);
+        $col++;
+    }
+
+    // Isi data
+    $row = 8;
+    $no = 1;
+
+    while ($patient = mysqli_fetch_assoc($result)) {
+        $sheet->setCellValue('A' . $row, $no)
+              ->setCellValue('B' . $row, $patient['kode_mcu'])
+              ->setCellValue('C' . $row, $patient['nama'])
+              ->setCellValue('D' . $row, $patient['usia'] . ' thn')
+              ->setCellValue('E' . $row, $patient['perusahaan'] ?: '-')
+              ->setCellValue('F' . $row, formatDateIndo($patient['tanggal_mcu']))
+              ->setCellValue('G' . $row, $patient['alamat'])
+              ->setCellValue('H' . $row, $patient['no_telp'])
+              ->setCellValue('I' . $row,
+                  $patient['status_pendaftaran'] == 'menunggu' ? 'Menunggu' :
+                  ($patient['status_pendaftaran'] == 'proses' ? 'Proses' : 'Selesai'));
+
+        $no++;
+        $row++;
+    }
+
+    // Set column widths
+    $sheet->getColumnDimension('A')->setWidth(6); // No column - fixed small width
+    // Auto size other columns
+    foreach (range('B', 'I') as $column) {
+        $sheet->getColumnDimension($column)->setAutoSize(true);
+    }
+
+    // Style untuk judul
+    $sheet->getStyle('A1:I1')->getFont()->setSize(16)->setBold(true);
+    $sheet->mergeCells('A1:I1');
+    $sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
+
+    // Style untuk header tabel
+    $sheet->getStyle('A7:I7')->getFill()
+          ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+          ->getStartColor()->setARGB('FFE0E0E0');
+
+    // Border untuk tabel
+    $lastRow = $row - 1;
+    $styleArray = [
+        'borders' => [
+            'allBorders' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+            ],
+        ],
+    ];
+    $sheet->getStyle('A7:I' . $lastRow)->applyFromArray($styleArray);
+
+    // Set header untuk download
+    $filename = 'laporan-pasien-' . date('Y-m-d-His') . '.xlsx';
+
+    // Clean output buffer to prevent corruption
+    if (ob_get_level()) {
+        ob_end_clean();
+    }
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+    header('Cache-Control: max-age=1');
+    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: cache, must-revalidate');
+    header('Pragma: public');
+
+    $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $writer->save('php://output');
+    exit;
+}
+?>
 
 <?php include '../../includes/admin-footer.php'; ?>

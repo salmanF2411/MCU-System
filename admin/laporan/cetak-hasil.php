@@ -402,14 +402,14 @@ $stats = mysqli_fetch_assoc($stats_result);
                         Data Hasil MCU
                         <span class="badge bg-primary ms-2"><?php echo mysqli_num_rows($result); ?> data</span>
                     </h5>
-                    <div>
+                    <!-- <div>
                         <button onclick="printReport()" class="btn btn-success me-2">
                             <i class="fas fa-print me-2"></i> Cetak Semua
                         </button>
                         <button onclick="exportToExcel()" class="btn btn-primary">
                             <i class="fas fa-file-excel me-2"></i> Excel
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="card-body">
                     <!-- Print Header -->
