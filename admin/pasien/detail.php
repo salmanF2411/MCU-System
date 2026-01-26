@@ -452,234 +452,278 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                     <div class="card-body">
                                         <?php if ($role == 'pendaftaran'): ?>
                                             <!-- Sirkulasi Data -->
-                                            <table class="table table-sm">
-                                                <tr>
-                                                    <th width="30%">Tekanan Darah</th>
-                                                    <td><?php echo $exam['tekanan_darah'] ? $exam['tekanan_darah'] . ' mmHg' : '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Nadi</th>
-                                                    <td><?php echo $exam['nadi'] ? $exam['nadi'] . ' x/menit' : '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Suhu</th>
-                                                    <td><?php echo $exam['suhu'] ? $exam['suhu'] . ' °C' : '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Respirasi</th>
-                                                    <td><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Tinggi Badan</th>
-                                                    <td><?php echo $exam['tinggi_badan'] ? $exam['tinggi_badan'] . ' cm' : '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Berat Badan</th>
-                                                    <td><?php echo $exam['berat_badan'] ? $exam['berat_badan'] . ' kg' : '-'; ?></td>
-                                                </tr>
-                                            </table>
-                                            
-                                        <?php elseif ($role == 'dokter_mata'): ?>
-                                            <!-- Mata Data -->
-                                            <table class="table table-sm">
-                                                <tr>
-                                                    <th width="40%">Visus Kanan (Jauh/Dekat)</th>
-                                                    <td><?php echo $exam['visus_kanan_jauh'] ?: '-' ?> / <?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Visus Kiri (Jauh/Dekat)</th>
-                                                    <td><?php echo $exam['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Anemis : Ikterik</th>
-                                                    <td><?php echo $exam['anemia'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Keterangan</th>
-                                                    <td><?php echo $exam['ikterik_keterangan'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Buta Warna</th>
-                                                    <td><?php echo $exam['buta_warna'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Keterangan</th>
-                                                    <td><?php echo $exam['buta_warna_keterangan'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Lapang Pandang</th>
-                                                    <td><?php echo $exam['lapang_pandang'] ?: '-'; ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Keterangan</th>
-                                                    <td><?php echo $exam['lapang_pandang_keterangan'] ?: '-'; ?></td>
-                                                </tr>
-                                            </table>
-                                            
-                                        <?php elseif ($role == 'dokter_umum'): ?>
-                                            <!-- General Examination Data -->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <h6 style="font-weight: bold;">THT & Gigi</h6>
-                                                    <table class="table table-sm">
-                                                        <tr>
-                                                            <th>Telinga</th>
-                                                            <td><?php echo $exam['telinga_status'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Keterangan</th>
-                                                            <td><?php echo $exam['telinga_keterangan'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Hidung</th>
-                                                            <td><?php echo $exam['hidung_status'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Keterangan</th>
-                                                            <td><?php echo $exam['hidung_keterangan'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Tenggorokan</th>
-                                                            <td><?php echo $exam['tenggorokan_status'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Keterangan</th>
-                                                            <td><?php echo $exam['tenggorokan_keterangan'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Gigi</th>
-                                                            <td><?php echo $exam['gigi_status'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Keterangan</th>
-                                                            <td><?php echo $exam['gigi_keterangan'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Leher (KGB)</th>
-                                                            <td><?php echo $exam['leher_kgb'] ?: '-'; ?></td>
-                                                        </tr>
-                                                    </table>
+                                            <div class="card border-primary">
+                                                <div class="card-header bg-primary text-white">
+                                                    <h6 class="mb-0"><i class="fas fa-heartbeat me-2"></i>Sirkulasi</h6>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <h6 style="font-weight: bold;">Thorax PARU - PARU</h6>
-                                                    <table class="table table-sm">
+                                                <div class="card-body">
+                                                    <table class="table table-sm table-borderless">
                                                         <tr>
-                                                            <th>Auskultasi</th>
-                                                            <td><?php echo $exam['paru_auskultasi'] ?: '-'; ?></td>
+                                                            <th width="40%">Tekanan Darah</th>
+                                                            <td><?php echo $exam['tekanan_darah'] ? $exam['tekanan_darah'] . ' mmHg' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Keterangan</th>
-                                                            <td><?php echo $exam['auskultasi_keterangan'] ?: '-'; ?></td>
+                                                            <th>Nadi</th>
+                                                            <td><?php echo $exam['nadi'] ? $exam['nadi'] . ' x/menit' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Palpasi</th>
-                                                            <td><?php echo $exam['paru_palpasi'] ?: '-'; ?></td>
+                                                            <th>Suhu</th>
+                                                            <td><?php echo $exam['suhu'] ? $exam['suhu'] . ' °C' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Perkusi</th>
-                                                            <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
-                                                        </tr>
-                                                    </table>
-                                                    <h6 style="font-weight: bold;">Thorax JANTUNG</h6>
-                                                    <table class="table table-sm">
-                                                        <tr>
-                                                            <th>Auskultasi</th>
-                                                            <td><?php echo $exam['jantung_auskultasi'] ?: '-'; ?></td>
+                                                            <th>Respirasi</th>
+                                                            <td><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Keterangan</th>
-                                                            <td><?php echo $exam['jantung_keterangan'] ?: '-'; ?></td>
+                                                            <th>Tinggi Badan</th>
+                                                            <td><?php echo $exam['tinggi_badan'] ? $exam['tinggi_badan'] . ' cm' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Perkusi</th>
-                                                            <td><?php echo $exam['jantung_perkusi'] ?: '-'; ?></td>
+                                                            <th>Berat Badan</th>
+                                                            <td><?php echo $exam['berat_badan'] ? $exam['berat_badan'] . ' kg' : '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>
                                             </div>
                                             
-                                            <div class="row mt-3">
-                                                <div class="col-md-6">
-                                                    <h6 style="font-weight: bold;">Abdominal</h6>
-                                                    <table class="table table-sm">
+                                        <?php elseif ($role == 'dokter_mata'): ?>
+                                            <!-- Mata Data -->
+                                            <div class="card border-secondary">
+                                                <div class="card-header bg-secondary text-white">
+                                                    <h6 class="mb-0"><i class="fas fa-eye me-2"></i>Mata</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table table-sm table-borderless">
                                                         <tr>
-                                                            <th>Operasi</th>
-                                                            <td><?php echo $exam['operasi'] ? 'Ya' : 'Tidak'; ?></td>
+                                                            <th width="40%">Visus Kanan (Jauh/Dekat)</th>
+                                                            <td><?php echo $exam['visus_kanan_jauh'] ?: '-' ?> / <?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Keterangan Operasi</th>
-                                                            <td><?php echo $exam['keterangan_operasi'] ?: '-'; ?></td>
+                                                            <th>Visus Kiri (Jauh/Dekat)</th>
+                                                            <td><?php echo $exam['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Obesitas</th>
-                                                            <td><?php echo $exam['obesitas'] ? 'Ya' : 'Tidak'; ?></td>
+                                                            <th>Anemis : Ikterik</th>
+                                                            <td><?php echo $exam['anemia'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Organomegali</th>
-                                                            <td><?php echo $exam['organomegali'] ? 'Ya' : 'Tidak'; ?></td>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['ikterik_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Hernia</th>
-                                                            <td><?php echo $exam['hernia'] ? 'Ya' : 'Tidak'; ?></td>
+                                                            <th>Buta Warna</th>
+                                                            <td><?php echo $exam['buta_warna'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Nyeri Tekan Epigastrium</th>
-                                                            <td><?php echo $exam['nyeri_epigastrium'] ? 'Ya' : 'Tidak'; ?></td>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['buta_warna_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Nyeri Tekan Abdomen</th>
-                                                            <td><?php echo $exam['nyeri_abdomen'] ? 'Ya' : 'Tidak'; ?></td>
+                                                            <th>Lapang Pandang</th>
+                                                            <td><?php echo $exam['lapang_pandang'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Bising Usus</th>
-                                                            <td><?php echo $exam['bising_usus'] ? 'Ya' : 'Tidak'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Hepar</th>
-                                                            <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>GENITALIA</th>
-                                                            <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Striae</th>
-                                                            <td><?php echo $exam['striae'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Sikatriks</th>
-                                                            <td><?php echo $exam['sikatriks'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>PSOAS SIGN</th>
-                                                            <td><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
+                                                            <th>Keterangan</th>
+                                                            <td><?php echo $exam['lapang_pandang_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <h6 style="font-weight: bold;">Refleks</h6>
-                                                    <table class="table table-sm">
-                                                        <tr>
-                                                            <th>Biceps</th>
-                                                            <td><?php echo $exam['biceps'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Triceps</th>
-                                                            <td><?php echo $exam['triceps'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Patella</th>
-                                                            <td><?php echo $exam['patella'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Achilles</th>
-                                                            <td><?php echo $exam['achilles'] ?: '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Plantar Response</th>
-                                                            <td><?php echo $exam['plantar_response'] ?: '-'; ?></td>
-                                                        </tr>
-                                                    </table>
+                                            </div>
+                                            
+                                        <?php elseif ($role == 'dokter_umum'): ?>
+                                            <!-- General Examination Data -->
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="card border-primary">
+                                                        <div class="card-header bg-primary text-white">
+                                                            <h6 class="mb-0"><i class="fas fa-ear-listen me-2"></i>THT & Gigi</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-borderless">
+                                                                <tr>
+                                                                    <th width="40%">Telinga</th>
+                                                                    <td><?php echo $exam['telinga_status'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan</th>
+                                                                    <td><?php echo $exam['telinga_keterangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Hidung</th>
+                                                                    <td><?php echo $exam['hidung_status'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan</th>
+                                                                    <td><?php echo $exam['hidung_keterangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Tenggorokan</th>
+                                                                    <td><?php echo $exam['tenggorokan_status'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan</th>
+                                                                    <td><?php echo $exam['tenggorokan_keterangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Gigi</th>
+                                                                    <td><?php echo $exam['gigi_status'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan</th>
+                                                                    <td><?php echo $exam['gigi_keterangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Leher (KGB)</th>
+                                                                    <td><?php echo $exam['leher_kgb'] ?: '-'; ?></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="card border-success">
+                                                        <div class="card-header bg-success text-white">
+                                                            <h6 class="mb-0"><i class="fas fa-lungs me-2"></i>Thorax PARU - PARU</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-borderless">
+                                                                <tr>
+                                                                    <th width="40%">Auskultasi</th>
+                                                                    <td><?php echo $exam['paru_auskultasi'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan</th>
+                                                                    <td><?php echo $exam['auskultasi_keterangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Palpasi</th>
+                                                                    <td><?php echo $exam['paru_palpasi'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Perkusi</th>
+                                                                    <td><?php echo $exam['paru_perkusi'] ?: '-'; ?></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card border-danger mt-3">
+                                                        <div class="card-header bg-danger text-white">
+                                                            <h6 class="mb-0"><i class="fas fa-heart me-2"></i>Thorax JANTUNG</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-borderless">
+                                                                <tr>
+                                                                    <th width="40%">Auskultasi</th>
+                                                                    <td><?php echo $exam['jantung_auskultasi'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan</th>
+                                                                    <td><?php echo $exam['jantung_keterangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Perkusi</th>
+                                                                    <td><?php echo $exam['jantung_perkusi'] ?: '-'; ?></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="card border-warning">
+                                                        <div class="card-header bg-warning text-dark">
+                                                            <h6 class="mb-0"><i class="fas fa-user-md me-2"></i>Abdominal</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-borderless">
+                                                                <tr>
+                                                                    <th width="50%">Operasi</th>
+                                                                    <td><?php echo $exam['operasi'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Keterangan Operasi</th>
+                                                                    <td><?php echo $exam['keterangan_operasi'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Obesitas</th>
+                                                                    <td><?php echo $exam['obesitas'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Organomegali</th>
+                                                                    <td><?php echo $exam['organomegali'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Hernia</th>
+                                                                    <td><?php echo $exam['hernia'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Nyeri Tekan Epigastrium</th>
+                                                                    <td><?php echo $exam['nyeri_epigastrium'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Nyeri Tekan Abdomen</th>
+                                                                    <td><?php echo $exam['nyeri_abdomen'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Bising Usus</th>
+                                                                    <td><?php echo $exam['bising_usus'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Hepar</th>
+                                                                    <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>GENITALIA</th>
+                                                                    <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Striae</th>
+                                                                    <td><?php echo $exam['striae'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Sikatriks</th>
+                                                                    <td><?php echo $exam['sikatriks'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>PSOAS SIGN</th>
+                                                                    <td><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="card border-info">
+                                                        <div class="card-header bg-info text-white">
+                                                            <h6 class="mb-0"><i class="fas fa-brain me-2"></i>Refleks</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-borderless">
+                                                                <tr>
+                                                                    <th width="50%">Biceps</th>
+                                                                    <td><?php echo $exam['biceps'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Triceps</th>
+                                                                    <td><?php echo $exam['triceps'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Patella</th>
+                                                                    <td><?php echo $exam['patella'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Achilles</th>
+                                                                    <td><?php echo $exam['achilles'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Plantar Response</th>
+                                                                    <td><?php echo $exam['plantar_response'] ?: '-'; ?></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             
