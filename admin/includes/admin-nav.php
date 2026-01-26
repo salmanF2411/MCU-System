@@ -41,7 +41,7 @@ require_once __DIR__ . '/../../config/database.php';
                 </li>
                 <?php endif; ?>
                 
-                <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
+                <!-- <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo ADMIN_URL; ?>/pasien/pemeriksaan-mata.php">
                         <i class="fas fa-eye"></i> Pemeriksaan Mata
@@ -55,7 +55,7 @@ require_once __DIR__ . '/../../config/database.php';
                         <i class="fas fa-stethoscope"></i> Pemeriksaan Umum
                     </a>
                 </li>
-                <?php endif; ?>
+                <?php endif; ?> -->
                 
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo ADMIN_URL; ?>/laporan/cetak-hasil.php">

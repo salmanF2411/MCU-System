@@ -395,23 +395,6 @@ $stats = mysqli_fetch_assoc($stats_result);
                 </div>
             </div>
 
-            <!-- Statistics Card -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row justify-content-center">
-                        <div class="col-md-4">
-                            <div class="card text-center border-primary">
-                                <div class="card-body">
-                                    <h5 class="card-title">Total</h5>
-                                    <h2 class="text-primary"><?php echo $stats['total']; ?></h2>
-                                    <p class="card-text">Hasil MCU</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Report Card -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">

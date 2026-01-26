@@ -1,23 +1,10 @@
-# TODO: Add Configurable Hero Section to Admin Dashboard
+# TODO: Add Text Field for Unlisted Family Medical History Diseases
 
-## Database Changes
+## Tasks
 
-- [ ] Add 'hero_image' column to pengaturan table
-
-## Settings Page Updates
-
-- [ ] Update pengaturan.php to handle hero image upload
-- [ ] Add form fields for hero image in settings form
-- [ ] Handle image upload and deletion logic
-
-## Dashboard Updates
-
-- [ ] Update dashboard.php to display hero section
-- [ ] Add hero section above existing content
-- [ ] Use configured hero image from settings
-
-## Testing
-
-- [ ] Test image upload functionality
-- [ ] Test hero display on dashboard
-- [ ] Test image deletion
+- [x] Add HTML text field in "Riwayat Penyakit Keluarga" section for "Penyakit Keluarga Lainnya"
+- [x] Add PHP processing code to handle and insert the new "riwayat_keluarga_lain" field into the database
+- [x] Add HTML text field in "UMUM" section for "Keluhan Lainnya" (already exists)
+- [x] Add PHP processing code to handle and insert the "keluhan_lain" field into the database (already exists)
+- [x] Add "batang/hari" to smoking description in detail.php
+- [ ] Test form submission to ensure data is saved correctly

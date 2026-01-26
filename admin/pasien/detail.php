@@ -286,7 +286,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                         <?php if (isset($histories['riwayat_keluarga'])): ?>
                                             <?php foreach ($histories['riwayat_keluarga'] as $family_disease): ?>
                                                 <div class="list-group-item">
-                                                    <i class="fas fa-family text-warning me-2"></i>
+                                                    <i class="fas fa-hospital text-danger me-2"></i>
                                                     <?php echo $family_disease; ?>
                                                 </div>
                                             <?php endforeach; ?>
@@ -363,7 +363,15 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <?php echo ucfirst($habit['jenis']); ?>
                                                         </strong>
                                                     </td>
-                                                    <td><?php echo $habit['keterangan']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                        if ($habit['jenis'] == 'merokok') {
+                                                            echo $habit['keterangan'] . ' batang/hari';
+                                                        } else {
+                                                            echo $habit['keterangan'];
+                                                        }
+                                                        ?>
+                                                    </td>
                                                 </tr>
                                             <?php endwhile; ?>
                                         </tbody>

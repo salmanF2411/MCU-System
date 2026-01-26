@@ -99,6 +99,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        // Jika ada riwayat keluarga lain
+        if (!empty($_POST['riwayat_keluarga_lain'])) {
+            $sql_riwayat = "INSERT INTO riwayat_kesehatan (pasien_id, kategori, nilai)
+                           VALUES ($pasien_id, 'riwayat_keluarga', '{$_POST['riwayat_keluarga_lain']}')";
+            mysqli_query($conn, $sql_riwayat);
+        }
+
         // Alergi
         if (isset($_POST['alergi'])) {
             foreach ($_POST['alergi'] as $alergi) {
@@ -142,6 +149,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                VALUES ($pasien_id, 'keluhan', '$keluhan')";
                 mysqli_query($conn, $sql_riwayat);
             }
+        }
+
+        // Jika ada keluhan lain
+        if (!empty($_POST['keluhan_lain'])) {
+            $sql_riwayat = "INSERT INTO riwayat_kesehatan (pasien_id, kategori, nilai)
+                           VALUES ($pasien_id, 'keluhan', '{$_POST['keluhan_lain']}')";
+            mysqli_query($conn, $sql_riwayat);
         }
 
         $_SESSION['success'] = "Pendaftaran berhasil! Kode MCU Anda: <strong>$kode_mcu</strong>. Harap simpan kode ini untuk keperluan berikutnya.";
@@ -467,6 +481,10 @@ require_once '../includes/header.php';
                                 <label class="form-check-label" for="keluarga_tbc">TBC</label>
                             </div>
                         </div>
+                        <div class="col-12 mt-2">
+                            <label for="riwayat_keluarga_lain" class="form-label">Penyakit Keluarga Lainnya (jika ada)</label>
+                            <input type="text" class="form-control" id="riwayat_keluarga_lain" name="riwayat_keluarga_lain" placeholder="Tulis penyakit keluarga lainnya">
+                        </div>
                     </div>
                     
                     <!-- Alergi -->
@@ -619,6 +637,10 @@ require_once '../includes/header.php';
                                 <input class="form-check-input" type="checkbox" name="keluhan[]" value="PEMBEDAHAN OPERASI" id="pembedahan">
                                 <label class="form-check-label" for="pembedahan">Pembedahan/Operasi</label>
                             </div>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <label for="keluhan_lain" class="form-label">Keluhan Lainnya (jika ada)</label>
+                            <input type="text" class="form-control" id="keluhan_lain" name="keluhan_lain" placeholder="Tulis keluhan lainnya">
                         </div>
                     </div>
                 </div>
