@@ -688,17 +688,9 @@ if ($page == 'patients') {
                                     </a>
                                     <?php endif; ?>
 
-                                    <?php if (hasRole('dokter_mata') || $_SESSION['role'] == 'super_admin'): ?>
-                                    <a href="pasien/pemeriksaan-mata.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-eye text-info me-2"></i> Pemeriksaan Mata
+                                    <a href="evaluasi.php" class="list-group-item list-group-item-action">
+                                        <i class="fas fa-comments text-primary me-2"></i> Feedback Pasien
                                     </a>
-                                    <?php endif; ?>
-
-                                    <?php if (hasRole('dokter_umum') || $_SESSION['role'] == 'super_admin'): ?>
-                                    <a href="pasien/pemeriksaan-umum.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-stethoscope text-success me-2"></i> Pemeriksaan Umum
-                                    </a>
-                                    <?php endif; ?>
 
                                     <a href="laporan/cetak-pasien.php" class="list-group-item list-group-item-action">
                                         <i class="fas fa-print text-secondary me-2"></i> Cetak Laporan
@@ -707,6 +699,15 @@ if ($page == 'patients') {
                                     <?php if ($_SESSION['role'] == 'super_admin'): ?>
                                     <a href="artikel/add.php" class="list-group-item list-group-item-action">
                                         <i class="fas fa-edit text-primary me-2"></i> Buat Artikel Baru
+                                    </a>
+                                    <?php endif; ?>
+                                     <?php if ($_SESSION['role'] == 'super_admin'): ?>
+                                    <a href="users/list.php" class="list-group-item list-group-item-action">
+                                        <i class="fas fa-user-cog text-secondary me-2"></i> Kelola User
+                                    </a>
+
+                                    <a href="pengaturan.php" class="list-group-item list-group-item-action">
+                                        <i class="fas fa-cog text-warning me-2"></i> Pengaturan Sistem
                                     </a>
                                     <?php endif; ?>
                                 </div>
