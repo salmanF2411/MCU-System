@@ -180,7 +180,7 @@ require_once '../includes/header.php';
                     <i class="fas fa-stethoscope fa-3x text-primary"></i>
                 </div>
                 <h1 class="page-title">Pendaftaran Medical Check Up</h1>
-                <p class="lead text-muted">Isi formulir pendaftaran dengan lengkap dan akurat untuk proses Medical Check Up yang optimal</p>
+                <p class="lead text-muted" style="font-weight: bold;">Isi formulir pendaftaran dengan lengkap dan akurat untuk proses Medical Check Up yang optimal</p>
                 <div class="alert alert-info border-0 shadow-sm">
                     <i class="fas fa-info-circle me-2"></i>
                     <strong>Penting:</strong> Pastikan semua data yang Anda isi adalah benar dan akurat. Kode MCU akan dikirimkan setelah pendaftaran berhasil.
