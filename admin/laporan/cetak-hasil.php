@@ -21,17 +21,32 @@ if ($id > 0) {
     // 2. Ambil Data Pemeriksaan (Flatten Data)
     $pemeriksaan_query = "SELECT * FROM pemeriksaan WHERE pasien_id = $id";
     $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
-    
+
     $data = []; // Array tunggal untuk menampung semua data
     $dokters = [];
-    
+
     while ($row = mysqli_fetch_assoc($pemeriksaan_result)) {
         // Gabungkan semua field ke array $data
         $data = array_merge($data, $row);
-        
+
         // Simpan nama dokter
         if($row['pemeriksa_role'] == 'dokter_umum') $dokters['umum'] = $row['dokter_pemeriksa'];
         if($row['pemeriksa_role'] == 'dokter_mata') $dokters['mata'] = $row['dokter_pemeriksa'];
+    }
+
+    // Ambil data vital signs dari pendaftaran secara spesifik
+    $vital_query = "SELECT tekanan_darah, nadi, suhu, respirasi, tinggi_badan, berat_badan FROM pemeriksaan WHERE pasien_id = $id AND pemeriksa_role = 'pendaftaran'";
+    $vital_result = mysqli_query($conn, $vital_query);
+    $vital_data = mysqli_fetch_assoc($vital_result);
+
+    // Override data vital signs dengan data dari pendaftaran
+    if ($vital_data) {
+        $data['tekanan_darah'] = $vital_data['tekanan_darah'];
+        $data['nadi'] = $vital_data['nadi'];
+        $data['suhu'] = $vital_data['suhu'];
+        $data['respirasi'] = $vital_data['respirasi'];
+        $data['tinggi_badan'] = $vital_data['tinggi_badan'];
+        $data['berat_badan'] = $vital_data['berat_badan'];
     }
 
     // Ambil Pengaturan
@@ -187,26 +202,41 @@ if ($id > 0) {
     $pdf->Cell(190, 7, '  Tanda Vital Tubuh', 1, 1, 'L');
 
     // --- LOGIKA NORMAL/ABNORMAL ---
-    // Fungsi cek normalitas sederhana (Bisa disesuaikan)
+    // Fungsi cek normalitas sesuai dengan detail page
     function checkNormal($val, $type) {
-        if (empty($val)) return false;
-        $val_clean = floatval(preg_replace('/[^0-9.]/', '', $val));
-        
+        if (empty($val) || $val === '-') {
+            return false;
+        }
+
         switch($type) {
-            case 'suhu': 
-                // Request User: Merah jika > 35 (Asumsi maksudnya demam > 37.5, tapi ini logika fleksibel)
-                // Jika ingin persis "melebihi 35" ganti 37.5 jadi 35.
-                return ($val_clean > 37.5 || $val_clean < 35); 
+            case 'suhu':
+                // Normal temperature: 36.5 - 37.5 °C
+                $temp = floatval($val);
+                return $temp < 36.5 || $temp > 37.5;
+
             case 'tensi':
-                // Format 120/80
-                $parts = explode('/', $val);
-                if(count($parts) == 2) {
-                    return ($parts[0] > 140 || $parts[1] > 90);
+                // Normal blood pressure: systolic 90-140, diastolic 60-90
+                if (preg_match('/(\d+)\/(\d+)/', $val, $matches)) {
+                    $systolic = intval($matches[1]);
+                    $diastolic = intval($matches[2]);
+                    return $systolic < 90 || $systolic > 140 || $diastolic < 60 || $diastolic > 90;
                 }
                 return false;
+
+            case 'nadi':
+                // Normal pulse: 60-100 bpm
+                $pulse = intval($val);
+                return $pulse < 60 || $pulse > 100;
+
+            case 'respirasi':
+                // Normal respiration: 12-20 breaths/min
+                $resp = intval($val);
+                return $resp < 12 || $resp > 20;
+
             case 'visus':
                 // Merah jika tidak 6/6 atau normal
                 return (strpos($val, '6/6') === false && stripos($val, 'normal') === false);
+
             case 'fisik':
                 // Merah jika ada kata-kata negatif
                 $bad_words = ['karang', 'lubang', 'karies', 'radang', 'bengkak', 'caries'];
@@ -214,6 +244,7 @@ if ($id > 0) {
                     if (stripos($val, $word) !== false) return true;
                 }
                 return (stripos($val, 'tidak ada kelainan') === false && stripos($val, 'normal') === false);
+
             default: return false;
         }
     }
