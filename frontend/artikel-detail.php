@@ -67,7 +67,7 @@ $related_result = mysqli_query($conn, $related_query);
                 </header>
 
                 <div class="article-content">
-                    <?php echo $article['konten']; ?>
+                    <?php echo nl2br($article['konten']); ?>
                 </div>
                 
                 <footer class="mt-5 pt-4 border-top">
@@ -174,6 +174,7 @@ $related_result = mysqli_query($conn, $related_query);
     .article-content {
         font-size: 1.1rem;
         line-height: 1.8;
+        text-align: justify;
     }
     
     .article-content h2 {

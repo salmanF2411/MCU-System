@@ -663,6 +663,8 @@ require_once '../includes/header.php';
                     <button type="submit" class="btn btn-primary btn-lg px-5 btn-mobile-responsive">
                         <i class="fas fa-paper-plane me-2"></i> Kirim Pendaftaran
                     </button>
+                    <br>
+                    <br>
                     <button type="reset" class="btn btn-secondary btn-lg px-5 ms-2 btn-mobile-responsive">
                         <i class="fas fa-redo me-2"></i> Reset Form
                     </button>
