@@ -47,8 +47,7 @@ $avg_rating_result = mysqli_query($conn, $avg_rating_query);
 $avg_rating = round(mysqli_fetch_assoc($avg_rating_result)['avg_rating'], 1);
 
 // Get all feedback
-$query = "SELECT f.*, p.nama as nama_pasien_real FROM feedback_pasien f
-          LEFT JOIN pasien p ON f.pasien_id = p.id
+$query = "SELECT f.* FROM feedback_pasien f
           ORDER BY f.tanggal_submit DESC";
 $result = mysqli_query($conn, $query);
 ?>
@@ -233,13 +232,10 @@ $result = mysqli_query($conn, $query);
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="row">
+                                                        <div class="row mb-3">
                                                             <div class="col-md-6">
-                                                                <h6>Informasi Pasien</h6>
-                                                                <p><strong>Nama:</strong> <?php echo htmlspecialchars($feedback['nama_pasien']); ?></p>
-                                                                <p><strong>Email:</strong> <?php echo htmlspecialchars($feedback['email']); ?></p>
-                                                                <p><strong>Kode MCU:</strong> <?php echo $feedback['kode_mcu'] ?: '-'; ?></p>
-                                                                <p><strong>Tanggal Submit:</strong> <?php echo formatDateIndo($feedback['tanggal_submit']); ?></p>
+                                                                <h6>Tanggal Submit</h6>
+                                                                <p><?php echo formatDateIndo($feedback['tanggal_submit']); ?></p>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <h6>Rating</h6>
@@ -251,16 +247,8 @@ $result = mysqli_query($conn, $query);
                                                                     ?>
                                                                     <span class="ms-2"><?php echo $feedback['rating']; ?>/5</span>
                                                                 </div>
-                                                                <p><strong>Status:</strong>
-                                                                    <?php if ($feedback['status'] == 'unread'): ?>
-                                                                        <span class="badge bg-warning">Belum Dibaca</span>
-                                                                    <?php else: ?>
-                                                                        <span class="badge bg-success">Sudah Dibaca</span>
-                                                                    <?php endif; ?>
-                                                                </p>
                                                             </div>
                                                         </div>
-                                                        <hr>
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <h6>Kesan</h6>
