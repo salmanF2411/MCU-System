@@ -157,10 +157,65 @@ function getPemeriksaanBadges($pasien_id) {
  */
 function getPemeriksaanData($pasien_id, $role) {
     global $conn;
-    $query = "SELECT * FROM pemeriksaan 
+    $query = "SELECT * FROM pemeriksaan
               WHERE pasien_id = $pasien_id AND pemeriksa_role = '$role'
               ORDER BY tanggal_periksa DESC LIMIT 1";
     $result = mysqli_query($conn, $query);
     return mysqli_fetch_assoc($result);
+}
+
+/**
+ * Check if examination value is abnormal
+ */
+function isAbnormal($parameter, $value) {
+    if (empty($value) || $value === '-') {
+        return false;
+    }
+
+    switch($parameter) {
+        case 'suhu':
+            // Normal temperature: 36.5 - 37.5 °C
+            $temp = floatval($value);
+            return $temp < 36.5 || $temp > 37.5;
+
+        case 'tekanan_darah':
+            // Normal blood pressure: systolic 90-140, diastolic 60-90
+            if (preg_match('/(\d+)\/(\d+)/', $value, $matches)) {
+                $systolic = intval($matches[1]);
+                $diastolic = intval($matches[2]);
+                return $systolic < 90 || $systolic > 140 || $diastolic < 60 || $diastolic > 90;
+            }
+            return false;
+
+        case 'nadi':
+            // Normal pulse: 60-100 bpm
+            $pulse = intval($value);
+            return $pulse < 60 || $pulse > 100;
+
+        case 'respirasi':
+            // Normal respiration: 12-20 breaths/min
+            $resp = intval($value);
+            return $resp < 12 || $resp > 20;
+
+        case 'visus':
+            // Normal vision: 6/6 or better (assuming values like 6/6, 6/12, etc.)
+            if (preg_match('/(\d+)\/(\d+)/', $value, $matches)) {
+                $numerator = intval($matches[1]);
+                $denominator = intval($matches[2]);
+                // Consider abnormal if worse than 6/12
+                return $denominator > 12;
+            }
+            return false;
+
+        default:
+            return false;
+    }
+}
+
+/**
+ * Get CSS class for examination value display
+ */
+function getValueClass($parameter, $value) {
+    return isAbnormal($parameter, $value) ? 'text-danger fw-bold' : '';
 }
 ?>

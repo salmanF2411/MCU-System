@@ -460,19 +460,19 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     <table class="table table-sm table-borderless">
                                                         <tr>
                                                             <th width="40%">Tekanan Darah</th>
-                                                            <td><?php echo $exam['tekanan_darah'] ? $exam['tekanan_darah'] . ' mmHg' : '-'; ?></td>
+                                                            <td class="<?php echo getValueClass('tekanan_darah', $exam['tekanan_darah']); ?>"><?php echo $exam['tekanan_darah'] ? $exam['tekanan_darah'] . ' mmHg' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Nadi</th>
-                                                            <td><?php echo $exam['nadi'] ? $exam['nadi'] . ' x/menit' : '-'; ?></td>
+                                                            <td class="<?php echo getValueClass('nadi', $exam['nadi']); ?>"><?php echo $exam['nadi'] ? $exam['nadi'] . ' x/menit' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Suhu</th>
-                                                            <td><?php echo $exam['suhu'] ? $exam['suhu'] . ' °C' : '-'; ?></td>
+                                                            <td class="<?php echo getValueClass('suhu', $exam['suhu']); ?>"><?php echo $exam['suhu'] ? $exam['suhu'] . ' °C' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Respirasi</th>
-                                                            <td><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
+                                                            <td class="<?php echo getValueClass('respirasi', $exam['respirasi']); ?>"><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Tinggi Badan</th>
@@ -496,11 +496,11 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     <table class="table table-sm table-borderless">
                                                         <tr>
                                                             <th width="40%">Visus Kanan (Jauh/Dekat)</th>
-                                                            <td><?php echo $exam['visus_kanan_jauh'] ?: '-' ?> / <?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></td>
+                                                            <td class="<?php echo getValueClass('visus', $exam['visus_kanan_jauh']); ?>"><?php echo $exam['visus_kanan_jauh'] ?: '-' ?> / <?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Visus Kiri (Jauh/Dekat)</th>
-                                                            <td><?php echo $exam['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></td>
+                                                            <td class="<?php echo getValueClass('visus', $exam['visus_kiri_jauh']); ?>"><?php echo $exam['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Anemis : Ikterik</th>
