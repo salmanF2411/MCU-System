@@ -27,7 +27,12 @@ require_once 'functions.php';
     <link href="<?php echo ASSETS_URL; ?>/css/style.css" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?php echo ASSETS_URL; ?>/images/favicon.ico">
+    <?php
+    $logo = getSetting('logo');
+    $favicon_src = $logo ? ASSETS_URL . '/' . $logo : ASSETS_URL . '/images/favicon.ico';
+    $favicon_type = $logo ? 'image/png' : 'image/x-icon';
+    ?>
+    <link rel="icon" type="<?php echo $favicon_type; ?>" href="<?php echo $favicon_src; ?>">
 
     <style>
         :root {
