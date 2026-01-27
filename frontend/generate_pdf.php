@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../libs/fpdf/fpdf.php';
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../includes/functions.php';
@@ -208,5 +209,6 @@ $pdf->Cell(0, $lineHeight, ': ' . getSetting('telepon') . ' / ' . getSetting('wh
 // Output PDF
 header('Content-Type: application/pdf');
 header('Content-Disposition: attachment; filename="pendaftaran-mcu-' . $kode_mcu . '.pdf"');
-$pdf->Output('I', 'pendaftaran-mcu-' . $kode_mcu . '.pdf'); // 'I' untuk preview di browser, 'D' untuk download langsung
+ob_clean();
+$pdf->Output('D', 'pendaftaran-mcu-' . $kode_mcu . '.pdf');
 ?>

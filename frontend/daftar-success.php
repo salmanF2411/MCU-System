@@ -50,6 +50,8 @@ require_once '../includes/header.php';
                         <a href="<?php echo BASE_URL; ?>" class="btn btn-primary btn-lg me-2">
                             <i class="fas fa-home me-2"></i> Kembali ke Beranda
                         </a>
+                        <br>
+                        <br>
                         <a href="generate_pdf.php?kode=<?php echo $kode_mcu; ?>&tanggal=<?php echo $_GET['tanggal'] ?? date('Y-m-d'); ?>" class="btn btn-success btn-lg" target="_blank">
                             <i class="fas fa-print me-2"></i> Download Bukti Pendaftaran
                         </a>

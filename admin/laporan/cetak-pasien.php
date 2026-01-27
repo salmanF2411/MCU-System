@@ -1,4 +1,5 @@
 <?php
+ob_start();
 $page_title = 'Cetak Data Pasien - Sistem MCU';
 require_once '../../config/database.php';
 require_once '../../includes/auth.php';
@@ -8,6 +9,7 @@ requireLogin();
 
 // Tambahkan fitur export Excel
 if (isset($_GET['export_excel']) && $_GET['export_excel'] == '1') {
+    ob_clean();
     // Filter parameters for export
     $start_date = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01');
     $end_date = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
@@ -367,11 +369,6 @@ function exportToExcel($result, $start_date, $end_date, $status) {
 
     // Set header untuk download
     $filename = 'laporan-pasien-' . date('Y-m-d-His') . '.xlsx';
-
-    // Clean output buffer to prevent corruption
-    if (ob_get_level()) {
-        ob_end_clean();
-    }
 
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="' . $filename . '"');
