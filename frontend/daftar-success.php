@@ -51,7 +51,7 @@ require_once '../includes/header.php';
                             <i class="fas fa-home me-2"></i> Kembali ke Beranda
                         </a>
                         <a href="generate_pdf.php?kode=<?php echo $kode_mcu; ?>&tanggal=<?php echo $_GET['tanggal'] ?? date('Y-m-d'); ?>" class="btn btn-success btn-lg" target="_blank">
-                            <i class="fas fa-print me-2"></i> Cetak Halaman
+                            <i class="fas fa-print me-2"></i> Download Bukti Pendaftaran
                         </a>
                     </div>
                 </div>
