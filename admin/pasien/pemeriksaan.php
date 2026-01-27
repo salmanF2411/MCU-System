@@ -679,13 +679,13 @@ $role_title = $role_titles[$role];
                                         </div>
                                     </div>
                                     
-                                    <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                         <div class="col-md-12">
                                             <label class="form-label">Kesimpulan</label>
                                             <textarea class="form-control" name="kesimpulan" 
                                                       rows="4" placeholder="Kesimpulan pemeriksaan..." required></textarea>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                                     <div class="row">
                                         <div class="col-md-12">

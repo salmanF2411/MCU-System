@@ -731,8 +731,8 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                             <?php if ($exam['kesimpulan'] || $exam['status_mcu']): ?>
                                                 <div class="card mt-3 bg-light">
                                                     <div class="card-body">
-                                                        <h6 style="font-weight: bold;">Kesimpulan</h6>
-                                                        <p><?php echo nl2br($exam['kesimpulan']); ?></p>
+                                                        <!-- <h6 style="font-weight: bold;">Kesimpulan</h6>
+                                                        <p><?php echo nl2br($exam['kesimpulan']); ?></p> -->
                                                         <h6 style="font-weight: bold;">Saran</h6>
                                                         <p><?php echo nl2br($exam['saran']); ?></p>
                                                         <div class="mt-2">
