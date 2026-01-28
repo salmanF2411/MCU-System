@@ -196,7 +196,7 @@ if ($id > 0) {
             case 'suhu':
                 // Merah jika > 37.5 (Bisa diganti 35 jika user minta spesifik)
                 $temp = floatval(str_replace(',', '.', $val));
-                return $temp > 37.5; 
+                return $temp > 37.5;
 
             case 'tensi':
                 if (preg_match('/(\d+)\/(\d+)/', $val, $matches)) {
@@ -205,6 +205,12 @@ if ($id > 0) {
                     return $systolic > 140 || $diastolic > 90;
                 }
                 return false;
+
+            case 'respirasi':
+                return intval($val) > 20;
+
+            case 'nadi':
+                return intval($val) > 100;
 
             case 'visus':
                 return (strpos($val, '6/6') === false && stripos($val, 'normal') === false);
@@ -222,8 +228,8 @@ if ($id > 0) {
 
     // A - F (Vital Signs)
     $pdf->RowResult('A. Tekanan Darah', ($data['tekanan_darah'] ?? '-') . ' mmHg', checkNormal($data['tekanan_darah'] ?? '', 'tensi'));
-    $pdf->RowResult('B. Respirasi', ($data['respirasi'] ?? '-') . ' x/menit');
-    $pdf->RowResult('C. Nadi', ($data['nadi'] ?? '-') . ' x/menit');
+    $pdf->RowResult('B. Respirasi', ($data['respirasi'] ?? '-') . ' x/menit', checkNormal($data['respirasi'] ?? '', 'respirasi'));
+    $pdf->RowResult('C. Nadi', ($data['nadi'] ?? '-') . ' x/menit', checkNormal($data['nadi'] ?? '', 'nadi'));
     
     // Suhu
     $suhu = $data['suhu'] ?? 0;
