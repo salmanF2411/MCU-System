@@ -271,13 +271,14 @@ if ($id > 0) {
     $leher = ($data['leher_kgb'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('I. Leher', $leher, checkNormal($leher, 'fisik'));
     
-    $dada = ($data['paru_auskultasi'] ?? 'Tidak Ada Kelainan');
+    $dada = ($data['auskultasi_keterangan'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('J. Dada', $dada, checkNormal($dada, 'fisik'));
     
     $perut = ($data['nyeri_abdomen'] ? 'Nyeri Tekan' : 'Tidak Ada Kelainan');
     $pdf->RowResult('K. Perut', $perut, $data['nyeri_abdomen']);
     
-    $pdf->RowResult('L. Kelamin', 'Tidak Ada Kelainan'); 
+    $dada = ($data['hepatomegali'] ?? 'Tidak Ada Kelainan');
+    $pdf->RowResult('L. Kelamin', $dada, checkNormal($dada, 'fisik'));
     
     $tangan = ($data['tangan'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('M. Tangan', 'Tidak Ada Kelainan'); 
@@ -368,7 +369,7 @@ if ($id > 0) {
     $pdf->SetTextColor(0);
 
     // 4.2 Saran (Logic Tinggi Dinamis)
-    $saran_text = $data['saran'] ?: '-';
+    $saran_text = isset($data['saran']) ? $data['saran'] : '-';
     
     $pdf->SetFont('Arial','',9); // Font saran diperkecil sedikit
     $line_height = 4.5; // Jarak baris rapat
