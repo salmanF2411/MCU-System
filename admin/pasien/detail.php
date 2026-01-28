@@ -726,6 +726,26 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     </div>
                                                 </div>
                                             </div>
+                                                <div class="col-md-6 mb-4">
+                                                    <div class="card border-success">
+                                                        <div class="card-header bg-success text-white">
+                                                            <h6 class="mb-0"><i class="fas fa-flask me-2"></i>Hasil Lanjutan</h6>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm table-borderless">
+                                                                <tr>
+                                                                    <th width="50%">Hasil Laboratorium</th>
+                                                                    <td><?php echo $exam['hasil_lab'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Riwayat Penyakit Dahulu</th>
+                                                                    <td><?php echo $exam['keterangan_penyakit'] ?: '-'; ?></td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             
                                             <!-- Conclusion -->
                                             <?php if ($exam['kesimpulan'] || $exam['status_mcu']): ?>

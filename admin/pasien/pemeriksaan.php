@@ -139,6 +139,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $patella = escape($_POST['patella']);
         $achilles = escape($_POST['achilles']);
         $plantar_response = escape($_POST['plantar_response']);
+
+        //Hasil Lanjutan
+        $hasil_lab = escape($_POST['hasil_lab']);
+        $keterangan_penyakit = escape($_POST['keterangan_penyakit']);
         
         // Kesimpulan
         $kesimpulan = escape($_POST['kesimpulan']);
@@ -177,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,jantung_auskultasi, jantung_keterangan, jantung_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
             nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,
-            biceps, triceps, patella, achilles, plantar_response,
+            biceps, triceps, patella, achilles, plantar_response,hasil_lab, keterangan_penyakit,
             kesimpulan, saran, status_mcu, dokter_pemeriksa, pemeriksa_id
         ) VALUES (
             $id, '$role',
@@ -186,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
             $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,'$striae','$sikatriks','$psoas_sign', '$hepatomegali',
-            '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response',
+            '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$hasil_lab', '$keterangan_penyakit',
             '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
     }
@@ -653,6 +657,26 @@ $role_title = $role_titles[$role];
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- HASIL LAB -->
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">HASIL LANJUTAN</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="row-md-6">
+                                            <label class="form-label">Pemeriksaan Laboratorium</label>
+                                            <textarea class="form-control" name="hasil_lab" 
+                                                      rows="1" placeholder="Pemeriksaan Lab..."></textarea>
+                                        </div>
+                                        <div class="row-md-6">
+                                            <label class="form-label">Riwayat Penyakit Dahulu / Sekarang</label>
+                                            <textarea class="form-control" name="keterangan_penyakit" 
+                                                      rows="1" placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
+                                        </div>
                                 </div>
                             </div>
                             

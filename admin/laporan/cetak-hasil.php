@@ -336,15 +336,11 @@ if ($id > 0) {
     $pdf->Ln(6); 
 
     // --- Lanjut PDF ---
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(95, 7, '  Hasil Pemeriksaan Penunjang Laboratorium', 1, 0, 'L');
-    $pdf->SetFont('Arial','',10);
-    $pdf->Cell(95, 7, '  (-)', 1, 1, 'L');
-    
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(95, 7, '  Riwayat Penyakit Dahulu / Sekarang', 1, 0, 'L');
-    $pdf->SetFont('Arial','',10);
-    $pdf->Cell(95, 7, '  (-)', 1, 1, 'L');
+    $hasil_lab = $data['hasil_lab'] ?? '-';
+    $pdf->RowResult('Hasil Pemeriksaan Penunjang Laboratorium', $hasil_lab, (!empty($hasil_lab) && $hasil_lab !== '-'));
+
+    $keterangan_penyakit = $data['keterangan_penyakit'] ?? '-';
+    $pdf->RowResult('Riwayat Penyakit Dahulu / Sekarang', $keterangan_penyakit, (!empty($keterangan_penyakit) && $keterangan_penyakit !== '-'));
     
     $pdf->Ln(5);
 
