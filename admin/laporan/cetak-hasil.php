@@ -27,9 +27,15 @@ if ($id > 0) {
     $data = []; // Array tunggal untuk menampung semua data
     $dokters = [];
 
+    // --- PERBAIKAN UTAMA DI SINI ---
     while ($row = mysqli_fetch_assoc($pemeriksaan_result)) {
-        // Gabungkan semua field ke array $data
-        $data = array_merge($data, $row);
+        // Loop setiap kolom. Hanya masukkan ke $data jika nilainya TIDAK KOSONG.
+        // Ini mencegah data Visus (dari row dokter mata) tertimpa kosong (oleh row dokter umum)
+        foreach ($row as $key => $val) {
+            if ($val !== null && $val !== '') {
+                $data[$key] = $val;
+            }
+        }
 
         // Simpan nama dokter
         if($row['pemeriksa_role'] == 'dokter_umum') $dokters['umum'] = $row['dokter_pemeriksa'];
@@ -42,12 +48,10 @@ if ($id > 0) {
     $vital_data = mysqli_fetch_assoc($vital_result);
 
     if ($vital_data) {
-        $data['tekanan_darah'] = $vital_data['tekanan_darah'];
-        $data['nadi'] = $vital_data['nadi'];
-        $data['suhu'] = $vital_data['suhu'];
-        $data['respirasi'] = $vital_data['respirasi'];
-        $data['tinggi_badan'] = $vital_data['tinggi_badan'];
-        $data['berat_badan'] = $vital_data['berat_badan'];
+        // Pastikan vital data tidak kosong sebelum override
+        foreach($vital_data as $k => $v) {
+            if(!empty($v)) $data[$k] = $v;
+        }
     }
 
     // Ambil Pengaturan Klinik
@@ -191,10 +195,12 @@ if ($id > 0) {
     // --- LOGIKA NORMAL/ABNORMAL ---
     function checkNormal($val, $type) {
         if (empty($val) || $val === '-') return false;
+        
+        $val_clean = strtolower(trim($val));
 
         switch($type) {
             case 'suhu':
-                // Merah jika > 37.5 (Bisa diganti 35 jika user minta spesifik)
+                // Merah jika > 37.5
                 $temp = floatval(str_replace(',', '.', $val));
                 return $temp > 37.5;
 
@@ -213,24 +219,22 @@ if ($id > 0) {
                 return intval($val) > 100;
 
             case 'visus':
-                // 1. Jika mengandung kata 'normal', return false (hitam)
-                if (stripos($val, 'normal') !== false) return false;
-
-                // 2. Cek format 6/angka
-                if (preg_match('/6\/([0-9.,]+)/', $val, $matches)) {
-                    // Ambil penyebut, replace koma jadi titik biar bisa difloat
-                    $denom_str = str_replace(',', '.', $matches[1]);
-                    $denominator = floatval($denom_str);
-                    
-                    // Jika penyebut > 6 (misal 6/7, 6/9, 6/60), return true (Merah)
-                    if ($denominator > 6) return true;
-                    
-                    // Jika penyebut <= 6 (misal 6/6, 6/5), return false (Hitam)
+                // 1. Jika "normal" atau "6/6" atau "6/6 (jauh)", return False (HITAM)
+                if ($val_clean == 'normal' || $val_clean == '6/6' || strpos($val_clean, '6/6') === 0) {
                     return false;
                 }
 
-                // 3. Fallback: Jika tidak mengandung '6/6' (misal 5/60, 1/300), return true (Merah)
-                return (strpos($val, '6/6') === false);
+                // 2. Cek format "6/angka" menggunakan Regex
+                if (preg_match('/6\/\s*(\d+)/', $val_clean, $matches)) {
+                    $penyebut = intval($matches[1]);
+                    // Jika penyebut > 6 (misal 6/7, 6/15) maka Abnormal (MERAH)
+                    if ($penyebut > 6) return true; 
+                    return false; // Jika 6/6 atau 6/5 (Hitam)
+                }
+
+                // 3. Fallback: Jika tidak mengandung '6/6' sama sekali, anggap abnormal (MERAH)
+                // (Misal: 5/60, 1/300)
+                return (strpos($val_clean, '6/6') === false);
 
             case 'fisik':
                 $bad_words = ['karang', 'lubang', 'karies', 'radang', 'bengkak', 'nyeri', 'merah'];
@@ -279,25 +283,58 @@ if ($id > 0) {
     $pdf->RowResult('M. Tangan', 'Tidak Ada Kelainan'); 
     $pdf->RowResult('N. Kaki', 'Tidak Ada Kelainan'); 
 
-    // O. VISUS
-    $visus_ka = ($data['visus_kanan_jauh'] ?? '-') ;
-    $visus_ki = ($data['visus_kiri_jauh'] ?? '-') ;
+    // --- BAGIAN VISUS KHUSUS (WARNA TERPISAH) ---
+    $visus_ka = isset($data['visus_kanan_jauh']) ? $data['visus_kanan_jauh'] : '-';
+    $visus_ki = isset($data['visus_kiri_jauh']) ? $data['visus_kiri_jauh'] : '-';
     
-    // Cek masing-masing mata
+    // Cek status masing-masing mata
     $abnormal_ka = checkNormal($visus_ka, 'visus');
     $abnormal_ki = checkNormal($visus_ki, 'visus');
     
-    $visus_full = "Kanan = $visus_ka dan Kiri = $visus_ki";
-    // Jika salah satu mata abnormal, warnai merah
-    $abnormal_mata = ($abnormal_ka || $abnormal_ki);
-    
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(95, 6, '  Hasil Pemeriksaan VISUS Mata', 1, 0, 'L');
-    if($abnormal_mata) $pdf->SetTextColor(255, 0, 0);
-    $pdf->Cell(95, 6, '  ' . $visus_full, 1, 1, 'L');
+    
+    // Teknik membuat kotak manual agar bisa beda warna teks
+    $x_now = $pdf->GetX();
+    $y_now = $pdf->GetY();
+    
+    // 1. Gambar Border Kotak Kosong
+    $pdf->Cell(95, 6, '', 1, 0); 
+    
+    // 2. Tulis Isi di dalam kotak (pakai XY manual)
+    $pdf->SetXY($x_now, $y_now);
+    
+    $text_1 = '  Kanan = ';
+    $text_val_1 = $visus_ka;
+    $text_2 = ' dan Kiri = ';
+    $text_val_2 = $visus_ki;
+    
+    // Kanan Label (Hitam)
+    $pdf->SetFont('Arial','',9);
     $pdf->SetTextColor(0);
+    $pdf->Cell($pdf->GetStringWidth($text_1), 6, $text_1, 0, 0);
+    
+    // Kanan Value (Merah jika abnormal)
+    if($abnormal_ka) { $pdf->SetTextColor(255,0,0); $pdf->SetFont('Arial','B',9); }
+    else { $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9); }
+    $pdf->Cell($pdf->GetStringWidth($text_val_1), 6, $text_val_1, 0, 0);
+    
+    // Separator (Hitam)
+    $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9);
+    $pdf->Cell($pdf->GetStringWidth($text_2), 6, $text_2, 0, 0);
+    
+    // Kiri Value (Merah jika abnormal)
+    if($abnormal_ki) { $pdf->SetTextColor(255,0,0); $pdf->SetFont('Arial','B',9); }
+    else { $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9); }
+    $pdf->Cell($pdf->GetStringWidth($text_val_2), 6, $text_val_2, 0, 0);
+    
+    $pdf->SetTextColor(0); // Reset ke Hitam
+    
+    // Reset Posisi untuk baris berikutnya
+    $pdf->SetXY($x_now + 95, $y_now); 
+    $pdf->Ln(6); 
 
-    // P. Lab & Riwayat
+    // --- Lanjut PDF ---
     $pdf->SetFont('Arial','B',10);
     $pdf->Cell(95, 7, '  Hasil Pemeriksaan Penunjang Laboratorium', 1, 0, 'L');
     $pdf->SetFont('Arial','',10);
@@ -310,7 +347,7 @@ if ($id > 0) {
     
     $pdf->Ln(5);
 
-    // --- BAGIAN 4: KESIMPULAN & SARAN (DINAMIS) ---
+    // --- KESIMPULAN & SARAN (DINAMIS) ---
     $pdf->SetFont('Arial','B',10);
     $pdf->Cell(190, 6, 'KESIMPULAN DAN SARAN HASIL MCU', 0, 1, 'C');
     $pdf->Ln(2);
@@ -364,7 +401,6 @@ if ($id > 0) {
 
     // --- TANDA TANGAN ---
     $pdf->Ln(3);
-    // Cek sisa halaman, jika kurang pindah page agar TTD tidak terpotong
     if ($pdf->GetY() > 250) $pdf->AddPage();
 
     $pdf->SetX(120);

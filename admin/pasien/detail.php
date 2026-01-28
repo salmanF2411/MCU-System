@@ -462,6 +462,10 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                             <th width="40%">Tekanan Darah</th>
                                                             <td class="<?php echo getValueClass('tekanan_darah', $exam['tekanan_darah']); ?>"><?php echo $exam['tekanan_darah'] ? $exam['tekanan_darah'] . ' mmHg' : '-'; ?></td>
                                                         </tr>
+                                                         <tr>
+                                                            <th>Respirasi</th>
+                                                            <td class="<?php echo getValueClass('respirasi', $exam['respirasi']); ?>"><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
+                                                        </tr>
                                                         <tr>
                                                             <th>Nadi</th>
                                                             <td class="<?php echo getValueClass('nadi', $exam['nadi']); ?>"><?php echo $exam['nadi'] ? $exam['nadi'] . ' x/menit' : '-'; ?></td>
@@ -469,10 +473,6 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         <tr>
                                                             <th>Suhu</th>
                                                             <td class="<?php echo getValueClass('suhu', $exam['suhu']); ?>"><?php echo $exam['suhu'] ? $exam['suhu'] . ' °C' : '-'; ?></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Respirasi</th>
-                                                            <td class="<?php echo getValueClass('respirasi', $exam['respirasi']); ?>"><?php echo $exam['respirasi'] ? $exam['respirasi'] . ' x/menit' : '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Tinggi Badan</th>
