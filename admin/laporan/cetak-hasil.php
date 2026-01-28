@@ -85,7 +85,7 @@ if ($id > 0) {
             $this->SetY(23);
             $this->SetFont('Arial','B',8);
             $this->SetTextColor(0);
-            $kontak = "Mail: " . ($settings['email'] ?? 'alvarishklinik@gmail.com') . " ; Phone: " . ($settings['telepon'] ?? '(0263) 295 1465');
+            $kontak = "Mail: " . ($settings['email'] ?? 'alvarishklinik@gmail.com') . " ; Phone: " . ($settings['telepon'] ?? '(0263) 295 1465') . " ; WhatsApp: " . ($settings['whatsapp'] ?? '081234567890');
             $this->Cell(0, 5, $kontak, 0, 1, 'C');
             $this->Ln(5);
         }
@@ -257,8 +257,8 @@ if ($id > 0) {
     $pdf->RowResult('N. Kaki', 'Tidak Ada Kelainan'); 
 
     // O. VISUS
-    $visus_ka = ($data['visus_kanan_jauh'] ?? '-') . ' (Jauh)';
-    $visus_ki = ($data['visus_kiri_jauh'] ?? '-') . ' (Jauh)';
+    $visus_ka = ($data['visus_kanan_jauh'] ?? '-') ;
+    $visus_ki = ($data['visus_kiri_jauh'] ?? '-') ;
     $visus_full = "Kanan = $visus_ka dan Kiri = $visus_ki";
     $abnormal_mata = (strpos($visus_ka, '6/6') === false || strpos($visus_ki, '6/6') === false);
     
