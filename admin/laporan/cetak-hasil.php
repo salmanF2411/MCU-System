@@ -89,14 +89,6 @@ if ($id > 0) {
             $this->Cell(0, 5, $kontak, 0, 1, 'C');
             $this->Ln(5);
         }
-
-        // Footer Halaman
-        function Footer() {
-            $this->SetY(-15);
-            $this->SetFont('Arial','I',8);
-            $this->Cell(0,10,'Halaman '.$this->PageNo().'/{nb}',0,0,'R');
-        }
-
         // Fungsi Helper: Baris Tabel dengan logika Warna Merah
         function RowResult($label, $value, $is_abnormal = false) {
             $this->SetFont('Arial','',9);
@@ -146,7 +138,7 @@ if ($id > 0) {
     // Header Grid
     $pdf->SetFont('Arial','B',10);
     $pdf->Cell(95, 7, 'BIODATA PELAMAR', 0, 0, 'L'); 
-    $pdf->Cell(95, 7, 'TIM MEDICAL CHECK UP', 0, 1, 'R'); 
+    $pdf->Cell(45, 7, 'TIM MEDICAL CHECK UP', 0, 1, 'R'); 
     
     // Baris 1 Grid
     $pdf->Cell(25, 7, ' NAMA', 1, 0, 'L', true);
@@ -155,7 +147,7 @@ if ($id > 0) {
     $pdf->SetTextColor(0); // Reset Hitam
     
     $pdf->Cell(35, 7, ' KOORDINATOR', 1, 0, 'C', true);
-    $pdf->Cell(60, 7, '  dr. ' . ($dokters['umum'] ?? '-'), 1, 1, 'L');
+    $pdf->Cell(60, 7, '  dr ALDOS IRAWAN,MMRS', 1, 1, 'L');
 
     // Baris 2 Grid (Posisi & Anggota)
     $h_multi = 14; 
@@ -174,11 +166,12 @@ if ($id > 0) {
     
     // Isi Anggota Manual
     $pdf->SetXY($x_now, $y_start);
-    $pdf->Cell(60, 5, '  Zr. Eneng Lisna Ependi', 0, 1);
+    $pdf->Cell(60, 4, '  Zr. Eneng Lisna Ependi', 0, 1);
     $pdf->SetX($x_now);
     $pdf->Cell(60, 5, '  Zr. Hartia Amelia', 0, 1);
     $pdf->SetX($x_now);
-    $pdf->Cell(60, 4, '  ' . ($dokters['mata'] ?? '-'), 0, 0); 
+    $pdf->Cell(60, 5, '  Zr. Annisa Laila Amaliah', 0, 1);
+    
     
     $pdf->SetY($y_start + $h_multi);
     $pdf->Ln(5);
