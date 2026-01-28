@@ -213,7 +213,24 @@ if ($id > 0) {
                 return intval($val) > 100;
 
             case 'visus':
-                return (strpos($val, '6/6') === false && stripos($val, 'normal') === false);
+                // 1. Jika mengandung kata 'normal', return false (hitam)
+                if (stripos($val, 'normal') !== false) return false;
+
+                // 2. Cek format 6/angka
+                if (preg_match('/6\/([0-9.,]+)/', $val, $matches)) {
+                    // Ambil penyebut, replace koma jadi titik biar bisa difloat
+                    $denom_str = str_replace(',', '.', $matches[1]);
+                    $denominator = floatval($denom_str);
+                    
+                    // Jika penyebut > 6 (misal 6/7, 6/9, 6/60), return true (Merah)
+                    if ($denominator > 6) return true;
+                    
+                    // Jika penyebut <= 6 (misal 6/6, 6/5), return false (Hitam)
+                    return false;
+                }
+
+                // 3. Fallback: Jika tidak mengandung '6/6' (misal 5/60, 1/300), return true (Merah)
+                return (strpos($val, '6/6') === false);
 
             case 'fisik':
                 $bad_words = ['karang', 'lubang', 'karies', 'radang', 'bengkak', 'nyeri', 'merah'];
@@ -265,8 +282,14 @@ if ($id > 0) {
     // O. VISUS
     $visus_ka = ($data['visus_kanan_jauh'] ?? '-') ;
     $visus_ki = ($data['visus_kiri_jauh'] ?? '-') ;
+    
+    // Cek masing-masing mata
+    $abnormal_ka = checkNormal($visus_ka, 'visus');
+    $abnormal_ki = checkNormal($visus_ki, 'visus');
+    
     $visus_full = "Kanan = $visus_ka dan Kiri = $visus_ki";
-    $abnormal_mata = (strpos($visus_ka, '6/6') === false || strpos($visus_ki, '6/6') === false);
+    // Jika salah satu mata abnormal, warnai merah
+    $abnormal_mata = ($abnormal_ka || $abnormal_ki);
     
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(95, 6, '  Hasil Pemeriksaan VISUS Mata', 1, 0, 'L');

@@ -201,12 +201,12 @@ function isAbnormal($parameter, $value) {
             return $resp > 20;
 
         case 'visus':
-            // Normal vision: 6/6 or better (assuming values like 6/6, 6/12, etc.)
+            // Normal vision: 6/6 
             if (preg_match('/(\d+)\/(\d+)/', $value, $matches)) {
                 $numerator = intval($matches[1]);
                 $denominator = intval($matches[2]);
-                // Consider abnormal if worse than 6/12
-                return $denominator > 12;
+                // Consider abnormal if worse than 6/6
+                return $denominator > 6;
             }
             return false;
 
