@@ -8,7 +8,9 @@ requireLogin();
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// --- LOGIKA UTAMA GENERATE PDF ---
+// ==========================================
+// LOGIKA GENERATE PDF
+// ==========================================
 if ($id > 0) {
     require_once('../../libs/fpdf/fpdf.php');
 
@@ -34,12 +36,11 @@ if ($id > 0) {
         if($row['pemeriksa_role'] == 'dokter_mata') $dokters['mata'] = $row['dokter_pemeriksa'];
     }
 
-    // Ambil data vital signs dari pendaftaran secara spesifik
+    // Prioritaskan data vital signs dari role 'pendaftaran' jika ada
     $vital_query = "SELECT tekanan_darah, nadi, suhu, respirasi, tinggi_badan, berat_badan FROM pemeriksaan WHERE pasien_id = $id AND pemeriksa_role = 'pendaftaran'";
     $vital_result = mysqli_query($conn, $vital_query);
     $vital_data = mysqli_fetch_assoc($vital_result);
 
-    // Override data vital signs dengan data dari pendaftaran
     if ($vital_data) {
         $data['tekanan_darah'] = $vital_data['tekanan_darah'];
         $data['nadi'] = $vital_data['nadi'];
@@ -49,18 +50,19 @@ if ($id > 0) {
         $data['berat_badan'] = $vital_data['berat_badan'];
     }
 
-    // Ambil Pengaturan
+    // Ambil Pengaturan Klinik
     $settings_query = "SELECT * FROM pengaturan LIMIT 1";
     $settings_result = mysqli_query($conn, $settings_query);
     $settings = mysqli_fetch_assoc($settings_result);
 
+    // --- CLASS PDF CUSTOM ---
     class MCU_PDF extends FPDF {
         private $col_header = [196, 215, 155]; // Warna Hijau Muda (RGB)
         
         // Header Halaman (Kop Surat Custom)
         function Header() {
             global $settings;
-            // 1. Garis Dekorasi Atas (Arrow Style Sederhana)
+            // Garis Dekorasi Atas (Arrow Style)
             $this->SetLineWidth(0.5);
             $this->SetDrawColor(0, 150, 0); // Garis Hijau Tua
             
@@ -68,9 +70,9 @@ if ($id > 0) {
             $this->Line(10, 10, 20, 10); $this->Line(20, 10, 25, 15); $this->Line(20, 20, 25, 15); $this->Line(10, 20, 20, 20);
             
             // Judul Tengah
-            $this->SetFont('Arial','B',16);
+            $this->SetFont('Arial','B',14);
             $this->SetTextColor(0, 100, 150); // Biru Laut
-            $this->Cell(0, 10, 'HASIL MEDICAL CHECK UP', 0, 1, 'C');
+            $this->Cell(0, 8, 'HASIL MEDICAL CHECK UP', 0, 1, 'C');
             
             // Panah Kanan
             $maxX = 200; 
@@ -95,66 +97,58 @@ if ($id > 0) {
             $this->Cell(0,10,'Halaman '.$this->PageNo().'/{nb}',0,0,'R');
         }
 
-        // Fungsi Helper untuk baris tabel dengan warna merah kondisional
+        // Fungsi Helper: Baris Tabel dengan logika Warna Merah
         function RowResult($label, $value, $is_abnormal = false) {
-            $this->SetFont('Arial','',10);
+            $this->SetFont('Arial','',9);
             $this->SetTextColor(0); // Default Hitam
-            
+
             // Kolom Label (Kiri)
-            $this->Cell(95, 7, '  ' . $label, 1, 0, 'L');
-            
+            $this->Cell(95, 6, '  ' . $label, 1, 0, 'L');
+
             // Kolom Nilai (Kanan)
             if ($is_abnormal) {
                 $this->SetTextColor(255, 0, 0); // Merah
-                $this->SetFont('Arial','B',10); // Tebal
+                $this->SetFont('Arial','B',9); // Tebal
             }
-            
-            $this->Cell(95, 7, '  ' . ($value ?: '-'), 1, 1, 'L');
-            
+
+            $this->Cell(95, 6, '  ' . ($value ?: '-'), 1, 1, 'L');
+
             // Reset Warna
             $this->SetTextColor(0);
-            $this->SetFont('Arial','',10);
-        }
-
-        // Fungsi Helper Header Section Hijau
-        function SectionHeader($text) {
-            $this->SetFillColor($this->col_header[0], $this->col_header[1], $this->col_header[2]);
-            $this->SetFont('Arial','B',10);
-            $this->Cell(190, 7, $text, 1, 1, 'C', true);
+            $this->SetFont('Arial','',9);
         }
     }
 
     $pdf = new MCU_PDF('P','mm','A4');
     $pdf->AliasNbPages();
     $pdf->AddPage();
-    $pdf->SetAutoPageBreak(true, 10);
+    $pdf->SetAutoPageBreak(false); // Disable auto page break to force one page
 
-    // --- BAGIAN 1: HEADER INFORMASI PERUSAHAAN ---
-    $pdf->SetFont('Arial','',10);
-    
+    // --- BAGIAN 1: HEADER INFO ---
+    $pdf->SetFont('Arial','',9);
+
     // Baris 1: Nama Perusahaan
-    $pdf->Cell(35, 6, 'Nama Perusahaan', 0, 0);
-    $pdf->Cell(5, 6, ':', 0, 0);
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(100, 6, strtoupper($patient['perusahaan'] ?: '-'), 0, 1);
-    
+    $pdf->Cell(35, 5, 'Nama Perusahaan', 0, 0);
+    $pdf->Cell(5, 5, ':', 0, 0);
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(100, 5, strtoupper($patient['perusahaan'] ?: '-'), 0, 1);
+
     // Baris 2: Tanggal MCU
-    $pdf->SetFont('Arial','',10);
-    $pdf->Cell(35, 6, 'Tanggal MCU', 0, 0);
-    $pdf->Cell(5, 6, ':', 0, 0);
-    $pdf->Cell(100, 6, formatDateIndo($patient['tanggal_mcu']), 0, 1);
+    $pdf->SetFont('Arial','',9);
+    $pdf->Cell(35, 5, 'Tanggal MCU', 0, 0);
+    $pdf->Cell(5, 5, ':', 0, 0);
+    $pdf->Cell(100, 5, formatDateIndo($patient['tanggal_mcu']), 0, 1);
     $pdf->Ln(2);
 
-    // --- BAGIAN 2: BIODATA & TIM MCU (GRID) ---
-    // Warna Header Tabel
-    $pdf->SetFillColor(196, 215, 155); 
+    // --- BAGIAN 2: GRID BIODATA & TIM ---
+    $pdf->SetFillColor(196, 215, 155); // Hijau Header
     
     // Header Grid
     $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(95, 7, 'BIODATA PELAMAR', 0, 0, 'L'); // Judul Kiri (Tanpa kotak)
-    $pdf->Cell(95, 7, 'TIM MEDICAL CHECK UP', 0, 1, 'R'); // Judul Kanan
+    $pdf->Cell(95, 7, 'BIODATA PELAMAR', 0, 0, 'L'); 
+    $pdf->Cell(95, 7, 'TIM MEDICAL CHECK UP', 0, 1, 'R'); 
     
-    // Baris 1 Grid: NAMA & KOORDINATOR
+    // Baris 1 Grid
     $pdf->Cell(25, 7, ' NAMA', 1, 0, 'L', true);
     $pdf->SetTextColor(255, 0, 0); // Merah untuk Nama Pasien
     $pdf->Cell(70, 7, '  ' . strtoupper($patient['nama']), 1, 0, 'L');
@@ -163,83 +157,67 @@ if ($id > 0) {
     $pdf->Cell(35, 7, ' KOORDINATOR', 1, 0, 'C', true);
     $pdf->Cell(60, 7, '  dr. ' . ($dokters['umum'] ?? '-'), 1, 1, 'L');
 
-    // Baris 2 Grid: POSISI & ANGGOTA
-    $h_multi = 14; // Tinggi baris untuk anggota (multicell simulation)
+    // Baris 2 Grid (Posisi & Anggota)
+    $h_multi = 14; 
     $y_start = $pdf->GetY();
     
     // Kiri (Posisi)
     $pdf->Cell(25, $h_multi, ' POSISI', 1, 0, 'L', true);
     $pdf->Cell(70, $h_multi, '  ' . strtoupper($patient['posisi_pekerjaan'] ?: '-'), 1, 0, 'L');
     
-    // Kanan (Anggota - Hardcode atau dari DB)
+    // Kanan (Anggota)
     $pdf->Cell(35, $h_multi, ' ANGGOTA', 1, 0, 'C', true);
     
-    // Simpan posisi X,Y untuk MultiCell manual
     $x_now = $pdf->GetX();
     $pdf->SetFont('Arial','', 9);
-    $pdf->Cell(60, $h_multi, '', 1, 0); // Bingkai kosong dulu
+    $pdf->Cell(60, $h_multi, '', 1, 0); // Bingkai luar
     
+    // Isi Anggota Manual
     $pdf->SetXY($x_now, $y_start);
     $pdf->Cell(60, 5, '  Zr. Eneng Lisna Ependi', 0, 1);
     $pdf->SetX($x_now);
     $pdf->Cell(60, 5, '  Zr. Hartia Amelia', 0, 1);
     $pdf->SetX($x_now);
-    $pdf->Cell(60, 4, '  ' . ($dokters['mata'] ?? '-'), 0, 0); // Dokter mata sbg anggota
+    $pdf->Cell(60, 4, '  ' . ($dokters['mata'] ?? '-'), 0, 0); 
     
-    $pdf->SetY($y_start + $h_multi); // Reset Y ke bawah grid
+    $pdf->SetY($y_start + $h_multi);
     $pdf->Ln(5);
 
-    // --- BAGIAN 3: TABEL HASIL PEMERIKSAAN ---
+    // --- BAGIAN 3: TABEL HASIL ---
     
-    // Header Tabel Utama
+    // Header Tabel
     $pdf->SetFillColor(196, 215, 155);
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(95, 7, 'PEMERIKSAAN', 1, 0, 'C', true);
-    $pdf->Cell(95, 7, 'HASIL PEMERIKSAAN', 1, 1, 'C', true);
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(95, 6, 'PEMERIKSAAN', 1, 0, 'C', true);
+    $pdf->Cell(95, 6, 'HASIL PEMERIKSAAN', 1, 1, 'C', true);
 
-    // Sub-Header: Tanda Vital
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(190, 7, '  Tanda Vital Tubuh', 1, 1, 'L');
+    // Sub-Header
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(190, 6, '  Tanda Vital Tubuh', 1, 1, 'L');
 
     // --- LOGIKA NORMAL/ABNORMAL ---
-    // Fungsi cek normalitas sesuai dengan detail page
     function checkNormal($val, $type) {
-        if (empty($val) || $val === '-') {
-            return false;
-        }
+        if (empty($val) || $val === '-') return false;
 
         switch($type) {
             case 'suhu':
-                // Normal temperature: 36.5 - 37.5 °C
-                $temp = floatval($val);
-                return $temp < 36.5 || $temp > 37.5;
+                // Merah jika > 37.5 (Bisa diganti 35 jika user minta spesifik)
+                $temp = floatval(str_replace(',', '.', $val));
+                return $temp > 37.5; 
 
             case 'tensi':
-                // Normal blood pressure: systolic 90-140, diastolic 60-90
                 if (preg_match('/(\d+)\/(\d+)/', $val, $matches)) {
                     $systolic = intval($matches[1]);
                     $diastolic = intval($matches[2]);
-                    return $systolic < 90 || $systolic > 140 || $diastolic < 60 || $diastolic > 90;
+                    return $systolic > 140 || $diastolic > 90;
                 }
                 return false;
 
-            case 'nadi':
-                // Normal pulse: 60-100 bpm
-                $pulse = intval($val);
-                return $pulse < 60 || $pulse > 100;
-
-            case 'respirasi':
-                // Normal respiration: 12-20 breaths/min
-                $resp = intval($val);
-                return $resp < 12 || $resp > 20;
-
             case 'visus':
-                // Merah jika tidak 6/6 atau normal
                 return (strpos($val, '6/6') === false && stripos($val, 'normal') === false);
 
             case 'fisik':
-                // Merah jika ada kata-kata negatif
-                $bad_words = ['karang', 'lubang', 'karies', 'radang', 'bengkak', 'caries'];
+                $bad_words = ['karang', 'lubang', 'karies', 'radang', 'bengkak', 'nyeri', 'merah'];
                 foreach($bad_words as $word) {
                     if (stripos($val, $word) !== false) return true;
                 }
@@ -249,142 +227,144 @@ if ($id > 0) {
         }
     }
 
-    // A. Tekanan Darah
+    // A - F (Vital Signs)
     $pdf->RowResult('A. Tekanan Darah', ($data['tekanan_darah'] ?? '-') . ' mmHg', checkNormal($data['tekanan_darah'] ?? '', 'tensi'));
-    
-    // B. Respirasi
-    $pdf->RowResult('B. Respirasi', ($data['respirasi'] ?? '-') . ' x/menit'); // Biasanya jarang merah kecuali sesak
-    
-    // C. Nadi
+    $pdf->RowResult('B. Respirasi', ($data['respirasi'] ?? '-') . ' x/menit');
     $pdf->RowResult('C. Nadi', ($data['nadi'] ?? '-') . ' x/menit');
     
-    // D. Suhu (CUSTOM LOGIC REQUESTED)
+    // Suhu
     $suhu = $data['suhu'] ?? 0;
-    // Ubah angka 37.5 di bawah ini menjadi 35 jika Anda ingin merah saat > 35
     $is_suhu_abnormal = ($suhu > 37.5); 
     $pdf->RowResult('D. Suhu', $suhu . ' C', $is_suhu_abnormal);
     
-    // E. Tinggi & Berat
     $pdf->RowResult('E. Tinggi Badan', ($data['tinggi_badan'] ?? '-') . ' cm');
     $pdf->RowResult('F. Berat Badan', ($data['berat_badan'] ?? '-') . ' kg');
     
     // G. Header Fisik
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(190, 7, '  G. Pemeriksaan Fisik Tubuh (Head to Toe)', 1, 1, 'L');
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(190, 6, '  G. Pemeriksaan Fisik Tubuh (Head to Toe)', 1, 1, 'L');
     
-    // H. Kepala (Gigi)
-    // Gabungkan status gigi
+    // H - N (Fisik)
     $gigi = ($data['gigi_keterangan'] ?? '') ?: ($data['gigi_status'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('H. Kepala (Gigi)', $gigi, checkNormal($gigi, 'fisik'));
     
-    // I. Leher
     $leher = ($data['leher_kgb'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('I. Leher', $leher, checkNormal($leher, 'fisik'));
     
-    // J. Dada (Thorax)
     $dada = ($data['paru_auskultasi'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('J. Dada', $dada, checkNormal($dada, 'fisik'));
     
-    // K. Perut
     $perut = ($data['nyeri_abdomen'] ? 'Nyeri Tekan' : 'Tidak Ada Kelainan');
     $pdf->RowResult('K. Perut', $perut, $data['nyeri_abdomen']);
     
-    // L. Kelamin (Sesuai data hepar/hernia dll jika mau dimasukkan, disini saya default)
-    $pdf->RowResult('L. Kelamin', 'Tidak Ada Kelainan'); // Data sensitif biasanya manual/default
+    $pdf->RowResult('L. Kelamin', 'Tidak Ada Kelainan'); 
     
-    // M. Tangan & Kaki (Ekstremitas)
-    $tangan = ($data['tangan'] ?? 'Tidak Ada Kelainan'); // Pastikan field ini ada di DB atau sesuaikan
+    $tangan = ($data['tangan'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('M. Tangan', 'Tidak Ada Kelainan'); 
     $pdf->RowResult('N. Kaki', 'Tidak Ada Kelainan'); 
 
-    // O. VISUS MATA (CUSTOM LOGIC)
+    // O. VISUS
     $visus_ka = ($data['visus_kanan_jauh'] ?? '-') . ' (Jauh)';
     $visus_ki = ($data['visus_kiri_jauh'] ?? '-') . ' (Jauh)';
     $visus_full = "Kanan = $visus_ka dan Kiri = $visus_ki";
-    
-    // Cek apakah visus normal (6/6)
     $abnormal_mata = (strpos($visus_ka, '6/6') === false || strpos($visus_ki, '6/6') === false);
     
-    $pdf->SetFont('Arial','B',10);
-    $pdf->Cell(95, 7, '  Hasil Pemeriksaan VISUS Mata', 1, 0, 'L');
+    $pdf->SetFont('Arial','B',9);
+    $pdf->Cell(95, 6, '  Hasil Pemeriksaan VISUS Mata', 1, 0, 'L');
     if($abnormal_mata) $pdf->SetTextColor(255, 0, 0);
-    $pdf->Cell(95, 7, '  ' . $visus_full, 1, 1, 'L');
-    $pdf->SetTextColor(0); // Reset
+    $pdf->Cell(95, 6, '  ' . $visus_full, 1, 1, 'L');
+    $pdf->SetTextColor(0);
 
-    // P. Penunjang & Riwayat
+    // P. Lab & Riwayat
     $pdf->SetFont('Arial','B',10);
     $pdf->Cell(95, 7, '  Hasil Pemeriksaan Penunjang Laboratorium', 1, 0, 'L');
     $pdf->SetFont('Arial','',10);
-    $pdf->Cell(95, 7, '  (-)', 1, 1, 'L'); // Sesuaikan jika ada data lab
+    $pdf->Cell(95, 7, '  (-)', 1, 1, 'L');
     
     $pdf->SetFont('Arial','B',10);
     $pdf->Cell(95, 7, '  Riwayat Penyakit Dahulu / Sekarang', 1, 0, 'L');
     $pdf->SetFont('Arial','',10);
-    // Ambil riwayat jika ada
-    $riwayat = '(-)'; // Default strip
-    // Logika ambil riwayat dari detail.php logic bisa ditaruh sini
-    $pdf->Cell(95, 7, '  ' . $riwayat, 1, 1, 'L');
+    $pdf->Cell(95, 7, '  (-)', 1, 1, 'L');
     
     $pdf->Ln(5);
 
-    // --- BAGIAN 4: KESIMPULAN & SARAN (FOOTER) ---
-    
-    $pdf->SetFont('Arial','B',11);
-    $pdf->Cell(190, 7, 'KESIMPULAN DAN SARAN HASIL MCU', 0, 1, 'C');
+    // --- BAGIAN 4: KESIMPULAN & SARAN (DINAMIS) ---
+    $pdf->SetFont('Arial','B',10);
+    $pdf->Cell(190, 6, 'KESIMPULAN DAN SARAN HASIL MCU', 0, 1, 'C');
     $pdf->Ln(2);
 
-    // Tabel Kesimpulan
-    $col_h = 20; // Tinggi kotak saran
-    
-    // Status Kesehatan
+    // 4.1 Status Kesehatan
     $pdf->SetFillColor(196, 215, 155);
-    $pdf->SetFont('Arial','',10);
-    $pdf->Cell(55, 10, ' STATUS KESEHATAN', 1, 0, 'C', true);
+    $pdf->SetFont('Arial','',9);
+    $pdf->Cell(55, 8, ' STATUS KESEHATAN', 1, 0, 'C', true);
     
-    // Logic Status (BOLD, RED, UNDERLINE)
     $status_mcu = strtoupper($data['status_mcu'] ?? '-');
-    $pdf->SetFont('Arial','BU',12); // Bold Underline
+    $pdf->SetFont('Arial','BU',11);
     if ($status_mcu == 'FIT WITH NOTE' || $status_mcu == 'UNFIT') {
         $pdf->SetTextColor(255, 0, 0);
     } else {
-        $pdf->SetTextColor(0, 150, 0); // Hijau jika Fit
+        $pdf->SetTextColor(0, 150, 0);
     }
-    $pdf->Cell(135, 10, $status_mcu, 1, 1, 'C');
-    $pdf->SetTextColor(0); // Reset
+    $pdf->Cell(135, 8, $status_mcu, 1, 1, 'C');
+    $pdf->SetTextColor(0);
 
-    // Saran
+    // 4.2 Saran (Logic Tinggi Dinamis)
+    $saran_text = $data['saran'] ?: '-';
+    
+    $pdf->SetFont('Arial','',9); // Font saran diperkecil sedikit
+    $line_height = 4.5; // Jarak baris rapat
+    $cell_width_label = 55;
+    $cell_width_content = 135;
+    
+    $x_start = $pdf->GetX();
+    $y_start = $pdf->GetY();
+    
+    // Gambar Konten Saran (Kanan) dulu untuk hitung tinggi
+    $pdf->SetXY($x_start + $cell_width_label, $y_start);
+    $pdf->MultiCell($cell_width_content, $line_height, $saran_text, 1, 'L');
+    
+    $y_end = $pdf->GetY();
+    $dynamic_height = $y_end - $y_start;
+    
+    // Minimal tinggi 10mm
+    if ($dynamic_height < 10) {
+        $dynamic_height = 10;
+        $pdf->SetY($y_start + 10);
+    }
+
+    // Gambar Label "SARAN" (Kiri) menyesuaikan tinggi konten
+    $pdf->SetXY($x_start, $y_start);
     $pdf->SetFont('Arial','',10);
-    $pdf->Cell(55, $col_h, ' SARAN', 1, 0, 'C', true);
+    $pdf->Cell($cell_width_label, $dynamic_height, ' SARAN', 1, 0, 'C', true);
     
-    // MultiCell untuk Saran
-    $x = $pdf->GetX();
-    $y = $pdf->GetY();
-    $saran_text = $data['saran'] ?: '1. Istirahat yang cukup.';
-    $pdf->MultiCell(135, $col_h, $saran_text, 1, 'L');
-    
+    // Pindahkan kursor ke bawah kotak
+    $pdf->SetY($y_end < ($y_start + 10) ? ($y_start + 10) : $y_end);
+
     // --- TANDA TANGAN ---
-    $pdf->Ln(5);
+    $pdf->Ln(3);
+    // Cek sisa halaman, jika kurang pindah page agar TTD tidak terpotong
+    if ($pdf->GetY() > 250) $pdf->AddPage();
+
     $pdf->SetX(120);
-    $pdf->SetFont('Arial','',11);
-    $pdf->Cell(80, 5, 'Cianjur, ' . formatDateIndo($patient['tanggal_mcu']), 0, 1, 'C');
+    $pdf->SetFont('Arial','',10);
+    $pdf->Cell(80, 4, 'Cianjur, ' . formatDateIndo($patient['tanggal_mcu']), 0, 1, 'C');
     $pdf->SetX(120);
-    $pdf->Cell(80, 5, 'Mengetahui,', 0, 1, 'C');
-    
-    $pdf->Ln(20); // Spasi TTD
-    
+    $pdf->Cell(80, 4, 'Mengetahui,', 0, 1, 'C');
+
+    $pdf->Ln(15);
+
     $pdf->SetX(120);
-    $pdf->SetFont('Arial','BU',11); // Nama Dokter Garis Bawah
-    $pdf->Cell(80, 5, 'dr. Hj Siti Isye Nasripah', 0, 1, 'C'); // Bisa ganti dynamic
+    $pdf->SetFont('Arial','BU',10);
+    $pdf->Cell(80, 4, 'dr. Hj Siti Isye Nasripah', 0, 1, 'C');
     $pdf->SetX(120);
-    $pdf->SetFont('Arial','B',9);
-    $pdf->Cell(80, 4, '(Penanggung Jawab MCU - Klinik)', 0, 1, 'C');
+    $pdf->SetFont('Arial','B',8);
+    $pdf->Cell(80, 3, '(Penanggung Jawab MCU - Klinik)', 0, 1, 'C');
 
     // Output PDF
     $filename = 'Hasil_MCU_' . preg_replace('/[^a-zA-Z0-9]/', '_', $patient['nama']) . '.pdf';
     $pdf->Output('I', $filename);
     exit;
 }
-
 // Filter parameters for listing page
 $search = isset($_GET['search']) ? escape($_GET['search']) : '';
 

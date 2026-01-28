@@ -67,13 +67,13 @@ $result = mysqli_query($conn, $query);
                 <h1 class="h3 mb-0">
                     <i class="fas fa-users me-2"></i> Daftar Pasien
                 </h1>
-                <div>
+                <!-- <div>
                     <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
                     <a href="javascript:void(0)" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPatientModal">
                         <i class="fas fa-plus me-2"></i> Tambah Pasien
                     </a>
                     <?php endif; ?>
-                </div>
+                </div> -->
             </div>
             
             <!-- Filter and Search -->
