@@ -176,26 +176,29 @@ function isAbnormal($parameter, $value) {
         case 'suhu':
             // Normal temperature: 36.5 - 37.5 °C
             $temp = floatval($value);
-            return $temp < 36.5 || $temp > 37.5;
+            return $temp > 37.5;
+            // return $temp < 36.5 || $temp > 37.5;
 
         case 'tekanan_darah':
             // Normal blood pressure: systolic 90-140, diastolic 60-90
             if (preg_match('/(\d+)\/(\d+)/', $value, $matches)) {
                 $systolic = intval($matches[1]);
                 $diastolic = intval($matches[2]);
-                return $systolic < 90 || $systolic > 140 || $diastolic < 60 || $diastolic > 90;
+                return $systolic > 140 || $diastolic > 90;
+                // return $systolic < 90 || $systolic > 140 || $diastolic < 60 || $diastolic > 90;
             }
             return false;
 
         case 'nadi':
             // Normal pulse: 60-100 bpm
             $pulse = intval($value);
-            return $pulse < 60 || $pulse > 100;
+            return $pulse > 100;
+            // return $pulse < 60 || $pulse > 100;
 
         case 'respirasi':
             // Normal respiration: 12-20 breaths/min
             $resp = intval($value);
-            return $resp < 12 || $resp > 20;
+            return $resp > 20;
 
         case 'visus':
             // Normal vision: 6/6 or better (assuming values like 6/6, 6/12, etc.)
