@@ -132,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sikatriks = escape($_POST['sikatriks']);
         $psoas_sign = escape($_POST['psoas_sign']);
         $hepatomegali = escape($_POST['hepatomegali']);
+        $keterangan_perut = escape($_POST['keterangan_perut']);
         
         // Refleks
         $biceps = escape($_POST['biceps']);
@@ -182,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             tenggorokan_status, tenggorokan_keterangan,gigi_status, gigi_keterangan, leher_kgb,
             paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,jantung_auskultasi, jantung_keterangan, jantung_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
-            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,
+            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,keterangan_perut,
             biceps, triceps, patella, achilles, plantar_response,keterangan_tangan,keterangan_kaki,hasil_lab, keterangan_penyakit,
             kesimpulan, saran, status_mcu, dokter_pemeriksa, pemeriksa_id
         ) VALUES (
@@ -191,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_status', '$gigi_keterangan', '$leher_kgb',
             '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
-            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,'$striae','$sikatriks','$psoas_sign', '$hepatomegali',
+            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,'$striae','$sikatriks','$psoas_sign', '$hepatomegali','$keterangan_perut',
             '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$keterangan_tangan','$keterangan_kaki','$hasil_lab', '$keterangan_penyakit',
             '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
@@ -587,6 +588,14 @@ $role_title = $role_titles[$role];
                                         </div>
                                     </div>
 
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="form-label">PENYAKIT PERUT</label>
+                                            <input type="text" class="form-control" name="keterangan_perut"
+                                                   placeholder="Penyakit Perut...">
+                                        </div>
+                                    </div>
+                                    <br>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label class="form-label">GENITALIA</label>

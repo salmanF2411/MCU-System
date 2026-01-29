@@ -271,14 +271,14 @@ if ($id > 0) {
     $leher = ($data['leher_kgb'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('I. Leher', $leher, checkNormal($leher, 'fisik'));
     
-    $dada = ($data['auskultasi_keterangan'] ?? 'Tidak Ada Kelainan');
+    $dada = (!empty($data['auskultasi_keterangan'])) ? $data['auskultasi_keterangan'] : 'Tidak Ada Kelainan';
     $pdf->RowResult('J. Dada', $dada, checkNormal($dada, 'fisik'));
-    
-    $perut = ($data['nyeri_abdomen'] ? 'Nyeri Tekan' : 'Tidak Ada Kelainan');
-    $pdf->RowResult('K. Perut', $perut, $data['nyeri_abdomen']);
-    
-    $dada = ($data['hepatomegali'] ?? 'Tidak Ada Kelainan');
-    $pdf->RowResult('L. Kelamin', $dada, checkNormal($dada, 'fisik'));
+      
+    $perut = ($data['keterangan_perut'] ?? 'Tidak Ada Kelainan');
+    $pdf->RowResult('K. Perut', $perut, checkNormal($perut, 'fisik'));
+
+    $kelamin = ($data['hepatomegali'] ?? 'Tidak Ada Kelainan');
+    $pdf->RowResult('L. Kelamin', $kelamin, checkNormal($kelamin, 'fisik'));
 
     $tangan = ($data['keterangan_tangan'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('M. Tangan', $tangan, checkNormal($tangan, 'fisik'));
