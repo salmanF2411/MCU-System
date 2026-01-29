@@ -675,7 +675,11 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                                     <td><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>GENITALIA</th>
+                                                                    <th>Penyakit Perut</th>
+                                                                    <td><?php echo $exam['keterangan_perut'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Genitalia</th>
                                                                     <td><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
                                                                 </tr>
                                                                 <tr>
