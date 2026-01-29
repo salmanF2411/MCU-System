@@ -279,10 +279,12 @@ if ($id > 0) {
     
     $dada = ($data['hepatomegali'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('L. Kelamin', $dada, checkNormal($dada, 'fisik'));
-    
-    $tangan = ($data['tangan'] ?? 'Tidak Ada Kelainan');
-    $pdf->RowResult('M. Tangan', 'Tidak Ada Kelainan'); 
-    $pdf->RowResult('N. Kaki', 'Tidak Ada Kelainan'); 
+
+    $tangan = ($data['keterangan_tangan'] ?? 'Tidak Ada Kelainan');
+    $pdf->RowResult('M. Tangan', $tangan, checkNormal($tangan, 'fisik'));
+
+    $kaki = ($data['keterangan_kaki'] ?? 'Tidak Ada Kelainan');
+    $pdf->RowResult('N. Kaki', $kaki, checkNormal($kaki, 'fisik'));
 
     // --- BAGIAN VISUS KHUSUS (WARNA TERPISAH) ---
     $visus_ka = isset($data['visus_kanan_jauh']) ? $data['visus_kanan_jauh'] : '-';

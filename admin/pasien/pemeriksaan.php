@@ -139,6 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $patella = escape($_POST['patella']);
         $achilles = escape($_POST['achilles']);
         $plantar_response = escape($_POST['plantar_response']);
+        $keterangan_tangan = escape($_POST['keterangan_tangan']);
+        $keterangan_kaki = escape($_POST['keterangan_kaki']);
 
         //Hasil Lanjutan
         $hasil_lab = escape($_POST['hasil_lab']);
@@ -181,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,jantung_auskultasi, jantung_keterangan, jantung_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
             nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,
-            biceps, triceps, patella, achilles, plantar_response,hasil_lab, keterangan_penyakit,
+            biceps, triceps, patella, achilles, plantar_response,keterangan_tangan,keterangan_kaki,hasil_lab, keterangan_penyakit,
             kesimpulan, saran, status_mcu, dokter_pemeriksa, pemeriksa_id
         ) VALUES (
             $id, '$role',
@@ -190,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
             $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,'$striae','$sikatriks','$psoas_sign', '$hepatomegali',
-            '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$hasil_lab', '$keterangan_penyakit',
+            '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$keterangan_tangan','$keterangan_kaki','$hasil_lab', '$keterangan_penyakit',
             '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
     }
@@ -657,6 +659,20 @@ $role_title = $role_titles[$role];
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row mt-3">
+                                        <div class="row-md-6">
+                                            <label class="form-label">Penyakit Tangan</label>
+                                            <textarea class="form-control" name="keterangan_tangan" 
+                                                      rows="2" placeholder="Keterangan Penyakit Tangan..."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="row-md-6">
+                                            <label class="form-label">Penyakit Kaki</label>
+                                            <textarea class="form-control" name="keterangan_kaki" 
+                                                      rows="2" placeholder="Keterangan Penyakit Kaki..."></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -670,12 +686,12 @@ $role_title = $role_titles[$role];
                                         <div class="row-md-6">
                                             <label class="form-label">Pemeriksaan Laboratorium</label>
                                             <textarea class="form-control" name="hasil_lab" 
-                                                      rows="1" placeholder="Pemeriksaan Lab..."></textarea>
+                                                      rows="2" placeholder="Pemeriksaan Lab..."></textarea>
                                         </div>
                                         <div class="row-md-6">
                                             <label class="form-label">Riwayat Penyakit Dahulu / Sekarang</label>
                                             <textarea class="form-control" name="keterangan_penyakit" 
-                                                      rows="1" placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
+                                                      rows="2" placeholder="Riwayat Penyakit Dahulu / Sekarang..."></textarea>
                                         </div>
                                 </div>
                             </div>

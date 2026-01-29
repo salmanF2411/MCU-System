@@ -721,6 +721,14 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                                     <th>Plantar Response</th>
                                                                     <td><?php echo $exam['plantar_response'] ?: '-'; ?></td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <th>Penyakit Tangan</th>
+                                                                    <td><?php echo $exam['keterangan_tangan'] ?: '-'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Penyakit Kaki</th>
+                                                                    <td><?php echo $exam['keterangan_kaki'] ?: '-'; ?></td>
+                                                                </tr>
                                                             </table>
                                                         </div>
                                                     </div>
