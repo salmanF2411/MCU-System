@@ -703,21 +703,28 @@ require_once '../includes/header.php';
                 return false;
             }
         }
-        
+
+        // Check if declaration checkbox is checked
+        if (!document.getElementById('declaration').checked) {
+            alert('Harap centang pernyataan persetujuan sebelum mengirim pendaftaran!');
+            document.getElementById('declaration').focus();
+            return false;
+        }
+
         // Validate email if filled
         var email = document.getElementById('email').value;
         if (email && !validateEmail(email)) {
             alert('Format email tidak valid!');
             return false;
         }
-        
+
         // Validate phone number
         var phone = document.getElementById('no_telp').value;
         if (!validatePhone(phone)) {
             alert('Format nomor telepon tidak valid! Minimal 10 digit angka.');
             return false;
         }
-        
+
         return true;
     }
     
