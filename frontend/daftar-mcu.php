@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $_SESSION['success'] = "Pendaftaran berhasil! Kode MCU Anda: <strong>$kode_mcu</strong>. Harap simpan kode ini untuk keperluan berikutnya.";
-        redirect('daftar-success.php?kode=' . $kode_mcu);
+        redirect('daftar-success.php?kode=' . $kode_mcu . '&tanggal=' . $tanggal_mcu);
     } else {
         $_SESSION['error'] = "Gagal melakukan pendaftaran. Silakan coba lagi.";
     }

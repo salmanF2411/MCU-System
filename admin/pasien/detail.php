@@ -508,7 +508,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         </tr>
                                                         <tr>
                                                             <th>Keterangan</th>
-                                                            <td class="<?php echo getStatusClass($exam['anemia']); ?>"><?php echo $exam['ikterik_keterangan'] ?: '-'; ?></td>
+                                                            <td class="<?php echo getDescriptionClass($exam['ikterik_keterangan']); ?>"><?php echo $exam['ikterik_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Buta Warna</th>
@@ -516,7 +516,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         </tr>
                                                         <tr>
                                                             <th>Keterangan</th>
-                                                            <td class="<?php echo getStatusClass($exam['buta_warna']); ?>"><?php echo $exam['buta_warna_keterangan'] ?: '-'; ?></td>
+                                                            <td class="<?php echo getDescriptionClass($exam['buta_warna_keterangan']); ?>"><?php echo $exam['buta_warna_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <th>Lapang Pandang</th>
@@ -524,7 +524,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         </tr>
                                                         <tr>
                                                             <th>Keterangan</th>
-                                                            <td class="<?php echo getStatusClass($exam['lapang_pandang']); ?>"><?php echo $exam['lapang_pandang_keterangan'] ?: '-'; ?></td>
+                                                            <td class="<?php echo getDescriptionClass($exam['lapang_pandang_keterangan']); ?>"><?php echo $exam['lapang_pandang_keterangan'] ?: '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>
