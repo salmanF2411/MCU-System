@@ -221,4 +221,18 @@ function isAbnormal($parameter, $value) {
 function getValueClass($parameter, $value) {
     return isAbnormal($parameter, $value) ? 'text-danger fw-bold' : '';
 }
+
+/**
+ * Get CSS class for status display (abnormal = red)
+ */
+function getStatusClass($status) {
+    return (strtolower($status) == 'abnormal') ? 'text-danger fw-bold' : '';
+}
+
+/**
+ * Get CSS class for description display (if has content = red)
+ */
+function getDescriptionClass($value) {
+    return (!empty($value) && $value !== '-') ? 'text-danger fw-bold' : '';
+}
 ?>
