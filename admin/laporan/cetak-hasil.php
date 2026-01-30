@@ -358,10 +358,12 @@ if ($id > 0) {
     
     $status_mcu = strtoupper($data['status_mcu'] ?? '-');
     $pdf->SetFont('Arial','BU',11);
-    if ($status_mcu == 'FIT WITH NOTE' || $status_mcu == 'UNFIT') {
-        $pdf->SetTextColor(255, 0, 0);
+    if ($status_mcu == 'UNFIT') {
+        $pdf->SetTextColor(255, 0, 0); // Merah
+    } elseif ($status_mcu == 'FIT WITH NOTE') {
+        $pdf->SetTextColor(255, 165, 0); // Orange
     } else {
-        $pdf->SetTextColor(0, 150, 0);
+        $pdf->SetTextColor(0, 150, 0); // Hijau
     }
     $pdf->Cell(135, 8, $status_mcu, 1, 1, 'C');
     $pdf->SetTextColor(0);
