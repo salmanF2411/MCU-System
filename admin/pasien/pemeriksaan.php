@@ -374,9 +374,10 @@ $role_title = $role_titles[$role];
                                         <option value="">- Pilih -</option>
                                         <option value="Ikterik(-)">Ikterik (-) </option>
                                         <option value="Ikterik(+)">Ikterik (+) </option>
+                                        <option value="Anemis">Anemis</option>
                                     </select>
                                     <textarea class="form-control mt-2" name="ikterik_keterangan" 
-                                                      rows="2" placeholder="Keterangan Anemis : Ikterik..."></textarea>
+                                                      rows="2" placeholder="Keterangan Anemis : Ikterik/Anemis..."></textarea>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label">Buta Warna</label>
