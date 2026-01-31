@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     <style>
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #e9eaec 0%, #f0eff2 100%);
             height: 100vh;
             display: flex;
             align-items: center;
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         .login-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #4b0af0 100%);
             border-radius: 15px 15px 0 0;
             padding: 30px;
             color: white;
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         .btn-login {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #4b0af0 100%);
             border: none;
             color: white;
             padding: 10px 30px;
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-md-5">
                 <div class="login-card">
                     <div class="login-header">
-                        <h3><i class="fas fa-user-md me-2"></i> Sistem MCU Klinik</h3>
+                        <h3><i class="fas fa-user-md me-2"></i> Sistem MCU Klinik ALVARISHA</h3>
                         <p class="mb-0">Login untuk melanjutkan ke dashboard</p>
                     </div>
                     

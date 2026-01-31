@@ -184,7 +184,7 @@ function isAbnormal($parameter, $value) {
             if (preg_match('/(\d+)\/(\d+)/', $value, $matches)) {
                 $systolic = intval($matches[1]);
                 $diastolic = intval($matches[2]);
-                return $systolic > 140 || $diastolic > 90;
+                return $systolic > 125 || $systolic < 100 || $diastolic > 80 || $diastolic < 70;
                 // return $systolic < 90 || $systolic > 140 || $diastolic < 60 || $diastolic > 90;
             }
             return false;
@@ -192,13 +192,13 @@ function isAbnormal($parameter, $value) {
         case 'nadi':
             // Normal pulse: 60-100 bpm
             $pulse = intval($value);
-            return $pulse > 100;
+            return $pulse > 100 || $pulse < 60;
             // return $pulse < 60 || $pulse > 100;
 
         case 'respirasi':
             // Normal respiration: 12-20 breaths/min
             $resp = intval($value);
-            return $resp > 20;
+            return $resp > 25 || $resp < 12;
 
         case 'visus':
             // Normal vision: 6/6 
