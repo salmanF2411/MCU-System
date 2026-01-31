@@ -128,11 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nyeri_abdomen = isset($_POST['nyeri_abdomen']) ? 1 : 0;
         $bising_usus = isset($_POST['bising_usus']) ? 1 : 0;
         $hepar = isset($_POST['hepar']) ? 1 : 0;
-        $striae = escape($_POST['striae']);
-        $sikatriks = escape($_POST['sikatriks']);
+        $striae = isset($_POST['striae']) ? 1 : 0;
+        $sikatriks = isset($_POST['sikatriks']) ? 1 : 0;
         $psoas_sign = escape($_POST['psoas_sign']);
         $hepatomegali = escape($_POST['hepatomegali']);
-        $keterangan_perut = escape($_POST['keterangan_perut']);
+        // $keterangan_perut = escape($_POST['keterangan_perut']);
         
         // Refleks
         $biceps = escape($_POST['biceps']);
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $keterangan_penyakit = escape($_POST['keterangan_penyakit']);
         
         // Kesimpulan
-        $kesimpulan = escape($_POST['kesimpulan']);
+        // $kesimpulan = escape($_POST['kesimpulan']);
 
         // Process saran from checkboxes and manual input
         $saran_options = isset($_POST['saran_options']) ? $_POST['saran_options'] : [];
@@ -183,18 +183,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             tenggorokan_status, tenggorokan_keterangan,gigi_status, gigi_keterangan, leher_kgb,
             paru_auskultasi,auskultasi_keterangan, paru_palpasi, paru_perkusi,jantung_auskultasi, jantung_keterangan, jantung_perkusi,
             operasi, keterangan_operasi, obesitas, organomegali, hernia, 
-            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,keterangan_perut,
-            biceps, triceps, patella, achilles, plantar_response,keterangan_tangan,keterangan_kaki,hasil_lab, keterangan_penyakit,
-            kesimpulan, saran, status_mcu, dokter_pemeriksa, pemeriksa_id
+            nyeri_epigastrium, nyeri_abdomen, bising_usus,hepar,striae, sikatriks, psoas_sign, hepatomegali,
+            biceps, triceps, patella, achilles, plantar_response,keterangan_tangan,keterangan_kaki,hasil_lab, keterangan_penyakit,saran, status_mcu, dokter_pemeriksa, pemeriksa_id
         ) VALUES (
             $id, '$role',
             '$telinga_status', '$telinga_keterangan', '$hidung_status', '$hidung_keterangan',
             '$tenggorokan_status', '$tenggorokan_keterangan', '$gigi_status', '$gigi_keterangan', '$leher_kgb',
             '$paru_auskultasi', '$auskultasi_keterangan', '$paru_palpasi', '$paru_perkusi','$jantung_auskultasi', '$jantung_keterangan', '$jantung_perkusi',
             $operasi, '$keterangan_operasi', $obesitas, $organomegali, $hernia,
-            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,'$striae','$sikatriks','$psoas_sign', '$hepatomegali','$keterangan_perut',
-            '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$keterangan_tangan','$keterangan_kaki','$hasil_lab', '$keterangan_penyakit',
-            '$kesimpulan', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
+            $nyeri_epigastrium, $nyeri_abdomen, $bising_usus, $hepar,$striae,$sikatriks,'$psoas_sign', '$hepatomegali',
+            '$biceps', '$triceps', '$patella', '$achilles', '$plantar_response','$keterangan_tangan','$keterangan_kaki','$hasil_lab', '$keterangan_penyakit', '$saran', '$status_mcu', '$dokter_pemeriksa', {$_SESSION['admin_id']}
         )";
     }
     
@@ -538,7 +536,7 @@ $role_title = $role_titles[$role];
                                                 </label>
                                             </div>
                                             <textarea class="form-control" name="keterangan_operasi" 
-                                                      rows="2" placeholder="Keterangan operasi..."></textarea>
+                                                      rows="2" placeholder="Keterangan operasi/penyakit perut..."></textarea>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-check mb-2">
@@ -559,8 +557,6 @@ $role_title = $role_titles[$role];
                                                     Hernia
                                                 </label>
                                             </div>
-                                        </div>
-                                        <div class="col-md-4">
                                             <div class="form-check mb-2">
                                                 <input class="form-check-input" type="checkbox" name="nyeri_epigastrium" id="nyeri_epigastrium">
                                                 <label class="form-check-label" for="nyeri_epigastrium">
@@ -573,6 +569,8 @@ $role_title = $role_titles[$role];
                                                     Nyeri Abdomen
                                                 </label>
                                             </div>
+                                        </div>
+                                        <div class="col-md-4">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="bising_usus" id="bising_usus">
                                                 <label class="form-check-label" for="bising_usus">
@@ -585,14 +583,34 @@ $role_title = $role_titles[$role];
                                                     Hepar
                                                 </label>
                                             </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="striae" id="striae">
+                                                <label class="form-check-label" for="striae">
+                                                    Striae
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="sikatriks" id="sikatriks">
+                                                <label class="form-check-label" for="sikatriks">
+                                                    Sikatriks
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <!-- <div class="row">
                                         <div class="col-md-12">
                                             <label class="form-label">PENYAKIT PERUT</label>
                                             <input type="text" class="form-control" name="keterangan_perut"
                                                    placeholder="Penyakit Perut...">
+                                        </div>
+                                    </div>
+                                    <br> -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="form-label">PSOAS SIGN</label>
+                                            <input type="text" class="form-control" name="psoas_sign"
+                                                   placeholder="PSOAS SIGN...">
                                         </div>
                                     </div>
                                     <br>
@@ -601,23 +619,6 @@ $role_title = $role_titles[$role];
                                             <label class="form-label">GENITALIA</label>
                                             <input type="text" class="form-control" name="hepatomegali"
                                                    placeholder="Genitalia...">
-                                        </div>
-                                    </div>
-                                    <br>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <label class="form-label">PEMERIKSAAN</label>
-                                            <br>
-                                            <label class="form-label">Striae</label>
-                                            <input type="text" class="form-control" name="striae"
-                                                   placeholder="Striae...">
-                                            <label class="form-label">Sikatriks</label>
-                                            <input type="text" class="form-control" name="sikatriks"
-                                                   placeholder="Sikatriks...">
-                                            <label class="form-label">PSOAS SIGN</label>
-                                            <input type="text" class="form-control" name="psoas_sign"
-                                                   placeholder="PSOAS SIGN...">
                                         </div>
                                     </div>
                                 </div>

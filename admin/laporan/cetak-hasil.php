@@ -274,7 +274,7 @@ if ($id > 0) {
     $dada = (!empty($data['auskultasi_keterangan'])) ? $data['auskultasi_keterangan'] : 'Tidak Ada Kelainan';
     $pdf->RowResult('J. Dada', $dada, checkNormal($dada, 'fisik'));
       
-    $perut = ($data['keterangan_perut'] ?? 'Tidak Ada Kelainan');
+    $perut = ($data['keterangan_operasi'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('K. Perut', $perut, checkNormal($perut, 'fisik'));
 
     $kelamin = ($data['hepatomegali'] ?? 'Tidak Ada Kelainan');

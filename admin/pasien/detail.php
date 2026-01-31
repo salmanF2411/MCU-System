@@ -675,24 +675,24 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                                     <td class="<?php echo $exam['hepar'] ? 'text-danger fw-bold' : ''; ?>"><?php echo $exam['hepar'] ? 'Ya' : 'Tidak'; ?></td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <th>Striae</th>
+                                                                    <td class="<?php echo $exam['striae'] ? 'text-danger fw-bold' : ''; ?>"><?php echo $exam['striae'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>Sikatriks</th>
+                                                                    <td class="<?php echo $exam['sikatriks'] ? 'text-danger fw-bold' : ''; ?>"><?php echo $exam['sikatriks'] ? 'Ya' : 'Tidak'; ?></td>
+                                                                </tr>
+                                                                <!-- <tr>
                                                                     <th>Penyakit Perut</th>
                                                                     <td class="<?php echo getDescriptionClass($exam['keterangan_perut']); ?>"><?php echo $exam['keterangan_perut'] ?: '-'; ?></td>
+                                                                </tr> -->
+                                                                <tr>
+                                                                    <th>PSOAS SIGN</th>
+                                                                    <td class="<?php echo getDescriptionClass($exam['psoas_sign']); ?>"><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <th>Genitalia</th>
                                                                     <td class="<?php echo getDescriptionClass($exam['hepatomegali']); ?>"><?php echo $exam['hepatomegali'] ?: '-'; ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>Striae</th>
-                                                                    <td class="<?php echo getDescriptionClass($exam['striae']); ?>"><?php echo $exam['striae'] ?: '-'; ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>Sikatriks</th>
-                                                                    <td class="<?php echo getDescriptionClass($exam['sikatriks']); ?>"><?php echo $exam['sikatriks'] ?: '-'; ?></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>PSOAS SIGN</th>
-                                                                    <td class="<?php echo getDescriptionClass($exam['psoas_sign']); ?>"><?php echo $exam['psoas_sign'] ?: '-'; ?></td>
                                                                 </tr>
                                                             </table>
                                                         </div>
