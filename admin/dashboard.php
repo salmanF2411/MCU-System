@@ -630,11 +630,11 @@ if ($page == 'patients') {
                     <div class="card-body">
                         <form method="GET" action="" class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label">Pilih Bulan untuk Statistik Kedatangan Pasien dan hasil mcu</label>
+                                <label class="form-label">Pilih Bulan untuk Statistik Kedatangan Pasien dan Hasil MCU</label>
                                 <input type="month" class="form-control" name="arrival_month" value="<?php echo $arrival_month; ?>" onchange="this.form.submit()">
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
-                                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                                <button type="submit" class="btn btn-secondary w-100" onclick="this.form.arrival_month.value='<?php echo date('Y-m'); ?>';">Reset</button>
                             </div>
                         </form>
                     </div>
