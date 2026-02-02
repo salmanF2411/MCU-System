@@ -85,7 +85,12 @@ if ($page == 'patients') {
     $completed_pasien = mysqli_fetch_assoc($completed_result)['total'];
 
     // Recent patients
-    $recent_query = "SELECT * FROM pasien ORDER BY created_at DESC LIMIT 5";
+    $recent_query = "SELECT p.*,
+                    (SELECT COUNT(*) FROM pemeriksaan WHERE pasien_id = p.id AND pemeriksa_role = 'pendaftaran') as cek_pendaftaran,
+                    (SELECT COUNT(*) FROM pemeriksaan WHERE pasien_id = p.id AND pemeriksa_role = 'dokter_mata') as cek_mata,
+                    (SELECT COUNT(*) FROM pemeriksaan WHERE pasien_id = p.id AND pemeriksa_role = 'dokter_umum') as cek_umum
+                    FROM pasien p
+                    ORDER BY p.created_at DESC LIMIT 5";
     $recent_result = mysqli_query($conn, $recent_query);
 
     // MCU status stats - only count completed examinations (dokter_umum)
@@ -100,6 +105,18 @@ if ($page == 'patients') {
     $fit_total = mysqli_fetch_assoc($fit_result)['total'];
     $unfit_total = mysqli_fetch_assoc($unfit_result)['total'];
     $fit_note_total = mysqli_fetch_assoc($fit_note_result)['total'];
+
+    // Patient arrivals last 7 days
+    $arrival_dates = [];
+    $arrival_counts = [];
+    for ($i = 6; $i >= 0; $i--) {
+        $date = date('Y-m-d', strtotime("-$i days"));
+        $arrival_dates[] = date('d/m', strtotime($date));
+        $query = "SELECT COUNT(*) as count FROM pasien WHERE DATE(created_at) = '$date'";
+        $result = mysqli_query($conn, $query);
+        $count = mysqli_fetch_assoc($result)['count'];
+        $arrival_counts[] = $count;
+    }
 }
 ?>
 
@@ -595,8 +612,8 @@ if ($page == 'patients') {
 
                 <!-- Charts and Recent Data -->
                 <div class="row">
-                    <!-- Left Column -->
-                    <div class="col-lg-8">
+                    <!-- Left Column - MCU Chart -->
+                    <div class="col-lg-6">
                         <!-- MCU Status Chart -->
                         <div class="card mb-4">
                             <div class="card-header">
@@ -626,7 +643,25 @@ if ($page == 'patients') {
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Right Column - Patient Arrival Chart -->
+                    <div class="col-lg-6">
+                        <!-- Patient Arrival Chart -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-chart-line me-2"></i> Statistik Kedatangan Pasien</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="arrivalChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Patients - Full Width -->
+                <div class="row">
+                    <div class="col-12">
                         <!-- Recent Patients -->
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
@@ -636,24 +671,51 @@ if ($page == 'patients') {
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover">
-                                        <thead>
+                                        <thead class="table-light">
                                             <tr>
+                                                <th>#</th>
                                                 <th>Kode MCU</th>
                                                 <th>Nama</th>
-                                                <th>Tanggal Daftar</th>
+                                                <th>Usia</th>
+                                                <th>Perusahaan</th>
+                                                <th>Tanggal MCU</th>
                                                 <th>Status</th>
+                                                <th>Pemeriksaan</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php $no = 1; ?>
                                             <?php while ($patient = mysqli_fetch_assoc($recent_result)): ?>
                                             <tr>
-                                                <td><strong><?php echo $patient['kode_mcu']; ?></strong></td>
-                                                <td><?php echo $patient['nama']; ?></td>
-                                                <td><?php echo formatDateIndo($patient['created_at']); ?></td>
+                                                <td><?php echo $no++; ?></td>
+                                                <td>
+                                                    <strong><?php echo $patient['kode_mcu']; ?></strong>
+                                                </td>
+                                                <td>
+                                                    <div class="fw-bold"><?php echo htmlspecialchars($patient['nama']); ?></div>
+                                                    <small class="text-muted"><?php echo $patient['no_telp']; ?></small>
+                                                </td>
+                                                <td><?php echo $patient['usia']; ?> thn</td>
+                                                <td><?php echo $patient['perusahaan'] ?: '-'; ?></td>
+                                                <td><?php echo formatDateIndo($patient['tanggal_mcu']); ?></td>
                                                 <td><?php echo getStatusBadge($patient['status_pendaftaran']); ?></td>
                                                 <td>
-                                                    <a href="pasien/detail.php?id=<?php echo $patient['id']; ?>" class="btn btn-sm btn-info">
+                                                    <div class="d-flex gap-1">
+                                                        <span class="badge <?php echo $patient['cek_pendaftaran'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                                            P
+                                                        </span>
+                                                        <span class="badge <?php echo $patient['cek_mata'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                                            M
+                                                        </span>
+                                                        <span class="badge <?php echo $patient['cek_umum'] ? 'bg-success' : 'bg-secondary'; ?>">
+                                                            U
+                                                        </span>
+                                                    </div>
+                                                    <small class="d-block text-muted">P=Reg, M=Mata, U=Umum</small>
+                                                </td>
+                                                <td>
+                                                    <a href="pasien/detail.php?id=<?php echo $patient['id']; ?>" class="btn btn-sm btn-info" title="Detail">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </td>
@@ -662,82 +724,12 @@ if ($page == 'patients') {
 
                                             <?php if (mysqli_num_rows($recent_result) == 0): ?>
                                             <tr>
-                                                <td colspan="5" class="text-center">Belum ada data pasien</td>
+                                                <td colspan="9" class="text-center">Belum ada data pasien</td>
                                             </tr>
                                             <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Column -->
-                    <div class="col-lg-4">
-                        <!-- Quick Actions -->
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-bolt me-2"></i> Akses Cepat</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="list-group">
-                                    <?php if (hasRole('pendaftaran') || $_SESSION['role'] == 'super_admin'): ?>
-                                    <a href="dashboard.php?page=patients&filter=menunggu" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-user-clock text-warning me-2"></i> Pasien Menunggu
-                                        <span class="badge bg-warning float-end"><?php echo $waiting_pasien; ?></span>
-                                    </a>
-                                    <?php endif; ?>
-
-                                    <a href="evaluasi.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-comments text-primary me-2"></i> Feedback Pasien
-                                    </a>
-
-                                    <a href="laporan/cetak-pasien.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-print text-secondary me-2"></i> Cetak Laporan
-                                    </a>
-
-                                    <?php if ($_SESSION['role'] == 'super_admin'): ?>
-                                    <a href="artikel/add.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-edit text-primary me-2"></i> Buat Artikel Baru
-                                    </a>
-                                    <?php endif; ?>
-                                     <?php if ($_SESSION['role'] == 'super_admin'): ?>
-                                    <a href="users/list.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-user-cog text-secondary me-2"></i> Kelola User
-                                    </a>
-
-                                    <a href="pengaturan.php" class="list-group-item list-group-item-action">
-                                        <i class="fas fa-cog text-warning me-2"></i> Pengaturan Sistem
-                                    </a>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- System Info -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h6 class="mb-0"><i class="fas fa-info-circle me-2"></i> Informasi Sistem</h6>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-unstyled mb-0">
-                                    <li class="mb-2">
-                                        <i class="fas fa-server text-primary me-2"></i>
-                                        <strong>Versi Sistem:</strong> 1.0.0
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-database text-primary me-2"></i>
-                                        <strong>Database:</strong> MySQL
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="fas fa-calendar text-primary me-2"></i>
-                                        <strong>Hari Ini:</strong> <?php echo date('l, d F Y'); ?>
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-clock text-primary me-2"></i>
-                                        <strong>Waktu Server:</strong> <?php echo date('H:i:s'); ?>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -771,6 +763,41 @@ var mcuChart = new Chart(ctx, {
         plugins: {
             legend: {
                 position: 'bottom'
+            }
+        }
+    }
+});
+
+// Patient Arrival Chart
+var ctx2 = document.getElementById('arrivalChart').getContext('2d');
+var arrivalChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: [<?php echo '"' . implode('","', $arrival_dates) . '"'; ?>],
+        datasets: [{
+            label: 'Kedatangan Pasien',
+            data: [<?php echo implode(',', $arrival_counts); ?>],
+            borderColor: '#007bff',
+            backgroundColor: 'rgba(0, 123, 255, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
             }
         }
     }
