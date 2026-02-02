@@ -11,6 +11,7 @@ requireLogin();
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 $search = isset($_GET['search']) ? escape($_GET['search']) : '';
+$arrival_month = isset($_GET['arrival_month']) ? $_GET['arrival_month'] : date('Y-m');
 
 if ($page == 'patients') {
     // Check role permissions
@@ -106,16 +107,30 @@ if ($page == 'patients') {
     $unfit_total = mysqli_fetch_assoc($unfit_result)['total'];
     $fit_note_total = mysqli_fetch_assoc($fit_note_result)['total'];
 
-    // Patient arrivals last 7 days
+    // Patient arrivals by week for selected month
     $arrival_dates = [];
     $arrival_counts = [];
-    for ($i = 6; $i >= 0; $i--) {
-        $date = date('Y-m-d', strtotime("-$i days"));
-        $arrival_dates[] = date('d/m', strtotime($date));
-        $query = "SELECT COUNT(*) as count FROM pasien WHERE DATE(created_at) = '$date'";
+    $month_start = date('Y-m-01', strtotime($arrival_month));
+    $month_end = date('Y-m-t', strtotime($arrival_month));
+    $current_week_start = $month_start;
+    $week_number = 1;
+
+    while ($current_week_start <= $month_end) {
+        $week_end = date('Y-m-d', strtotime('next sunday', strtotime($current_week_start)));
+        if ($week_end > $month_end) {
+            $week_end = $month_end;
+        }
+
+        $week_label = 'Minggu ' . $week_number;
+        $arrival_dates[] = $week_label;
+
+        $query = "SELECT COUNT(*) as count FROM pasien WHERE DATE(created_at) BETWEEN '$current_week_start' AND '$week_end'";
         $result = mysqli_query($conn, $query);
         $count = mysqli_fetch_assoc($result)['count'];
         $arrival_counts[] = $count;
+
+        $current_week_start = date('Y-m-d', strtotime($week_end . ' +1 day'));
+        $week_number++;
     }
 }
 ?>
@@ -610,6 +625,21 @@ if ($page == 'patients') {
                     </div>
                 </div>
 
+                <!-- Month Filter for Patient Arrivals -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form method="GET" action="" class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label">Pilih Bulan untuk Statistik Kedatangan Pasien</label>
+                                <input type="month" class="form-control" name="arrival_month" value="<?php echo $arrival_month; ?>" onchange="this.form.submit()">
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- Charts and Recent Data -->
                 <div class="row">
                     <!-- Left Column - MCU Chart -->
@@ -622,7 +652,7 @@ if ($page == 'patients') {
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-8">
-                                        <canvas id="mcuChart" height="200"></canvas>
+                                        <canvas id="mcuChart" height="250"></canvas>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="list-group">
