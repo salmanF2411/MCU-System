@@ -94,10 +94,10 @@ if ($page == 'patients') {
                     ORDER BY p.created_at DESC LIMIT 5";
     $recent_result = mysqli_query($conn, $recent_query);
 
-    // MCU status stats - only count completed examinations (dokter_umum)
-    $fit_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'FIT' AND pemeriksa_role = 'dokter_umum'";
-    $unfit_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'UNFIT' AND pemeriksa_role = 'dokter_umum'";
-    $fit_note_query = "SELECT COUNT(DISTINCT pasien_id) as total FROM pemeriksaan WHERE status_mcu = 'FIT WITH NOTE' AND pemeriksa_role = 'dokter_umum'";
+    // MCU status stats - only count completed examinations (dokter_umum) for selected month
+    $fit_query = "SELECT COUNT(DISTINCT p.pasien_id) as total FROM pemeriksaan p JOIN pasien ps ON p.pasien_id = ps.id WHERE p.status_mcu = 'FIT' AND p.pemeriksa_role = 'dokter_umum' AND DATE(ps.created_at) LIKE '$arrival_month%'";
+    $unfit_query = "SELECT COUNT(DISTINCT p.pasien_id) as total FROM pemeriksaan p JOIN pasien ps ON p.pasien_id = ps.id WHERE p.status_mcu = 'UNFIT' AND p.pemeriksa_role = 'dokter_umum' AND DATE(ps.created_at) LIKE '$arrival_month%'";
+    $fit_note_query = "SELECT COUNT(DISTINCT p.pasien_id) as total FROM pemeriksaan p JOIN pasien ps ON p.pasien_id = ps.id WHERE p.status_mcu = 'FIT WITH NOTE' AND p.pemeriksa_role = 'dokter_umum' AND DATE(ps.created_at) LIKE '$arrival_month%'";
 
     $fit_result = mysqli_query($conn, $fit_query);
     $unfit_result = mysqli_query($conn, $unfit_query);
@@ -630,7 +630,7 @@ if ($page == 'patients') {
                     <div class="card-body">
                         <form method="GET" action="" class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label">Pilih Bulan untuk Statistik Kedatangan Pasien</label>
+                                <label class="form-label">Pilih Bulan untuk Statistik Kedatangan Pasien dan hasil mcu</label>
                                 <input type="month" class="form-control" name="arrival_month" value="<?php echo $arrival_month; ?>" onchange="this.form.submit()">
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
