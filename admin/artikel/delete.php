@@ -10,14 +10,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
     
     if ($id > 0) {
-        // Get article data to delete image
-        $query = "SELECT gambar FROM artikel WHERE id = $id";
+        // Get article data to delete image and video
+        $query = "SELECT gambar, video FROM artikel WHERE id = $id";
         $result = mysqli_query($conn, $query);
         $article = mysqli_fetch_assoc($result);
-        
+
         // Delete image file if exists
         if ($article && $article['gambar'] && file_exists('../../assets/' . $article['gambar'])) {
             unlink('../../assets/' . $article['gambar']);
+        }
+
+        // Delete video file if exists
+        if ($article && $article['video'] && file_exists('../../assets/' . $article['video'])) {
+            unlink('../../assets/' . $article['video']);
         }
         
         // Delete article
