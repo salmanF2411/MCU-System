@@ -37,7 +37,7 @@ $related_result = mysqli_query($conn, $related_query);
 <div class="container">
     <div class="row">
         <!-- Main Content -->
-        <div class="col-md-8">
+        <div class="col-md-8 mb-3">
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>">Beranda</a></li>
@@ -79,10 +79,10 @@ $related_result = mysqli_query($conn, $related_query);
                     <?php echo nl2br($article['konten']); ?>
                 </div>
                 
-                <footer class="mt-5 pt-4 border-top">
+                <footer class="mt-3 pt-3 border-top">
                     <div class="text-center">
                         <small class="text-muted">
-                            Artikel ini diterbitkan pada <?php echo formatDateIndo($article['tanggal_publish']); ?> oleh <?php echo $article['penulis']; ?>
+                            Artikel ini diterbitkan oleh <?php echo $article['penulis']; ?>
                         </small>
                     </div>
                 </footer>
