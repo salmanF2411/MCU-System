@@ -19,19 +19,23 @@ $setting = mysqli_fetch_assoc($result);
     <!-- About Content -->
     <div class="row mb-5">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-hospital me-2"></i><?php echo $setting['nama_klinik']; ?></h4>
+                </div>
                 <div class="card-body">
-                    <h3 class="card-title"><?php echo $setting['nama_klinik']; ?></h3>
-                    <p class="card-text">
+                    <p class="card-text" style="text-align: justify; line-height: 1.8; color: #555;">
                         <?php echo $setting['tentang'] ?: 'Kami adalah klinik Medical Check Up profesional yang berkomitmen untuk memberikan layanan pemeriksaan kesehatan terbaik bagi perusahaan dan individu. Dengan tim dokter spesialis berpengalaman dan peralatan medis terkini, kami siap membantu menjaga kesehatan Anda.'; ?>
                     </p>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informasi Kontak</h4>
+                </div>
                 <div class="card-body">
-                    <h4 class="card-title">Informasi Kontak</h4>
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <i class="fas fa-hospital me-2 text-primary"></i>
@@ -67,9 +71,10 @@ $setting = mysqli_fetch_assoc($result);
                     <h4 class="mb-0"><i class="fas fa-eye me-2"></i> Visi</h4>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">
-                        Menjadi klinik Medical Check Up terdepan yang memberikan layanan kesehatan berkualitas tinggi dengan standar internasional untuk mendukung kesehatan masyarakat dan produktivitas kerja.
-                    </p>
+                    <ul>
+                        <li>Mewujudkan Klinik yang Islami, terbaik pilihan seluruh masyarakat Cianjur</li>
+                        <li>Memajukan kehidupan masyarakat sebagai aktualisasi Rahmatan lil'alamin.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -80,11 +85,11 @@ $setting = mysqli_fetch_assoc($result);
                 </div>
                 <div class="card-body">
                     <ul>
-                        <li>Menyediakan layanan MCU yang lengkap dan akurat</li>
-                        <li>Menggunakan peralatan medis terkini dan terstandar</li>
-                        <li>Memiliki tim medis profesional dan berpengalaman</li>
-                        <li>Memberikan pelayanan yang cepat dan ramah</li>
-                        <li>Mendukung program kesehatan perusahaan</li>
+                        <li>Melaksanakan dakwah dalam pelayanan kesehatan</li>
+                        <li>Memberikan pelayanan yang profesional terhadap seluruh masyarakat tanpa melupakan fungsi sosial keberadaan Klinik Alvarisha.</li>
+                        <li>Mengutamakan keselamatan dan kepuasan pasien</li>
+                        <li>Mengikuti perkembangan ilmu dalam rangka meningkatkan pengetahuan dan keterampilan karyawan.</li>
+                        <li>Melaksanakan pelayanan sesuai standar akreditasi klinik.</li>
                     </ul>
                 </div>
             </div>
