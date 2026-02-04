@@ -630,7 +630,7 @@ if ($page == 'patients') {
                     <div class="card-body">
                         <form method="GET" action="" class="row g-3">
                             <div class="col-md-8">
-                                <label class="form-label">Pilih Bulan untuk Statistik Kedatangan Pasien dan Hasil MCU</label>
+                                <label class="form-label"><i class="fas fa-calendar-alt me-2"></i>Pilih Bulan untuk Statistik Kedatangan Pasien dan Hasil MCU</label>
                                 <input type="month" class="form-control" name="arrival_month" value="<?php echo $arrival_month; ?>" onchange="this.form.submit()">
                             </div>
                             <div class="col-md-4 d-flex align-items-end">
