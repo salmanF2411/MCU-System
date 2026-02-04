@@ -171,11 +171,11 @@ require_once 'functions.php';
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>"><i class="fas fa-home"></i> Beranda</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>/home-visit.php"><i class="fas fa-house-user"></i> Home Visit</a>
+                     <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/artikel.php"><i class="fas fa-newspaper"></i> Artikel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>/artikel.php"><i class="fas fa-newspaper"></i> Artikel</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/home-visit.php"><i class="fas fa-house-user"></i> Home Visit</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>/daftar-mcu.php"><i class="fas fa-edit"></i> Daftar MCU</a>

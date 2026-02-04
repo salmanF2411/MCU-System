@@ -26,8 +26,8 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
             <div class="services-gallery" style="overflow-x: auto; white-space: nowrap; padding-bottom: 20px;">
                 <div class="d-flex" style="gap: 20px;">
                     <?php foreach ($services as $service): ?>
-                    <div class="service-card" style="min-width: 300px; display: inline-block;">
-                        <div class="card h-100 shadow-sm">
+                    <div class="service-card" style="min-width: 300px; max-width: 300px; display: inline-block; vertical-align: top; cursor: pointer;">
+                        <div class="card shadow-sm h-100">
                             <?php if ($service['gambar']): ?>
                             <img src="<?php echo ASSETS_URL . '/' . $service['gambar']; ?>"
                                  class="card-img-top" alt="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
@@ -40,19 +40,25 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             <?php endif; ?>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title"><?php echo htmlspecialchars($service['judul_layanan']); ?></h5>
-                                <p class="card-text flex-grow-1">
-                                    <?php echo htmlspecialchars(substr($service['deskripsi'], 0, 100)) . '...'; ?>
+                                <p class="card-text" style="flex-grow: 1; word-wrap: break-word; overflow-wrap: break-word; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">
+                                    <?php echo htmlspecialchars($service['deskripsi']); ?>
                                 </p>
                                 <div class="mt-auto">
                                     <p class="text-success fw-bold mb-2">
                                         Rp <?php echo number_format($service['harga'], 0, ',', '.'); ?>
                                     </p>
-                                    <button type="button" class="btn btn-primary w-100 select-service"
-                                            data-id="<?php echo $service['id_setting']; ?>"
-                                            data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
-                                            data-price="<?php echo $service['harga']; ?>">
-                                        Pilih Layanan
-                                    </button>
+                                    <div class="d-grid gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm view-detail"
+                                                data-id="<?php echo $service['id_setting']; ?>">
+                                            <i class="fas fa-eye me-1"></i>Lihat Detail
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm select-service"
+                                                data-id="<?php echo $service['id_setting']; ?>"
+                                                data-title="<?php echo htmlspecialchars($service['judul_layanan']); ?>"
+                                                data-price="<?php echo $service['harga']; ?>">
+                                            Pilih Layanan
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -190,9 +196,54 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
 </div>
 
 <script>
+// Check for pre-selected service from detail page
+document.addEventListener('DOMContentLoaded', function() {
+    const selectedService = sessionStorage.getItem('selectedService');
+    if (selectedService) {
+        const service = JSON.parse(selectedService);
+
+        // Set select value
+        document.getElementById('serviceSelect').value = service.id;
+
+        // Update price display
+        updatePrice();
+
+        // Scroll to form
+        document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+
+        // Highlight selected service
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.classList.remove('border-primary');
+        });
+        document.querySelector(`[data-id="${service.id}"]`).closest('.service-card').classList.add('border-primary');
+
+        // Clear sessionStorage
+        sessionStorage.removeItem('selectedService');
+    }
+});
+
+// View detail button
+document.querySelectorAll('.view-detail').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent card click
+        const serviceId = this.getAttribute('data-id');
+        window.location.href = `home-visit-detail.php?id=${serviceId}`;
+    });
+});
+
+// Service card click (goes to detail)
+document.querySelectorAll('.service-card').forEach(card => {
+    card.addEventListener('click', function() {
+        const serviceId = this.querySelector('.view-detail').getAttribute('data-id');
+        window.location.href = `home-visit-detail.php?id=${serviceId}`;
+    });
+});
+
 // Service selection from gallery
 document.querySelectorAll('.select-service').forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent card click
+
         const serviceId = this.getAttribute('data-id');
         const serviceTitle = this.getAttribute('data-title');
         const servicePrice = this.getAttribute('data-price');
