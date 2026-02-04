@@ -70,9 +70,9 @@ $settings = mysqli_fetch_assoc($result);
         </div>
         
         <?php
-        $query = "SELECT * FROM artikel 
-                  WHERE status = 'published' 
-                  ORDER BY tanggal_publish DESC 
+        $query = "SELECT * FROM artikel
+                  WHERE status = 'published'
+                  ORDER BY created_at DESC
                   LIMIT 3";
         $result = mysqli_query($conn, $query);
         

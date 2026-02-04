@@ -34,7 +34,7 @@ $total_pages = ceil($total_articles / $limit);
 // Get articles
 $query = "SELECT * FROM artikel
           WHERE status = 'published'" . $search_condition . "
-          ORDER BY tanggal_publish DESC
+          ORDER BY created_at DESC
           LIMIT $limit OFFSET $offset";
 $stmt = mysqli_prepare($conn, $query);
 if (!empty($search_params)) {
