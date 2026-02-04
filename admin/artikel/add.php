@@ -33,15 +33,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Handle image upload
     $gambar = '';
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
-        $upload_result = uploadFile($_FILES['gambar'], 'uploads/artikel/');
+        $upload_result = uploadFile($_FILES['gambar'], 'uploads/artikel/', 'image');
         if (isset($upload_result['success'])) {
             $gambar = $upload_result['success'];
         }
     }
 
+    // Handle video upload
+    $video = '';
+    if (isset($_FILES['video']) && $_FILES['video']['error'] == 0) {
+        $upload_result = uploadFile($_FILES['video'], 'uploads/artikel/', 'video');
+        if (isset($upload_result['success'])) {
+            $video = $upload_result['success'];
+        }
+    }
+
     // Insert article
-    $query = "INSERT INTO artikel (judul, slug, konten, gambar, kategori, penulis, tanggal_publish, status)
-              VALUES ('$judul', '$slug', '$konten', '$gambar', '$kategori', '$penulis', '$tanggal_publish', '$status')";
+    $query = "INSERT INTO artikel (judul, slug, konten, gambar, video, kategori, penulis, tanggal_publish, status)
+              VALUES ('$judul', '$slug', '$konten', '$gambar', '$video', '$kategori', '$penulis', '$tanggal_publish', '$status')";
 
     if (mysqli_query($conn, $query)) {
         $_SESSION['success'] = "Artikel berhasil ditambahkan!";
@@ -141,12 +150,21 @@ include '../../includes/admin-header.php';
                                         <!-- Featured Image -->
                                         <div class="mb-3">
                                             <label class="form-label">Gambar Utama</label>
-                                            <input type="file" class="form-control" name="gambar" 
+                                            <input type="file" class="form-control" name="gambar"
                                                    accept="image/*">
                                             <small class="text-muted">Max. 5MB, format: JPG, PNG, GIF</small>
                                             <div id="imagePreview" class="mt-2"></div>
                                         </div>
-                                        
+
+                                        <!-- Featured Video -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Video Utama</label>
+                                            <input type="file" class="form-control" name="video"
+                                                   accept="video/*">
+                                            <small class="text-muted">Max. 50MB, format: MP4, AVI, MOV, WMV, FLV</small>
+                                            <div id="videoPreview" class="mt-2"></div>
+                                        </div>
+
                                         <!-- Submit Button -->
                                         <div class="d-grid">
                                             <button type="submit" class="btn btn-success">
@@ -191,7 +209,7 @@ tinymce.init({
 document.querySelector('input[name="gambar"]').addEventListener('change', function(e) {
     const preview = document.getElementById('imagePreview');
     const file = e.target.files[0];
-    
+
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -200,6 +218,29 @@ document.querySelector('input[name="gambar"]').addEventListener('change', functi
                     <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;">
                     <div class="mt-2 text-center">
                         <small class="text-muted">Preview</small>
+                    </div>
+                </div>
+            `;
+        }
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = '';
+    }
+});
+
+// Simple video preview
+document.querySelector('input[name="video"]').addEventListener('change', function(e) {
+    const preview = document.getElementById('videoPreview');
+    const file = e.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `
+                <div class="border p-2 rounded">
+                    <video src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;" controls></video>
+                    <div class="mt-2 text-center">
+                        <small class="text-muted">Preview Video</small>
                     </div>
                 </div>
             `;

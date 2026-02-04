@@ -61,27 +61,37 @@ function getSetting($key) {
 /**
  * Upload file
  */
-function uploadFile($file, $folder = 'uploads/') {
+function uploadFile($file, $folder = 'uploads/', $type = 'image') {
     $target_dir = __DIR__ . '/../assets/' . $folder;
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
-    
+
     $filename = time() . '_' . basename($file['name']);
     $target_file = $target_dir . $filename;
     $file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    
-    // Check file size (max 5MB)
-    if ($file['size'] > 5000000) {
-        return ['error' => 'File terlalu besar. Maksimal 5MB'];
+
+    // Check file size based on type
+    if ($type == 'video') {
+        $max_size = 50000000; // 50MB for videos
+        $allowed_types = ['mp4', 'avi', 'mov', 'wmv', 'flv'];
+        $error_msg = 'File video terlalu besar. Maksimal 50MB';
+        $format_error = 'Format video tidak diizinkan. Gunakan MP4, AVI, MOV, WMV, atau FLV';
+    } else {
+        $max_size = 5000000; // 5MB for images
+        $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+        $error_msg = 'File terlalu besar. Maksimal 5MB';
+        $format_error = 'Format file tidak diizinkan';
     }
-    
-    // Allow certain file formats
-    $allowed_types = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+
+    if ($file['size'] > $max_size) {
+        return ['error' => $error_msg];
+    }
+
     if (!in_array($file_type, $allowed_types)) {
-        return ['error' => 'Format file tidak diizinkan'];
+        return ['error' => $format_error];
     }
-    
+
     if (move_uploaded_file($file['tmp_name'], $target_file)) {
         return ['success' => $folder . $filename];
     } else {

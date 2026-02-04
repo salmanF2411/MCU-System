@@ -41,9 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     // Handle image upload
     $gambar = $article['gambar']; // Keep existing image
-    
+
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
-        $upload_result = uploadFile($_FILES['gambar'], 'uploads/artikel/');
+        $upload_result = uploadFile($_FILES['gambar'], 'uploads/artikel/', 'image');
         if (isset($upload_result['success'])) {
             // Delete old image if exists
             if ($gambar && file_exists('../../assets/' . $gambar)) {
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $gambar = $upload_result['success'];
         }
     }
-    
+
     // Delete image if checkbox is checked
     if (isset($_POST['delete_image']) && $_POST['delete_image'] == '1') {
         if ($gambar && file_exists('../../assets/' . $gambar)) {
@@ -60,13 +60,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $gambar = '';
     }
-    
+
+    // Handle video upload
+    $video = $article['video']; // Keep existing video
+
+    if (isset($_FILES['video']) && $_FILES['video']['error'] == 0) {
+        $upload_result = uploadFile($_FILES['video'], 'uploads/artikel/', 'video');
+        if (isset($upload_result['success'])) {
+            // Delete old video if exists
+            if ($video && file_exists('../../assets/' . $video)) {
+                unlink('../../assets/' . $video);
+            }
+            $video = $upload_result['success'];
+        }
+    }
+
+    // Delete video if checkbox is checked
+    if (isset($_POST['delete_video']) && $_POST['delete_video'] == '1') {
+        if ($video && file_exists('../../assets/' . $video)) {
+            unlink('../../assets/' . $video);
+        }
+        $video = '';
+    }
+
     // Update article
-    $query = "UPDATE artikel SET 
+    $query = "UPDATE artikel SET
               judul = '$judul',
               slug = '$slug',
               konten = '$konten',
               gambar = '$gambar',
+              video = '$video',
               kategori = '$kategori',
               penulis = '$penulis',
               tanggal_publish = '$tanggal_publish',
@@ -185,12 +208,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <!-- New Image -->
                                         <div class="mb-3">
                                             <label class="form-label"><?php echo $article['gambar'] ? 'Ganti Gambar' : 'Tambah Gambar'; ?></label>
-                                            <input type="file" class="form-control" name="gambar" 
+                                            <input type="file" class="form-control" name="gambar"
                                                    accept="image/*">
                                             <small class="text-muted">Max. 5MB, format: JPG, PNG, GIF</small>
                                             <div id="imagePreview" class="mt-2"></div>
                                         </div>
-                                        
+
+                                        <!-- Current Video -->
+                                        <?php if ($article['video']): ?>
+                                        <div class="mb-3">
+                                            <label class="form-label">Video Saat Ini</label>
+                                            <div class="border p-2 rounded text-center">
+                                                <video src="<?php echo ASSETS_URL . '/' . $article['video']; ?>"
+                                                       class="img-fluid rounded"
+                                                       style="max-height: 150px;" controls></video>
+                                                <div class="mt-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                               name="delete_video" value="1" id="deleteVideo">
+                                                        <label class="form-check-label text-danger" for="deleteVideo">
+                                                            Hapus video ini
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php endif; ?>
+
+                                        <!-- New Video -->
+                                        <div class="mb-3">
+                                            <label class="form-label"><?php echo $article['video'] ? 'Ganti Video' : 'Tambah Video'; ?></label>
+                                            <input type="file" class="form-control" name="video"
+                                                   accept="video/*">
+                                            <small class="text-muted">Max. 50MB, format: MP4, AVI, MOV, WMV, FLV</small>
+                                            <div id="videoPreview" class="mt-2"></div>
+                                        </div>
+
                                         <!-- Article Stats -->
                                         <div class="mb-3">
                                             <div class="border p-3 rounded bg-light">
@@ -265,6 +318,44 @@ if (deleteCheckbox) {
     deleteCheckbox.addEventListener('change', function() {
         if (this.checked) {
             if (!confirm('Yakin ingin menghapus gambar ini?')) {
+                this.checked = false;
+            }
+        }
+    });
+}
+
+// Video preview
+const videoInput = document.querySelector('input[name="video"]');
+if (videoInput) {
+    videoInput.addEventListener('change', function(e) {
+        const preview = document.getElementById('videoPreview');
+        const file = e.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.innerHTML = `
+                    <div class="border p-2 rounded">
+                        <video src="${e.target.result}" class="img-fluid rounded" style="max-height: 200px;" controls></video>
+                        <div class="mt-2 text-center">
+                            <small class="text-muted">Preview Video Baru</small>
+                        </div>
+                    </div>
+                `;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
+        }
+    });
+}
+
+// Delete video checkbox
+const deleteVideoCheckbox = document.getElementById('deleteVideo');
+if (deleteVideoCheckbox) {
+    deleteVideoCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            if (!confirm('Yakin ingin menghapus video ini?')) {
                 this.checked = false;
             }
         }

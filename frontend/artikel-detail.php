@@ -60,9 +60,18 @@ $related_result = mysqli_query($conn, $related_query);
                     </div>
                     
                     <?php if (!empty($article['gambar'])): ?>
-                        <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>" 
-                             class="img-fluid rounded mb-4" 
+                        <img src="<?php echo ASSETS_URL . '/' . $article['gambar']; ?>"
+                             class="img-fluid rounded mb-4"
                              alt="<?php echo htmlspecialchars($article['judul']); ?>">
+                    <?php endif; ?>
+
+                    <?php if (!empty($article['video'])): ?>
+                        <video src="<?php echo ASSETS_URL . '/' . $article['video']; ?>"
+                               class="img-fluid rounded mb-4"
+                               controls
+                               style="max-width: 100%; height: auto;">
+                            Your browser does not support the video tag.
+                        </video>
                     <?php endif; ?>
                 </header>
 
