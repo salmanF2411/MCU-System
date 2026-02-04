@@ -1,14 +1,29 @@
-# TODO: Add Video Upload to Article Section
+# Home Visit Feature Implementation
 
-## Tasks
+## Database
 
-- [ ] Modify `includes/functions.php` to support video uploads
-- [ ] Update `admin/artikel/add.php` to include video upload functionality
-- [ ] Update `admin/artikel/edit.php` to include video upload functionality
-- [ ] Update `frontend/artikel-detail.php` to display videos
-- [ ] Test the implementation
+- [x] Add home_visit_setting and home_visit tables to mcu_system.sql
 
-## Progress
+## Admin Pages
 
-- [x] Plan confirmed by user
-- [ ] Implementation started
+- [x] Create admin/home-visit/ directory
+- [x] Create admin/home-visit/list.php
+- [x] Create admin/home-visit/add.php
+- [x] Create admin/home-visit/edit.php
+- [x] Create admin/home-visit/delete.php
+
+## Frontend Pages
+
+- [x] Create frontend/home-visit.php
+
+## Navigation Updates
+
+- [x] Update admin/includes/admin-nav.php to add home visit menu
+- [x] Update includes/header.php to add home visit link
+
+## Testing
+
+- [ ] Run SQL to create tables
+- [ ] Test admin functionality
+- [ ] Test frontend functionality
+- [ ] Test image uploads

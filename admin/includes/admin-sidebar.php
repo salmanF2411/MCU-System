@@ -124,6 +124,24 @@ $is_patients_page = ($current_page == 'dashboard.php' && isset($_GET['page']) &&
             </li>
 
             <li class="nav-item mt-2">
+                <small class="text-muted ps-3">HOME VISIT</small>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page == 'list.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
+                   href="<?php echo ADMIN_URL; ?>/home-visit/list.php">
+                    <i class="fas fa-home"></i> Manajemen Home Visit
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page == 'process.php' && strpos($_SERVER['REQUEST_URI'], '/home-visit/') !== false) ? 'active' : ''; ?>"
+                   href="<?php echo ADMIN_URL; ?>/home-visit/process.php">
+                    <i class="fas fa-cogs"></i> Proses Home Visit
+                </a>
+            </li>
+
+            <li class="nav-item mt-2">
                 <small class="text-muted ps-3">PENGATURAN</small>
             </li>
 

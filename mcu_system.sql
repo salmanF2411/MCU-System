@@ -175,6 +175,33 @@ CREATE TABLE pengaturan (
 INSERT INTO pengaturan (nama_klinik, alamat, telepon, email, whatsapp) VALUES
 ('Klinik Sehat Mandiri', 'Jl. Kesehatan No. 123, Jakarta Pusat', '(021) 1234567', 'info@kliniksehat.com', '081234567890');
 
+-- Tabel Pengaturan Home Visit
+CREATE TABLE home_visit_setting (
+    id_setting INT AUTO_INCREMENT PRIMARY KEY,
+    judul_layanan VARCHAR(100) NOT NULL,
+    deskripsi TEXT,
+    harga DECIMAL(12,2) NOT NULL,
+    gambar VARCHAR(255) NOT NULL,
+    status ENUM('aktif','nonaktif') DEFAULT 'aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Tabel Home Visit
+CREATE TABLE home_visit (
+    id_visit INT AUTO_INCREMENT PRIMARY KEY,
+    nama_pasien VARCHAR(100) NOT NULL,
+    keluhan TEXT NOT NULL,
+    id_setting INT NOT NULL,
+    harga DECIMAL(12,2) NOT NULL,
+    status ENUM('pending','diproses','selesai','batal') DEFAULT 'pending',
+    tanggal_kunjungan DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (id_setting)
+    REFERENCES home_visit_setting(id_setting)
+    ON DELETE CASCADE
+);
 
 ALTER TABLE pengaturan ADD COLUMN hero_image VARCHAR(255) DEFAULT NULL;
 
