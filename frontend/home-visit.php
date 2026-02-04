@@ -40,9 +40,6 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                             <?php endif; ?>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title"><?php echo htmlspecialchars($service['judul_layanan']); ?></h5>
-                                <p class="card-text" style="flex-grow: 1; word-wrap: break-word; overflow-wrap: break-word; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">
-                                    <?php echo htmlspecialchars($service['deskripsi']); ?>
-                                </p>
                                 <div class="mt-auto">
                                     <p class="text-success fw-bold mb-2">
                                         Rp <?php echo number_format($service['harga'], 0, ',', '.'); ?>
