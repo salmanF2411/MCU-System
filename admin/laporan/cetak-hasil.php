@@ -257,7 +257,7 @@ if ($id > 0) {
     $pdf->RowResult('D. Suhu', $suhu . ' C', checkNormal($suhu, 'suhu'));
     
     $pdf->RowResult('E. Tinggi Badan', ($data['tinggi_badan'] ?? '-') . ' cm');
-    $pdf->RowResult('F. Berat Badan', ($data['berat_badan'] ?? '-') . ' kg');
+    $pdf->RowResult('F. Berat Badan', ($data['berat_badan'] ?? '-') . ' kg', isBMIAbnormal($data['berat_badan'] ?? 0, $data['tinggi_badan'] ?? 0));
     
     // G. Header Fisik
     $pdf->SetFont('Arial','B',9);

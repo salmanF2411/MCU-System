@@ -480,7 +480,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                         </tr>
                                                         <tr>
                                                             <th>Berat Badan</th>
-                                                            <td><?php echo $exam['berat_badan'] ? $exam['berat_badan'] . ' kg' : '-'; ?></td>
+                                                            <td class="<?php echo isBMIAbnormal($exam['berat_badan'], $exam['tinggi_badan']) ? 'text-danger fw-bold' : ''; ?>"><?php echo $exam['berat_badan'] ? $exam['berat_badan'] . ' kg' : '-'; ?></td>
                                                         </tr>
                                                     </table>
                                                 </div>

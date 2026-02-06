@@ -240,6 +240,25 @@ function getStatusClass($status) {
 }
 
 /**
+ * Calculate BMI
+ */
+function calculateBMI($weight, $height) {
+    if (!$weight || !$height || $height == 0) return null;
+    $height_m = $height / 100; // convert cm to m
+    return $weight / ($height_m * $height_m);
+}
+
+/**
+ * Check if BMI is abnormal (underweight or overweight)
+ */
+function isBMIAbnormal($weight, $height) {
+    $bmi = calculateBMI($weight, $height);
+    if (!$bmi) return false;
+    // Normal BMI range: 18.5 - 24.9
+    return $bmi < 18.5 || $bmi > 24.9;
+}
+
+/**
  * Get CSS class for description display (if has content = red)
  */
 function getDescriptionClass($value) {
