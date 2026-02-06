@@ -643,7 +643,7 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                                     <td><?php echo $exam['operasi'] ? 'Ya' : 'Tidak'; ?></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Keterangan Operasi</th>
+                                                                    <th>Keterangan Operasi/Penyakit Perut</th>
                                                                     <td class="<?php echo getDescriptionClass($exam['keterangan_operasi']); ?>"><?php echo $exam['keterangan_operasi'] ?: '-'; ?></td>
                                                                 </tr>
                                                                 <tr>

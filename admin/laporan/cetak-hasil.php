@@ -264,14 +264,60 @@ if ($id > 0) {
     $pdf->Cell(190, 6, '  G. Pemeriksaan Fisik Tubuh (Head to Toe)', 1, 1, 'L');
     
     // H - N (Fisik)
-    $gigi = ($data['gigi_keterangan'] ?? '') ?: ($data['gigi_status'] ?? 'Tidak Ada Kelainan');
-    $pdf->RowResult('H. Kepala (Gigi)', $gigi, checkNormal($gigi, 'fisik'));
+    // Dinamis untuk H. Kepala berdasarkan keterangan yang ada
+    $kepala_parts = [];
+    if (!empty($data['gigi_keterangan'])) {
+        $kepala_parts['Gigi'] = $data['gigi_keterangan'];
+    }
+    if (!empty($data['hidung_keterangan'])) {
+        $kepala_parts['Hidung'] = $data['hidung_keterangan'];
+    }
+    if (!empty($data['tenggorokan_keterangan'])) {
+        $kepala_parts['Tenggorokan'] = $data['tenggorokan_keterangan'];
+    }
+    if (!empty($data['telinga_keterangan'])) {
+        $kepala_parts['Telinga'] = $data['telinga_keterangan'];
+    }
+
+    $kepala_label = 'H. Kepala' . (!empty($kepala_parts) ? ' (' . implode(' + ', array_keys($kepala_parts)) . ')' : '');
+    $kepala_value = implode(' + ', array_values($kepala_parts)) ?: 'Tidak Ada Kelainan';
+
+    // Cek abnormal berdasarkan semua keterangan
+    $kepala_abnormal = false;
+    foreach ($kepala_parts as $part => $ket) {
+        if (checkNormal($ket, 'fisik')) {
+            $kepala_abnormal = true;
+            break;
+        }
+    }
+
+    $pdf->RowResult($kepala_label, $kepala_value, $kepala_abnormal);
     
     $leher = ($data['leher_kgb'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('I. Leher', $leher, checkNormal($leher, 'fisik'));
-    
-    $dada = (!empty($data['auskultasi_keterangan'])) ? $data['auskultasi_keterangan'] : 'Tidak Ada Kelainan';
-    $pdf->RowResult('J. Dada', $dada, checkNormal($dada, 'fisik'));
+
+    // Dinamis untuk J. Dada berdasarkan keterangan yang ada
+    $thorax_parts = [];
+    if (!empty($data['auskultasi_keterangan'])) {
+        $thorax_parts['Paru - Paru'] = $data['auskultasi_keterangan'];
+    }
+    if (!empty($data['jantung_keterangan'])) {
+        $thorax_parts['Jantung'] = $data['jantung_keterangan'];
+    }
+
+    $thorax_label = 'J. Dada' . (!empty($thorax_parts) ? ' (' . implode(' + ', array_keys($thorax_parts)) . ')' : '');
+    $thorax_value = implode(' + ', array_values($thorax_parts)) ?: 'Tidak Ada Kelainan';
+
+    // Cek abnormal berdasarkan semua keterangan
+    $thorax_abnormal = false;
+    foreach ($thorax_parts as $part => $ket) {
+        if (checkNormal($ket, 'fisik')) {
+            $thorax_abnormal = true;
+            break;
+        }
+    }
+
+    $pdf->RowResult($thorax_label, $thorax_value, $thorax_abnormal);
       
     $perut = ($data['keterangan_operasi'] ?? 'Tidak Ada Kelainan');
     $pdf->RowResult('K. Perut', $perut, checkNormal($perut, 'fisik'));
