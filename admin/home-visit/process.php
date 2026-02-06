@@ -105,12 +105,12 @@ $result = mysqli_query($conn, $query);
                                     <tr>
                                         <th width="50">#</th>
                                         <th>Nama Pasien</th>
+                                        <th>No. HP</th>
                                         <th>Layanan</th>
                                         <th>Keluhan</th>
                                         <th>Alamat</th>
                                         <th width="120">Harga</th>
                                         <th width="100">Status</th>
-                                        <th width="120">Tanggal Daftar</th>
                                         <th width="120">Tanggal Kunjungan</th>
                                         <th width="150">Aksi</th>
                                     </tr>
@@ -123,6 +123,7 @@ $result = mysqli_query($conn, $query);
                                             <td>
                                                 <strong><?php echo htmlspecialchars($registration['nama_pasien']); ?></strong>
                                             </td>
+                                            <td><?php echo htmlspecialchars($registration['no_hp']); ?></td>
                                             <td><?php echo htmlspecialchars($registration['judul_layanan']); ?></td>
                                             <td>
                                                 <?php echo substr(strip_tags($registration['keluhan']), 0, 50) . '...'; ?>
@@ -148,9 +149,6 @@ $result = mysqli_query($conn, $query);
                                                 <span class="badge <?php echo $status_class; ?>">
                                                     <?php echo ucfirst($registration['status']); ?>
                                                 </span>
-                                            </td>
-                                            <td>
-                                                <small><?php echo formatDateIndo($registration['created_at'], true); ?></small>
                                             </td>
                                             <td>
                                                 <small><?php echo $registration['tanggal_kunjungan'] ? formatDateIndo($registration['tanggal_kunjungan']) : '-'; ?></small>

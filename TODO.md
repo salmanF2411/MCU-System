@@ -1,13 +1,8 @@
-# TODO: Add Address Field to Home Visit
+# TODO: Add Phone Number Field to Home Visit
 
 ## Tasks
 
-- [x] Add address input field to frontend/home-visit.php form
-- [x] Update frontend/process-home-visit.php to save address to database
-- [x] Update admin/home-visit/get-detail.php to display address in detail modal
-- [x] Add address column to admin/home-visit/process.php list view
-- [x] Test the implementation
-
-## Status
-
-- Current: All implementation completed successfully
+- [x] Add phone number input field to frontend/home-visit.php booking form (mandatory)
+- [x] Update frontend/process-home-visit.php to validate and insert phone number into database
+- [x] Update admin/home-visit/process.php to display phone number column in the table
+- [x] Update admin/home-visit/get-detail.php to show phone number in the detail modal

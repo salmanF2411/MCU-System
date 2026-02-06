@@ -89,13 +89,19 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 <div class="card-body">
                     <form id="bookingForm">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Nama Pasien *</label>
                                     <input type="text" class="form-control" name="nama_pasien" required>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">No. HP *</label>
+                                    <input type="tel" class="form-control" name="no_hp" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="mb-3">
                                     <label class="form-label">Layanan yang Dipilih *</label>
                                     <select class="form-select" name="id_setting" id="serviceSelect" required>

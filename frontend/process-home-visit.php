@@ -12,6 +12,7 @@ try {
 
     // Get and sanitize input
     $nama_pasien = escape($_POST['nama_pasien'] ?? '');
+    $no_hp = escape($_POST['no_hp'] ?? '');
     $keluhan = escape($_POST['keluhan'] ?? '');
     $alamat_visit = escape($_POST['alamat_visit'] ?? '');
     $id_setting = (int)($_POST['id_setting'] ?? 0);
@@ -20,6 +21,10 @@ try {
     // Validate required fields
     if (empty($nama_pasien)) {
         throw new Exception('Nama pasien wajib diisi');
+    }
+
+    if (empty($no_hp)) {
+        throw new Exception('No. HP wajib diisi');
     }
 
     if (empty($keluhan)) {
@@ -46,8 +51,8 @@ try {
     $harga = $service['harga'];
 
     // Insert booking
-    $query = "INSERT INTO home_visit (nama_pasien, keluhan, alamat_visit, id_setting, harga, tanggal_kunjungan)
-              VALUES ('$nama_pasien', '$keluhan', '$alamat_visit', $id_setting, $harga, " .
+    $query = "INSERT INTO home_visit (nama_pasien, no_hp, keluhan, alamat_visit, id_setting, harga, tanggal_kunjungan)
+              VALUES ('$nama_pasien', '$no_hp', '$keluhan', '$alamat_visit', $id_setting, $harga, " .
               ($tanggal_kunjungan ? "'$tanggal_kunjungan'" : "NULL") . ")";
 
     if (!mysqli_query($conn, $query)) {

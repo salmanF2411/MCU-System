@@ -34,6 +34,10 @@ if (!$registration) {
                 <td><?php echo htmlspecialchars($registration['nama_pasien']); ?></td>
             </tr>
             <tr>
+                <td><strong>No. HP:</strong></td>
+                <td><?php echo htmlspecialchars($registration['no_hp']); ?></td>
+            </tr>
+            <tr>
                 <td><strong>Keluhan:</strong></td>
                 <td><?php echo nl2br(htmlspecialchars($registration['keluhan'])); ?></td>
             </tr>
