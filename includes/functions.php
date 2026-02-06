@@ -186,8 +186,8 @@ function isAbnormal($parameter, $value) {
         case 'suhu':
             // Normal temperature: 36.5 - 37.5 °C
             $temp = floatval($value);
-            return $temp > 37.5;
-            // return $temp < 36.5 || $temp > 37.5;
+            // return $temp > 37.5;
+            return $temp < 36.5 || $temp > 37.5;
 
         case 'tekanan_darah':
             // Normal blood pressure: systolic 90-140, diastolic 60-90
@@ -202,8 +202,8 @@ function isAbnormal($parameter, $value) {
         case 'nadi':
             // Normal pulse: 60-100 bpm
             $pulse = intval($value);
-            return $pulse > 100 || $pulse < 60;
-            // return $pulse < 60 || $pulse > 100;
+            // return $pulse > 100 || $pulse < 60;
+            return $pulse < 60 || $pulse > 100;
 
         case 'respirasi':
             // Normal respiration: 12-20 breaths/min
