@@ -117,6 +117,12 @@ $services = mysqli_fetch_all($result, MYSQLI_ASSOC);
                                       placeholder="Jelaskan keluhan atau gejala yang Anda alami..."></textarea>
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label">Alamat Lengkap *</label>
+                            <textarea class="form-control" name="alamat_visit" rows="3" required
+                                      placeholder="Masukkan alamat lengkap tempat kunjungan..."></textarea>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">

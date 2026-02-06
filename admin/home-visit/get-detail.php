@@ -38,6 +38,10 @@ if (!$registration) {
                 <td><?php echo nl2br(htmlspecialchars($registration['keluhan'])); ?></td>
             </tr>
             <tr>
+                <td><strong>Alamat:</strong></td>
+                <td><?php echo nl2br(htmlspecialchars($registration['alamat_visit'])); ?></td>
+            </tr>
+            <tr>
                 <td><strong>Tanggal Kunjungan:</strong></td>
                 <td><?php echo $registration['tanggal_kunjungan'] ? formatDateIndo($registration['tanggal_kunjungan']) : 'Tidak ditentukan'; ?></td>
             </tr>

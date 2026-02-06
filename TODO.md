@@ -1,29 +1,13 @@
-# Home Visit Feature Implementation
+# TODO: Add Address Field to Home Visit
 
-## Database
+## Tasks
 
-- [x] Add home_visit_setting and home_visit tables to mcu_system.sql
+- [x] Add address input field to frontend/home-visit.php form
+- [x] Update frontend/process-home-visit.php to save address to database
+- [x] Update admin/home-visit/get-detail.php to display address in detail modal
+- [x] Add address column to admin/home-visit/process.php list view
+- [x] Test the implementation
 
-## Admin Pages
+## Status
 
-- [x] Create admin/home-visit/ directory
-- [x] Create admin/home-visit/list.php
-- [x] Create admin/home-visit/add.php
-- [x] Create admin/home-visit/edit.php
-- [x] Create admin/home-visit/delete.php
-
-## Frontend Pages
-
-- [x] Create frontend/home-visit.php
-
-## Navigation Updates
-
-- [x] Update admin/includes/admin-nav.php to add home visit menu
-- [x] Update includes/header.php to add home visit link
-
-## Testing
-
-- [ ] Run SQL to create tables
-- [ ] Test admin functionality
-- [ ] Test frontend functionality
-- [ ] Test image uploads
+- Current: All implementation completed successfully

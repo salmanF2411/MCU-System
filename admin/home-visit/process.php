@@ -107,6 +107,7 @@ $result = mysqli_query($conn, $query);
                                         <th>Nama Pasien</th>
                                         <th>Layanan</th>
                                         <th>Keluhan</th>
+                                        <th>Alamat</th>
                                         <th width="120">Harga</th>
                                         <th width="100">Status</th>
                                         <th width="120">Tanggal Daftar</th>
@@ -125,6 +126,9 @@ $result = mysqli_query($conn, $query);
                                             <td><?php echo htmlspecialchars($registration['judul_layanan']); ?></td>
                                             <td>
                                                 <?php echo substr(strip_tags($registration['keluhan']), 0, 50) . '...'; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo substr(strip_tags($registration['alamat_visit']), 0, 50) . '...'; ?>
                                             </td>
                                             <td>
                                                 <span class="fw-bold text-success">
