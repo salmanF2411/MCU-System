@@ -195,28 +195,28 @@ if ($id > 0) {
     // --- LOGIKA NORMAL/ABNORMAL ---
     function checkNormal($val, $type) {
         if (empty($val) || $val === '-') return false;
-        
+
         $val_clean = strtolower(trim($val));
 
         switch($type) {
             case 'suhu':
-                // Merah jika > 37.5
+                // Abnormal jika < 36.5 atau > 37.5
                 $temp = floatval(str_replace(',', '.', $val));
-                return $temp > 37.5;
+                return $temp < 36.5 || $temp > 37.5;
 
             case 'tensi':
                 if (preg_match('/(\d+)\/(\d+)/', $val, $matches)) {
                     $systolic = intval($matches[1]);
                     $diastolic = intval($matches[2]);
-                    return $systolic > 140 || $diastolic > 90;
+                    return $systolic > 125 || $systolic < 100 || $diastolic > 80 || $diastolic < 70;
                 }
                 return false;
 
             case 'respirasi':
-                return intval($val) > 20;
+                return intval($val) > 25 || intval($val) < 12;
 
             case 'nadi':
-                return intval($val) > 100;
+                return intval($val) < 60 || intval($val) > 100;
 
             case 'visus':
                 // 1. Jika "normal" atau "6/6" atau "6/6 (jauh)", return False (HITAM)
@@ -224,12 +224,12 @@ if ($id > 0) {
                     return false;
                 }
 
-                // 2. Cek format "6/angka" menggunakan Regex
-                if (preg_match('/6\/\s*(\d+)/', $val_clean, $matches)) {
-                    $penyebut = intval($matches[1]);
-                    // Jika penyebut > 6 (misal 6/7, 6/15) maka Abnormal (MERAH)
-                    if ($penyebut > 6) return true; 
-                    return false; // Jika 6/6 atau 6/5 (Hitam)
+                // 2. Cek format "angka/angka" menggunakan Regex
+                if (preg_match('/(\d+)\/\s*(\d+)/', $val_clean, $matches)) {
+                    $numerator = intval($matches[1]);
+                    $denominator = intval($matches[2]);
+                    // Abnormal jika denominator > 6 (lebih buruk dari 6/6)
+                    return $denominator > 6;
                 }
 
                 // 3. Fallback: Jika tidak mengandung '6/6' sama sekali, anggap abnormal (MERAH)
@@ -254,8 +254,7 @@ if ($id > 0) {
     
     // Suhu
     $suhu = $data['suhu'] ?? 0;
-    $is_suhu_abnormal = ($suhu > 37.5); 
-    $pdf->RowResult('D. Suhu', $suhu . ' C', $is_suhu_abnormal);
+    $pdf->RowResult('D. Suhu', $suhu . ' C', checkNormal($suhu, 'suhu'));
     
     $pdf->RowResult('E. Tinggi Badan', ($data['tinggi_badan'] ?? '-') . ' cm');
     $pdf->RowResult('F. Berat Badan', ($data['berat_badan'] ?? '-') . ' kg');
