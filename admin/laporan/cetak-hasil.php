@@ -332,55 +332,60 @@ if ($id > 0) {
     $pdf->RowResult('N. Kaki', $kaki, checkNormal($kaki, 'fisik'));
 
     // --- BAGIAN VISUS KHUSUS (WARNA TERPISAH) ---
-    $visus_ka = isset($data['visus_kanan_jauh']) ? $data['visus_kanan_jauh'] : '-';
-    $visus_ki = isset($data['visus_kiri_jauh']) ? $data['visus_kiri_jauh'] : '-';
-    
+    $visus_kanan_jauh = isset($data['visus_kanan_jauh']) ? $data['visus_kanan_jauh'] : '-';
+    $visus_kanan_dekat = isset($data['visus_kanan_dekat']) ? $data['visus_kanan_dekat'] : '-';
+    $visus_kiri_jauh = isset($data['visus_kiri_jauh']) ? $data['visus_kiri_jauh'] : '-';
+    $visus_kiri_dekat = isset($data['visus_kiri_dekat']) ? $data['visus_kiri_dekat'] : '-';
+
     // Cek status masing-masing mata
-    $abnormal_ka = checkNormal($visus_ka, 'visus');
-    $abnormal_ki = checkNormal($visus_ki, 'visus');
-    
+    $abnormal_kanan_jauh = checkNormal($visus_kanan_jauh, 'visus');
+    $abnormal_kanan_dekat = checkNormal($visus_kanan_dekat, 'visus');
+    $abnormal_kiri_jauh = checkNormal($visus_kiri_jauh, 'visus');
+    $abnormal_kiri_dekat = checkNormal($visus_kiri_dekat, 'visus');
+
     $pdf->SetFont('Arial','B',9);
     $pdf->Cell(95, 6, '  Hasil Pemeriksaan VISUS Mata', 1, 0, 'L');
-    
+
     // Teknik membuat kotak manual agar bisa beda warna teks
     $x_now = $pdf->GetX();
     $y_now = $pdf->GetY();
-    
+
     // 1. Gambar Border Kotak Kosong
-    $pdf->Cell(95, 6, '', 1, 0); 
-    
+    $pdf->Cell(95, 6, '', 1, 0);
+
     // 2. Tulis Isi di dalam kotak (pakai XY manual)
     $pdf->SetXY($x_now, $y_now);
-    
-    $text_1 = '  Kanan = ';
-    $text_val_1 = $visus_ka;
-    $text_2 = ' dan Kiri = ';
-    $text_val_2 = $visus_ki;
-    
-    // Kanan Label (Hitam)
-    $pdf->SetFont('Arial','',9);
-    $pdf->SetTextColor(0);
-    $pdf->Cell($pdf->GetStringWidth($text_1), 6, $text_1, 0, 0);
-    
-    // Kanan Value (Merah jika abnormal)
-    if($abnormal_ka) { $pdf->SetTextColor(255,0,0); $pdf->SetFont('Arial','B',9); }
-    else { $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9); }
-    $pdf->Cell($pdf->GetStringWidth($text_val_1), 6, $text_val_1, 0, 0);
-    
-    // Separator (Hitam)
-    $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9);
-    $pdf->Cell($pdf->GetStringWidth($text_2), 6, $text_2, 0, 0);
-    
-    // Kiri Value (Merah jika abnormal)
-    if($abnormal_ki) { $pdf->SetTextColor(255,0,0); $pdf->SetFont('Arial','B',9); }
-    else { $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9); }
-    $pdf->Cell($pdf->GetStringWidth($text_val_2), 6, $text_val_2, 0, 0);
-    
+
+    $text_parts = [
+        ['  Kanan J = ', $visus_kanan_jauh, $abnormal_kanan_jauh],
+        [' dan Kiri J = ', $visus_kiri_jauh, $abnormal_kiri_jauh],
+        [' | Kanan D = ', $visus_kanan_dekat, $abnormal_kanan_dekat],
+        [' dan Kiri D = ', $visus_kiri_dekat, $abnormal_kiri_dekat]
+    ];
+
+    foreach ($text_parts as $part) {
+        $label = $part[0];
+        $value = $part[1];
+        $is_abnormal = $part[2];
+
+        // Label (Hitam)
+        $pdf->SetFont('Arial','',9);
+        $pdf->SetTextColor(0);
+        $width_label = $pdf->GetStringWidth($label);
+        $pdf->Cell($width_label, 6, $label, 0, 0);
+
+        // Value (Merah jika abnormal)
+        if($is_abnormal) { $pdf->SetTextColor(255,0,0); $pdf->SetFont('Arial','B',9); }
+        else { $pdf->SetTextColor(0); $pdf->SetFont('Arial','',9); }
+        $width_value = $pdf->GetStringWidth($value);
+        $pdf->Cell($width_value, 6, $value, 0, 0);
+    }
+
     $pdf->SetTextColor(0); // Reset ke Hitam
-    
+
     // Reset Posisi untuk baris berikutnya
-    $pdf->SetXY($x_now + 95, $y_now); 
-    $pdf->Ln(6); 
+    $pdf->SetXY($x_now + 95, $y_now);
+    $pdf->Ln(6);
 
     // --- Lanjut PDF ---
     $hasil_lab = $data['hasil_lab'] ?? '-';

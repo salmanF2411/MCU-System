@@ -176,12 +176,22 @@ $result = mysqli_query($conn, $query);
                                                             <i class="fas fa-check"></i>
                                                         </button>
                                                     <?php endif; ?>
-                                                    <button type="button"
-                                                            class="btn btn-danger"
-                                                            onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'batal')"
-                                                            title="Batal">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
+                                                    <?php if (in_array($registration['status'], ['selesai', 'batal'])): ?>
+                                                        <button type="button"
+                                                                class="btn btn-danger delete-visit"
+                                                                data-id="<?php echo $registration['id_visit']; ?>"
+                                                                data-nama="<?php echo htmlspecialchars($registration['nama_pasien']); ?>"
+                                                                title="Hapus">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    <?php else: ?>
+                                                        <button type="button"
+                                                                class="btn btn-danger"
+                                                                onclick="updateStatus(<?php echo $registration['id_visit']; ?>, 'batal')"
+                                                                title="Batal">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    <?php endif; ?>
                                                 </div>
                                             </td>
                                         </tr>
@@ -249,6 +259,31 @@ $result = mysqli_query($conn, $query);
     </div>
 </div>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-trash me-2"></i> Konfirmasi Hapus
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Apakah Anda yakin ingin menghapus pendaftaran home visit untuk <strong id="visitNama"></strong>?</p>
+                <p class="text-danger">Tindakan ini tidak dapat dibatalkan!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <form id="deleteForm" method="POST" action="delete-visit.php" style="display: inline;">
+                    <input type="hidden" name="id" id="deleteId">
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 function viewDetails(id) {
     fetch(`get-detail.php?id=${id}`)
@@ -285,6 +320,20 @@ function updateStatus(id, status) {
         });
     }
 }
+
+// Delete confirmation
+document.querySelectorAll('.delete-visit').forEach(button => {
+    button.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const nama = this.getAttribute('data-nama');
+
+        document.getElementById('deleteId').value = id;
+        document.getElementById('visitNama').textContent = nama;
+
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+    });
+});
 </script>
 
 <?php include '../../includes/admin-footer.php'; ?>

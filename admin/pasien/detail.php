@@ -496,11 +496,17 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     <table class="table table-sm table-borderless">
                                                         <tr>
                                                             <th width="40%">Visus Kanan (Jauh/Dekat)</th>
-                                                            <td class="<?php echo getValueClass('visus', $exam['visus_kanan_jauh']); ?>"><?php echo $exam['visus_kanan_jauh'] ?: '-' ?> / <?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></td>
+                                                            <td>
+                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kanan_jauh']); ?>"><?php echo $exam['visus_kanan_jauh'] ?: '-'; ?></span> /
+                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kanan_dekat']); ?>"><?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th>Visus Kiri (Jauh/Dekat)</th>
-                                                            <td class="<?php echo getValueClass('visus', $exam['visus_kiri_jauh']); ?>"><?php echo $exam['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></td>
+                                                            <td>
+                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kiri_jauh']); ?>"><?php echo $exam['visus_kiri_jauh'] ?: '-'; ?></span> /
+                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kiri_dekat']); ?>"><?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></span>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <th>Anemis : Ikterik</th>
