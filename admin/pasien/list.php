@@ -51,6 +51,17 @@ $query = "SELECT p.*,
           LIMIT $limit OFFSET $offset";
 
 $result = mysqli_query($conn, $query);
+
+// Get statistics for all patients (unfiltered)
+$stats_query = "SELECT
+                COUNT(*) as total,
+                SUM(CASE WHEN status_pendaftaran = 'menunggu' THEN 1 ELSE 0 END) as menunggu,
+                SUM(CASE WHEN status_pendaftaran = 'proses' THEN 1 ELSE 0 END) as proses,
+                SUM(CASE WHEN status_pendaftaran = 'selesai' THEN 1 ELSE 0 END) as selesai
+                FROM pasien";
+
+$stats_result = mysqli_query($conn, $stats_query);
+$stats = mysqli_fetch_assoc($stats_result);
 ?>
 
 <?php include '../../includes/admin-header.php'; ?>
@@ -100,6 +111,42 @@ $result = mysqli_query($conn, $query);
                             <a href="<?php echo ADMIN_URL; ?>/pasien/list.php" class="btn btn-secondary w-100">Reset</a>
                         </div>
                     </form>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card border-primary">
+                        <div class="card-body text-center">
+                            <h4 class="card-title text-primary"><?php echo $stats['total']; ?></h4>
+                            <p class="card-text">Total Pasien</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <h4 class="card-title text-warning"><?php echo $stats['menunggu']; ?></h4>
+                            <p class="card-text">Menunggu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-info">
+                        <div class="card-body text-center">
+                            <h4 class="card-title text-info"><?php echo $stats['proses']; ?></h4>
+                            <p class="card-text">Proses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-success">
+                        <div class="card-body text-center">
+                            <h4 class="card-title text-success"><?php echo $stats['selesai']; ?></h4>
+                            <p class="card-text">Selesai</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
