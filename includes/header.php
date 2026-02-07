@@ -178,10 +178,10 @@ require_once 'functions.php';
                         <a class="nav-link" href="<?php echo BASE_URL; ?>/artikel.php"><i class="fas fa-newspaper"></i> Artikel</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>/home-visit.php"><i class="fas fa-house-user"></i> Home Visit</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/daftar-mcu.php"><i class="fas fa-edit"></i> Daftar MCU</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo BASE_URL; ?>/daftar-mcu.php"><i class="fas fa-edit"></i> Daftar MCU</a>
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/home-visit.php"><i class="fas fa-house-user"></i> Home Visit</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>/feedback.php"><i class="fas fa-comments"></i> Feedback</a>
