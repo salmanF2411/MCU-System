@@ -171,7 +171,10 @@ require_once 'functions.php';
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>"><i class="fas fa-home"></i> Beranda</a>
                     </li>
-                     <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo BASE_URL; ?>/tentang.php"><i class="fas fa-info-circle"></i> Tentang</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?php echo BASE_URL; ?>/artikel.php"><i class="fas fa-newspaper"></i> Artikel</a>
                     </li>
                     <li class="nav-item">
