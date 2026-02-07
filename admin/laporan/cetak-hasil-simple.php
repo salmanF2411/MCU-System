@@ -291,10 +291,10 @@ $settings = mysqli_fetch_assoc($settings_result);
             <div class="section-title">PEMERIKSAAN MATA</div>
             <table class="exam-table">
                 <tr>
-                    <th width="25%">Visus Kanan (Jauh/Dekat)</th>
-                    <td><?php echo $exams['dokter_mata']['visus_kanan_jauh'] ?: '-' ?> / <?php echo $exams['dokter_mata']['visus_kanan_dekat'] ?: '-'; ?></td>
-                    <th width="25%">Visus Kiri (Jauh/Dekat)</th>
-                    <td><?php echo $exams['dokter_mata']['visus_kiri_jauh'] ?: '-' ?> / <?php echo $exams['dokter_mata']['visus_kiri_dekat'] ?: '-'; ?></td>
+                    <th width="25%">Visus Kanan</th>
+                    <td><?php echo $exams['dokter_mata']['visus_kanan_jauh'] ?: '-'; ?></td>
+                    <th width="25%">Visus Kiri</th>
+                    <td><?php echo $exams['dokter_mata']['visus_kiri_jauh'] ?: '-'; ?></td>
                 </tr>
                 <tr>
                     <th>Anemia</th>

@@ -82,17 +82,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
     } elseif ($role == 'dokter_mata') {
         $visus_kanan_jauh = escape($_POST['visus_kanan_jauh']);
-        $visus_kanan_dekat = escape($_POST['visus_kanan_dekat']);
+        $visus_kanan_dekat = '';
         $visus_kiri_jauh = escape($_POST['visus_kiri_jauh']);
-        $visus_kiri_dekat = escape($_POST['visus_kiri_dekat']);
+        $visus_kiri_dekat = '';
         $anemia = escape($_POST['anemia']);
         $ikterik_keterangan = escape($_POST['ikterik_keterangan']);
         $buta_warna = escape($_POST['buta_warna']);
         $buta_warna_keterangan = escape($_POST['buta_warna_keterangan']);
         $lapang_pandang = escape($_POST['lapang_pandang']);
         $lapang_pandang_keterangan = escape($_POST['lapang_pandang_keterangan']);
-        
-        $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia,ikterik_keterangan, buta_warna,buta_warna_keterangan, lapang_pandang,lapang_pandang_keterangan, pemeriksa_id) 
+
+        $insert_query = "INSERT INTO pemeriksaan (pasien_id, pemeriksa_role, visus_kanan_jauh, visus_kanan_dekat, visus_kiri_jauh, visus_kiri_dekat, anemia,ikterik_keterangan, buta_warna,buta_warna_keterangan, lapang_pandang,lapang_pandang_keterangan, pemeriksa_id)
                          VALUES ($id, '$role', '$visus_kanan_jauh', '$visus_kanan_dekat', '$visus_kiri_jauh', '$visus_kiri_dekat', '$anemia', '$ikterik_keterangan', '$buta_warna','$buta_warna_keterangan', '$lapang_pandang','$lapang_pandang_keterangan', {$_SESSION['admin_id']})";
         
     } elseif ($role == 'dokter_umum') {
@@ -335,35 +335,15 @@ $role_title = $role_titles[$role];
                             
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <h6>VISUS KANAN</h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Jauh</label>
-                                            <textarea class="form-control" name="visus_kanan_jauh" 
-                                                      rows="1" placeholder="6/"></textarea>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Dekat</label>
-                                            <textarea class="form-control" name="visus_kanan_dekat" 
-                                                      rows="1" placeholder="6/"></textarea>
-                                        </div>
-                                    </div>
+                                    <label class="form-label">VISUS KANAN</label>
+                                    <textarea class="form-control" name="visus_kanan_jauh"
+                                              rows="1" placeholder="6/"></textarea>
                                 </div>
-                                
+
                                 <div class="col-md-6">
-                                    <h6>VISUS KIRI</h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Jauh</label>
-                                            <textarea class="form-control" name="visus_kiri_jauh" 
-                                                      rows="1" placeholder="6/"></textarea>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">Dekat</label>
-                                           <textarea class="form-control" name="visus_kiri_dekat" 
-                                                      rows="1" placeholder="6/"></textarea>
-                                        </div>
-                                    </div>
+                                    <label class="form-label">VISUS KIRI</label>
+                                    <textarea class="form-control" name="visus_kiri_jauh"
+                                              rows="1" placeholder="6/"></textarea>
                                 </div>
                             </div>
                             

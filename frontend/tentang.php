@@ -145,7 +145,7 @@ $setting = mysqli_fetch_assoc($result);
                 </div>
                 <div class="card-body">
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3734.641285579347!2d107.08480507471582!3d-6.817386993180287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNDknMDIuNiJTIDEwN8KwMDUnMTQuNiJF!5e1!3m2!1sid!2sid!4v1769482516995!5m2!1sid!2sid" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14940.57612772112!2d107.05798757269284!3d-6.752563714709638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sid!2sid!4v1770438852589!5m2!1sid!2sid" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>

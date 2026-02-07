@@ -495,17 +495,15 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                 <div class="card-body">
                                                     <table class="table table-sm table-borderless">
                                                         <tr>
-                                                            <th width="40%">Visus Kanan (Jauh/Dekat)</th>
+                                                            <th width="40%">Visus Kanan</th>
                                                             <td>
-                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kanan_jauh']); ?>"><?php echo $exam['visus_kanan_jauh'] ?: '-'; ?></span> /
-                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kanan_dekat']); ?>"><?php echo $exam['visus_kanan_dekat'] ?: '-'; ?></span>
+                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kanan_jauh']); ?>"><?php echo $exam['visus_kanan_jauh'] ?: '-'; ?></span>
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <th>Visus Kiri (Jauh/Dekat)</th>
+                                                            <th>Visus Kiri</th>
                                                             <td>
-                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kiri_jauh']); ?>"><?php echo $exam['visus_kiri_jauh'] ?: '-'; ?></span> /
-                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kiri_dekat']); ?>"><?php echo $exam['visus_kiri_dekat'] ?: '-'; ?></span>
+                                                                <span class="<?php echo getValueClass('visus', $exam['visus_kiri_jauh']); ?>"><?php echo $exam['visus_kiri_jauh'] ?: '-'; ?></span>
                                                             </td>
                                                         </tr>
                                                         <tr>

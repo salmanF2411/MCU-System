@@ -357,10 +357,8 @@ if ($id > 0) {
     $pdf->SetXY($x_now, $y_now);
 
     $text_parts = [
-        ['  Kanan J = ', $visus_kanan_jauh, $abnormal_kanan_jauh],
-        [' dan Kiri J = ', $visus_kiri_jauh, $abnormal_kiri_jauh],
-        [' | Kanan D = ', $visus_kanan_dekat, $abnormal_kanan_dekat],
-        [' dan Kiri D = ', $visus_kiri_dekat, $abnormal_kiri_dekat]
+        ['  Kanan = ', $visus_kanan_jauh, $abnormal_kanan_jauh],
+        [' dan Kiri = ', $visus_kiri_jauh, $abnormal_kiri_jauh]
     ];
 
     foreach ($text_parts as $part) {
