@@ -215,10 +215,21 @@ $pemeriksaan_result = mysqli_query($conn, $pemeriksaan_query);
                                                     <td><?php echo $family['nama']; ?></td>
                                                     <td><?php echo $family['usia']; ?></td>
                                                     <td>
-                                                        <span class="badge <?php echo $family['kondisi'] == 'Sehat' ? 'bg-success' : 'bg-warning'; ?>">
-                                                            <?php echo $family['kondisi']; ?>
-                                                        </span>
-                                                    </td>
+<?php
+    $badge = 'bg-secondary';
+
+    if ($family['kondisi'] == 'Sehat') {
+        $badge = 'bg-success';
+    } elseif ($family['kondisi'] == 'Sakit') {
+        $badge = 'bg-warning';
+    } elseif ($family['kondisi'] == 'Meninggal') {
+        $badge = 'bg-danger';
+    }
+?>
+    <span class="badge <?= $badge; ?>">
+        <?= $family['kondisi']; ?>
+    </span>
+</td>
                                                     <td><?php echo $family['meninggal_tahun'] ?: '-'; ?></td>
                                                 </tr>
                                             <?php endwhile; ?>
