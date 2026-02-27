@@ -44,24 +44,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Data keluarga (ayah)
         if (!empty($_POST['nama_ayah'])) {
             $nama_ayah = escape($_POST['nama_ayah']);
-            $usia_ayah = escape($_POST['usia_ayah']);
+            // PENYESUAIAN: Jika kosong kirim NULL agar tidak error di MySQL Strict Mode
+            $usia_ayah = !empty($_POST['usia_ayah']) ? "'" . escape($_POST['usia_ayah']) . "'" : "NULL";
             $kondisi_ayah = escape($_POST['kondisi_ayah']);
-            $meninggal_ayah = escape($_POST['meninggal_ayah']);
+            $meninggal_ayah = !empty($_POST['meninggal_ayah']) ? "'" . escape($_POST['meninggal_ayah']) . "'" : "NULL";
 
             $sql_keluarga = "INSERT INTO keluarga_pasien (pasien_id, hubungan, nama, usia, kondisi, meninggal_tahun)
-                            VALUES ($pasien_id, 'Ayah', '$nama_ayah', '$usia_ayah', '$kondisi_ayah', '$meninggal_ayah')";
+                            VALUES ($pasien_id, 'Ayah', '$nama_ayah', $usia_ayah, '$kondisi_ayah', $meninggal_ayah)";
             mysqli_query($conn, $sql_keluarga);
         }
 
         // Data keluarga (ibu)
         if (!empty($_POST['nama_ibu'])) {
             $nama_ibu = escape($_POST['nama_ibu']);
-            $usia_ibu = escape($_POST['usia_ibu']);
+            // PENYESUAIAN: Jika kosong kirim NULL agar tidak error di MySQL Strict Mode
+            $usia_ibu = !empty($_POST['usia_ibu']) ? "'" . escape($_POST['usia_ibu']) . "'" : "NULL";
             $kondisi_ibu = escape($_POST['kondisi_ibu']);
-            $meninggal_ibu = escape($_POST['meninggal_ibu']);
+            $meninggal_ibu = !empty($_POST['meninggal_ibu']) ? "'" . escape($_POST['meninggal_ibu']) . "'" : "NULL";
 
             $sql_keluarga = "INSERT INTO keluarga_pasien (pasien_id, hubungan, nama, usia, kondisi, meninggal_tahun)
-                            VALUES ($pasien_id, 'Ibu', '$nama_ibu', '$usia_ibu', '$kondisi_ibu', '$meninggal_ibu')";
+                            VALUES ($pasien_id, 'Ibu', '$nama_ibu', $usia_ibu, '$kondisi_ibu', $meninggal_ibu)";
             mysqli_query($conn, $sql_keluarga);
         }
 
@@ -167,10 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 require_once '../includes/header.php';
 ?>
-
-
-
-
 
 <div class="container">
     <div class="row mb-4">
