@@ -672,6 +672,28 @@ require_once '../includes/header.php';
     </div>
 </div>
 
+<!-- Modal untuk pesan error -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="errorModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Pesan Kesalahan
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="errorModalBody">
+                <!-- Pesan error akan ditampilkan di sini -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // Calculate age from birth date
     document.getElementById('tanggal_lahir').addEventListener('change', function() {
@@ -690,21 +712,37 @@ require_once '../includes/header.php';
     // Set minimum date for MCU date (tomorrow)
     document.getElementById('tanggal_mcu').min = new Date().toISOString().split('T')[0];
     
+    // Fungsi untuk menampilkan modal error
+    function showErrorModal(message) {
+        var modalBody = document.getElementById('errorModalBody');
+        modalBody.innerHTML = '<p class="mb-0">' + message + '</p>';
+        var modal = new bootstrap.Modal(document.getElementById('errorModal'));
+        modal.show();
+    }
+
     // Form validation
     function validateForm() {
         // Check required fields
         var requiredFields = document.querySelectorAll('[required]');
         for (var i = 0; i < requiredFields.length; i++) {
             if (!requiredFields[i].value.trim()) {
-                alert('Harap lengkapi semua field yang wajib diisi!');
+                var fieldLabel = requiredFields[i].previousElementSibling ? 
+                    requiredFields[i].previousElementSibling.textContent.replace('*', '').trim() : 
+                    'Field ini';
+                showErrorModal('<i class="fas fa-exclamation-circle me-2 text-danger"></i>Harap lengkapi semua field yang wajib diisi!');
                 requiredFields[i].focus();
+                // Tambahkan efek visual pada field yang kosong
+                requiredFields[i].classList.add('is-invalid');
+                requiredFields[i].addEventListener('input', function() {
+                    this.classList.remove('is-invalid');
+                });
                 return false;
             }
         }
 
         // Check if declaration checkbox is checked
         if (!document.getElementById('declaration').checked) {
-            alert('Harap centang pernyataan persetujuan sebelum mengirim pendaftaran!');
+            showErrorModal('<i class="fas fa-check-square me-2 text-danger"></i>Harap centang pernyataan persetujuan sebelum mengirim pendaftaran!');
             document.getElementById('declaration').focus();
             return false;
         }
@@ -712,14 +750,14 @@ require_once '../includes/header.php';
         // Validate email if filled
         var email = document.getElementById('email').value;
         if (email && !validateEmail(email)) {
-            alert('Format email tidak valid!');
+            showErrorModal('<i class="fas fa-envelope me-2 text-danger"></i>Format email tidak valid! Mohon masukkan email yang benar.');
             return false;
         }
 
         // Validate phone number
         var phone = document.getElementById('no_telp').value;
         if (!validatePhone(phone)) {
-            alert('Format nomor telepon tidak valid! Minimal 10 digit angka.');
+            showErrorModal('<i class="fas fa-phone me-2 text-danger"></i>Format nomor telepon tidak valid! Minimal 10 digit angka.');
             return false;
         }
 
